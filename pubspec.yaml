@@ -1,7 +1,6 @@
 name: flutter_paytabs_sdk
 description: PayTabs flutter plugin.
 version: 1.0.0
-author: mohamed adly <m.adly@paytabs.com>
 homepage: http://www.paytabs.com
 
 environment:
