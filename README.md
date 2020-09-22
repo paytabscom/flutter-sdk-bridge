@@ -84,7 +84,7 @@ To complete the integration you need to set `NSAllowsArbitraryLoads` to true und
 
 ## Demo application
 
-Check our complete example here <https://github.com/paytabscom/flutter_paytabs_sdk/tree/master/example>.
+Check our complete [example][example].
 
 <img src="images/demo.png" width="300">
 
@@ -100,3 +100,4 @@ See [LICENSE][license].
  [2]: https://www.paytabs.com/en/terms-of-use/
  [3]: https://www.paytabs.com/en/privacy-policy/
  [license]: https://github.com/paytabscom/flutter_paytabs_sdk/master/LICENSE
+ [example]: https://github.com/paytabscom/flutter-sdk/tree/master/example
