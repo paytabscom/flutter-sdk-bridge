@@ -63,8 +63,8 @@ Future<void> payPressed() async {
 
 Future<void> applePayPressed() async {
   var args = {
-      pt_merchant_email: "m.adly@paytabs.com",
-      pt_secret_key: "kuTEjyEMhpVSWTwXBSOSeiiDAeMCOdyeuFZKiXAlhzjSKqswUWAgbCaYFivjvYzCWaWJbRszhjZuEQqsUycVzLSyMIaZiQLlRqlp",// Add your Secret Key Here
+      pt_merchant_email: "test@example.com",
+      pt_secret_key: "kuTEjyEMhpVSWTwXBSOSeiiDAeMCOdyeuFZKiXAlhzjSKqswUWAgbCaYFivjvYzCWaWJbRszhjZuEQqsUycVzLSyMIaZmhLlRqlp",// Add your Secret Key Here
       pt_transaction_title: "Mr. John Doe",
       pt_amount: "2.0",
       pt_currency_code: "AED",
@@ -73,7 +73,7 @@ Future<void> applePayPressed() async {
       pt_country_code: "AE",
       pt_language: 'en',
       pt_preauth: false,
-      pt_merchant_identifier: 'merchant.com.paytabs.pt2.sdk.sample'
+      pt_merchant_identifier: 'merchant.bundleId'
     };
   FlutterPaytabsSdk.startApplePayPayment(args, (event) {
         setState(() {
