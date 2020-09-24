@@ -55,7 +55,9 @@ Future<void> payPressed() async {
           if(firstEvent.keys.first == "EventPreparePaypage") {
             //_result = firstEvent.values.first.toString();
           } else {
-            _result = 'Response code:' + firstEvent["pt_response_code"] + '\n Transaction ID:' + firstEvent["pt_transaction_id"];
+            _result = 'Response code:' + firstEvent["pt_response_code"] + '\n Transaction ID:' + firstEvent["pt_transaction_id"]
+             + '\n StatementRef:'+ firstEvent["pt_statement_reference"]
+            + '\n Trace code:'+ firstEvent["pt_trace_code"];
           }
         });
     });
@@ -74,6 +76,7 @@ Future<void> applePayPressed() async {
       pt_language: 'en',
       pt_preauth: false,
       pt_merchant_identifier: 'merchant.bundleId'
+      pt_tokenization: true,
     };
   FlutterPaytabsSdk.startApplePayPayment(args, (event) {
         setState(() {
@@ -83,7 +86,9 @@ Future<void> applePayPressed() async {
           if(firstEvent.keys.first == "EventPreparePaypage") {
             //_result = firstEvent.values.first.toString();
           } else {
-            _result = 'Response code:' + firstEvent["pt_response_code"] + '\n Transaction ID:' + firstEvent["pt_transaction_id"];
+            _result = 'Response code:' + firstEvent["pt_response_code"] + '\n Transaction ID:' + firstEvent["pt_transaction_id"] 
+            + '\n StatementRef:'+ firstEvent["pt_statement_reference"]
+            + '\n Trace code:'+ firstEvent["pt_trace_code"];
           }
         });
     });
@@ -137,19 +142,19 @@ showAlertDialog(BuildContext context, String title, String message) {
               textColor: Colors.white,
               child: Text('Pay By Credit Card'),
             ),
-            // SizedBox(height: 16),
-            // FlatButton(
-            //   onPressed: () {
-            //     if(Platform.isIOS) {
-            //       applePayPressed();
-            //     } else {
-            //       showAlertDialog(context, 'Error', 'Unsupported platform');
-            //     }
-            //   },
-            //   color: Colors.blue,
-            //   textColor: Colors.white,
-            //   child: Text('Apple Pay'),
-            // )
+            SizedBox(height: 16),
+            FlatButton(
+              onPressed: () {
+                if(Platform.isIOS) {
+                  applePayPressed();
+                } else {
+                  showAlertDialog(context, 'Error', 'Unsupported platform');
+                }
+              },
+              color: Colors.blue,
+              textColor: Colors.white,
+              child: Text('Apple Pay'),
+            )
             ])
         ),
       ),
