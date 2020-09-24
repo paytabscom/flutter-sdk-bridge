@@ -140,7 +140,7 @@ showAlertDialog(BuildContext context, String title, String message) {
               },
               color: Colors.blue,
               textColor: Colors.white,
-              child: Text('Pay By Credit Card'),
+              child: Text('Pay with PayTabs'),
             ),
             SizedBox(height: 16),
             FlatButton(
@@ -153,7 +153,7 @@ showAlertDialog(BuildContext context, String title, String message) {
               },
               color: Colors.blue,
               textColor: Colors.white,
-              child: Text('Apple Pay'),
+              child: Text('Pay with Apple Pay'),
             )
             ])
         ),

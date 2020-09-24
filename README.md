@@ -18,14 +18,15 @@ dependencies:
   flutter_paytabs_sdk: ^1.0.0
 ```
 
-# Pay using credit card
+# Pay now
 
-1. Import flutter_paytabs_sdk 
+Import flutter_paytabs_sdk 
 ```dart
 import 'package:flutter_paytabs_sdk/flutter_paytabs_sdk.dart';
 ```
 
-2. Configure arguments
+## Pay with PayTabs
+1. Configure arguments
 
 ```dart
 var args = {
@@ -56,7 +57,7 @@ var args = {
     };
 ```
 
-3. Start calling payment method and handle the transaction details
+2. Start calling `startPayment` method and handle the transaction details
 
 ```dart
 FlutterPaytabsSdk.startPayment(args, (event) {
@@ -71,14 +72,59 @@ FlutterPaytabsSdk.startPayment(args, (event) {
     }
     });
 ```
+
+# Pay with Apple Pay
+
+1. Configure arguments
+
+```dart
+var args = {
+  pt_merchant_email: "test@example.com",
+  pt_secret_key: "kuTEjyEMhpVSWTwXBSOSeiiDAeMCOdyeuFZKiXAlhzjSKqswUWAgbCaYFivjvYzCWaWJbRszhjZuEQqsUycVzLSyMIaZmhLlRqlp",// Add your Secret Key Here
+  pt_transaction_title: "Mr. John Doe",
+  pt_amount: "2.0",
+  pt_currency_code: "AED",
+  pt_customer_email: "test@example.com",
+  pt_order_id: "1234567",
+  pt_country_code: "AE",
+  pt_language: 'en',
+  pt_preauth: false,
+  pt_merchant_identifier: 'merchant.bundleId'
+  pt_tokenization: true,
+};
+```
+
+2. Start calling `startApplePayPayment` method and handle the transaction details
+
+```dart
+FlutterPaytabsSdk.startApplePayPayment(args, (event) {
+    List<dynamic> eventList = event;
+    Map firstEvent = eventList.first;
+    if(firstEvent.keys.first == "EventPreparePaypage") {
+        // TODO
+        // Here you can handle prepare events
+    } else {
+        // TODO
+        // Here you can handle transcation details
+    }
+    });
+```
 # Prerequisites (iOS) 
-To complete the integration you need to set `NSAllowsArbitraryLoads` to true under the section `NSAppTransportSecurity` in your app `info.plist`  or add our domains as expection domains (contact our support team)
+Disable the perfect forward secrecy (PFS) only for paytabs.com
 
 ```xml
 <key>NSAppTransportSecurity</key>
 <dict>
-    <key>NSAllowsArbitraryLoads</key>
-    <true/>
+    <key>NSExceptionDomains</key>
+    <dict>
+        <key>paytabs.com</key>
+        <dict>
+            <key>NSIncludesSubdomains</key>
+            <true/>
+            <key>NSThirdPartyExceptionRequiresForwardSecrecy</key>
+            <false/>
+        </dict>
+    </dict>
 </dict>
 ```
 
