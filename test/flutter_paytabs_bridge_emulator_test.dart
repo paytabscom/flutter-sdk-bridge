@@ -1,9 +1,8 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_paytabs_sdk/flutter_paytabs_sdk.dart';
 
 void main() {
-  const MethodChannel channel = MethodChannel('flutter_paytabs_sdk');
+  const MethodChannel channel = MethodChannel('flutter_paytabs_bridge_emulator');
 
   TestWidgetsFlutterBinding.ensureInitialized();
 

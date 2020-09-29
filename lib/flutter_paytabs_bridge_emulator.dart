@@ -1,3 +1,9 @@
+import 'dart:async';
+
+import 'package:flutter/services.dart';
+import 'dart:io' show Platform;
+
+// Constants
 const String pt_merchant_email = 'pt_merchant_email';
 const String pt_secret_key = 'pt_secret_key';
 const String pt_transaction_title = 'pt_transaction_title';
@@ -25,3 +31,29 @@ const String pt_tokenization = 'pt_tokenization';
 const String pt_preauth = 'pt_preauth';
 const String pt_merchant_identifier = 'pt_merchant_identifier';
 const String pt_country_code = 'pt_country_code';
+// --------
+
+class FlutterPaytabsSdk {
+  
+  static const MethodChannel _channel = const MethodChannel('flutter_paytabs_bridge_emulator');
+  static const stream = const EventChannel('flutter_paytabs_bridge_emulator_stream');
+  static StreamSubscription _eventsubscription;
+  
+  static Future<dynamic> startPayment(Map args,void eventsCallBack(dynamic)) async {
+    _createEventsSubscription(eventsCallBack);
+    return await _channel.invokeMethod('startPayment',args);
+  }
+
+  static Future<dynamic> startApplePayPayment(Map args,void eventsCallBack(dynamic)) async {
+    if(!Platform.isIOS) { return null; }
+    _createEventsSubscription(eventsCallBack);
+    return await _channel.invokeMethod('startApplePayPayment',args);
+  }
+
+  static void _createEventsSubscription(void eventsCallBack(dynamic dynamic)) {
+    if (_eventsubscription == null && eventsCallBack != null) {
+        _eventsubscription = stream.receiveBroadcastStream().listen(eventsCallBack);
+      }
+  }
+
+}

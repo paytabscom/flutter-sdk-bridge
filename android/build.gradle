@@ -1,4 +1,4 @@
-group 'com.paytabs.flutter_paytabs_sdk'
+group 'com.paytabs.flutter_paytabs_bridge_emulator'
 version '1.0'
 
 buildscript {
@@ -40,5 +40,5 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
     implementation 'com.github.dbachelder:CreditCardEntry:1.4.9'
-    implementation files('paytabs_sdk-v4.0.1/paytabs_sdk-v4.0.1.aar')
+    implementation files('paytabs_sdk/paytabs_sdk.aar')
 }

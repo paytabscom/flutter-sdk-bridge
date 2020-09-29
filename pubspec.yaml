@@ -1,7 +1,7 @@
-name: flutter_paytabs_sdk
-description: PayTabs flutter plugin.
-version: 1.0.0
-homepage: http://www.paytabs.com
+name: flutter_paytabs_bridge_emulator
+description: PayTabs plugin.
+version: 1.0.1-beta
+homepage: http://wwww.paytabs.com
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
@@ -27,10 +27,10 @@ flutter:
   plugin:
     platforms:
       android:
-        package: com.paytabs.flutter_paytabs_sdk
-        pluginClass: FlutterPaytabsSdkPlugin
+        package: com.paytabs.flutter_paytabs_bridge_emulator
+        pluginClass: FlutterPaytabsBridge
       ios:
-        pluginClass: FlutterPaytabsSdkPlugin
+        pluginClass: FlutterPaytabsBridge
 
   # To add assets to your plugin package, add an assets section, like this:
   # assets:

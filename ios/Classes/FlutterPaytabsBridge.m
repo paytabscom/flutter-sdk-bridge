@@ -1,18 +1,18 @@
-#import "FlutterPaytabsSdkPlugin.h"
+#import "FlutterPaytabsBridge.h"
 #import <paytabs-iOS/paytabs_iOS.h>
 
-@interface FlutterPaytabsSdkPlugin() <FlutterStreamHandler>
+@interface FlutterPaytabsBridge() <FlutterStreamHandler>
 @property (copy, nonatomic) FlutterEventSink flutterEventSink;
 @property (assign, nonatomic) BOOL flutterListening;
 @property (copy, nonatomic) FlutterResult flutterResult;
 @end
-@implementation FlutterPaytabsSdkPlugin
+@implementation FlutterPaytabsBridge
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
     FlutterMethodChannel* channel = [FlutterMethodChannel
-                                     methodChannelWithName:@"flutter_paytabs_sdk"
+                                     methodChannelWithName:@"flutter_paytabs_bridge_emulator"
                                      binaryMessenger:[registrar messenger]];
-    FlutterEventChannel *stream = [FlutterEventChannel eventChannelWithName:@"flutter_paytabs_sdk_stream" binaryMessenger:registrar.messenger];
-    FlutterPaytabsSdkPlugin* instance = [[FlutterPaytabsSdkPlugin alloc] init];
+    FlutterEventChannel *stream = [FlutterEventChannel eventChannelWithName:@"flutter_paytabs_bridge_emulator_stream" binaryMessenger:registrar.messenger];
+    FlutterPaytabsBridge* instance = [[FlutterPaytabsBridge alloc] init];
     [registrar addMethodCallDelegate:instance channel:channel];
     [stream setStreamHandler:instance];
 }
@@ -97,7 +97,8 @@
                                             @"pt_token_customer_password": tokenizedCustomerEmail ? tokenizedCustomerPassword : @"",
                                             @"pt_token": tokenizedCustomerEmail ? token : @"",
                                             @"pt_statement_reference": statementReference ? statementReference : @"",
-                                            @"pt_trace_code": traceCode ? traceCode : @""
+                                            @"pt_trace_code": traceCode ? traceCode : @"",
+                                            @"pt_result": callbackResult ? callbackResult : @""
                 }];
                 self.flutterEventSink(resultArray);
             }

@@ -1,4 +1,4 @@
-package com.paytabs.flutter_paytabs_sdk;
+package com.paytabs.flutter_paytabs_bridge_emulator;
 
 import androidx.annotation.NonNull;
 
@@ -30,21 +30,21 @@ import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
 
-/** FlutterPaytabsSdkPlugin */
-public class FlutterPaytabsSdkPlugin implements FlutterPlugin, MethodCallHandler, ActivityAware, PluginRegistry.ActivityResultListener {
+/** FlutterPaytabsBridge */
+public class FlutterPaytabsBridge implements FlutterPlugin, MethodCallHandler, ActivityAware, PluginRegistry.ActivityResultListener {
   /// The MethodChannel that will the communication between Flutter and native Android
   ///
   /// This local reference serves to register the plugin with the Flutter Engine and unregister it
   /// when the Flutter Engine is detached from the Activity
   private MethodChannel channel;
-  private  Context context;
-  private  Activity activity;
+  private Context context;
+  private Activity activity;
   private EventChannel.EventSink eventSink;
-  static final String streamName = "flutter_paytabs_sdk_stream";
+  static final String streamName = "flutter_paytabs_bridge_emulator_stream";
   @Override
   public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
     context = flutterPluginBinding.getApplicationContext();
-    channel = new MethodChannel(flutterPluginBinding.getFlutterEngine().getDartExecutor(), "flutter_paytabs_sdk");
+    channel = new MethodChannel(flutterPluginBinding.getFlutterEngine().getDartExecutor(), "flutter_paytabs_bridge_emulator");
     channel.setMethodCallHandler(this);
     EventChannel eventChannel = new EventChannel(flutterPluginBinding.getFlutterEngine().getDartExecutor().getBinaryMessenger(),streamName);
     eventChannel.setStreamHandler(
@@ -73,15 +73,13 @@ public class FlutterPaytabsSdkPlugin implements FlutterPlugin, MethodCallHandler
   // depending on the user's project. onAttachedToEngine or registerWith must both be defined
   // in the same class.
   public static void registerWith(Registrar registrar) {
-    Log.d("PayTabs", "registerWith");
-    final MethodChannel channel = new MethodChannel(registrar.messenger(), "flutter_paytabs_sdk");
-    channel.setMethodCallHandler(new FlutterPaytabsSdkPlugin());
+    final MethodChannel channel = new MethodChannel(registrar.messenger(), "flutter_paytabs_bridge_emulator");
+    channel.setMethodCallHandler(new FlutterPaytabsBridge());
   }
 
   @Override
   public void onMethodCall(@NonNull MethodCall call, @NonNull Result result) {
     if (call.method.equals("startPayment")) {
-      Log.d("PayTabs", "startPayment");
       HashMap<String, Object> arguments = call.arguments();
       Intent intent = new Intent(context, PayTabActivity.class);
       try {
@@ -161,6 +159,7 @@ public class FlutterPaytabsSdkPlugin implements FlutterPlugin, MethodCallHandler
     if (resultCode == RESULT_OK && requestCode == PaymentParams.PAYMENT_REQUEST_CODE) {
         map.put("pt_response_code", data.getStringExtra(PaymentParams.RESPONSE_CODE));
         map.put("pt_transaction_id", data.getStringExtra(PaymentParams.TRANSACTION_ID));
+        map.put("pt_result", data.getStringExtra(PaymentParams.RESULT_MESSAGE));
         if (data.hasExtra(PaymentParams.TOKEN) && !data.getStringExtra(PaymentParams.TOKEN).isEmpty()) {
           map.put("pt_token", data.getStringExtra(PaymentParams.TOKEN));
           map.put("pt_token_customer_password", data.getStringExtra(PaymentParams.CUSTOMER_PASSWORD));

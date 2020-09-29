@@ -1,8 +1,8 @@
-[![pub package](https://img.shields.io/pub/v/flutter_paytabs_sdk.svg)](https://pub.dev/packages/flutter_paytabs_sdk)
+[![pub package](https://img.shields.io/pub/v/flutter_paytabs_bridge_emulator.svg)](https://pub.dev/packages/flutter_paytabs_bridge_emulator)
 
-## Flutter PayTabs SDK
+## Flutter PayTabs Bridge Emulator
 
-Flutter PayTabs SDK is a wrapper for the native PayTabs Android and iOS SDKs, It helps you integrate with PayTabs payment gateway.
+Flutter PayTabs Bridge Emulator is a wrapper for the native PayTabs Android and iOS SDKs, It helps you integrate with PayTabs payment gateway.
 
 Flutter support:
 * [x] iOS
@@ -11,18 +11,18 @@ Flutter support:
 ## Usage
 
 # Installation
-Add `flutter_paytabs_sdk` to your package's `pubspec.yaml` file:
+Add `flutter_paytabs_bridge_emulator` to your package's `pubspec.yaml` file:
 
 ```yaml
 dependencies:
-  flutter_paytabs_sdk: ^1.0.0
+  flutter_paytabs_bridge_emulator: ^1.0.1-beta
 ```
 
 # Pay now
 
-Import flutter_paytabs_sdk 
+Import flutter_paytabs_bridge_emulator
 ```dart
-import 'package:flutter_paytabs_sdk/flutter_paytabs_sdk.dart';
+import 'package:flutter_paytabs_bridge_emulator/flutter_paytabs_bridge_emulator.dart';
 ```
 
 ## Pay with PayTabs
@@ -114,7 +114,7 @@ Disable the perfect forward secrecy (PFS) only for paytabs.com
 
 ```xml
 <key>NSAppTransportSecurity</key>
-<dict>
+<dict
     <key>NSExceptionDomains</key>
     <dict>
         <key>paytabs.com</key>
@@ -145,5 +145,5 @@ See [LICENSE][license].
  [1]: https://www.paytabs.com/en/support/
  [2]: https://www.paytabs.com/en/terms-of-use/
  [3]: https://www.paytabs.com/en/privacy-policy/
- [license]: https://github.com/paytabscom/flutter_paytabs_sdk/master/LICENSE
- [example]: https://github.com/paytabscom/flutter-sdk/tree/master/example
+ [license]: https://github.com/paytabscom/flutter_paytabs_bridge/master/LICENSE
+ [example]: https://github.com/paytabscom/flutter_paytabs_bridge/tree/master/example

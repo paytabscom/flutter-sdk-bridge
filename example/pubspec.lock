@@ -62,13 +62,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_paytabs_sdk:
+  flutter_paytabs_bridge_emulator:
     dependency: "direct main"
     description:
       path: ".."
       relative: true
     source: path
-    version: "1.0.0"
+    version: "1.0.1-beta"
   flutter_test:
     dependency: "direct dev"
     description: flutter

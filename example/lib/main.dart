@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
-import 'package:flutter_paytabs_sdk/constant.dart';
-import 'package:flutter_paytabs_sdk/flutter_paytabs_sdk.dart';
+import 'package:flutter_paytabs_bridge_emulator/flutter_paytabs_bridge_emulator.dart';
 import 'dart:io' show Platform;
 void main() {
   runApp(MyApp());
@@ -23,7 +22,7 @@ class _MyAppState extends State<MyApp> {
 Future<void> payPressed() async {
   var args = {
       pt_merchant_email: "test@example.com",
-      pt_secret_key: "BIueZNfPLblJnMmPYARDEoP5x1WqseI3XciX0yNLJ8v7URXTrOw6dmbKn8bQnTUk6ch6L5SudnC8fz2HozNBVZmh7w9uq4Pwg7D1",// Add your Secret Key Here
+      pt_secret_key: "kuTEjyEMhpVSWTwXBSOSeiiDAeMCOdyeuFZKiXAlhzjSKqswUWAgbCaYFivjvYzCWaWJbRszhjZuEQqsUycVzLSyMIaZiQLlRqlp",// Add your Secret Key Here
       pt_transaction_title: "Mr. John Doe",
       pt_amount: "2.0",
       pt_currency_code: "USD",
@@ -55,9 +54,8 @@ Future<void> payPressed() async {
           if(firstEvent.keys.first == "EventPreparePaypage") {
             //_result = firstEvent.values.first.toString();
           } else {
-            _result = 'Response code:' + firstEvent["pt_response_code"] + '\n Transaction ID:' + firstEvent["pt_transaction_id"]
-             + '\n StatementRef:'+ firstEvent["pt_statement_reference"]
-            + '\n Trace code:'+ firstEvent["pt_trace_code"];
+            _result = 'Response code:' + firstEvent["pt_response_code"] + '\nTransaction ID:' + firstEvent["pt_transaction_id"]
+            + '\nResult message:'+ firstEvent["pt_result"];
           }
         });
     });
@@ -66,7 +64,7 @@ Future<void> payPressed() async {
 Future<void> applePayPressed() async {
   var args = {
       pt_merchant_email: "test@example.com",
-      pt_secret_key: "kuTEjyEMhpVSWTwXBSOSeiiDAeMCOdyeuFZKiXAlhzjSKqswUWAgbCaYFivjvYzCWaWJbRszhjZuEQqsUycVzLSyMIaZmhLlRqlp",// Add your Secret Key Here
+      pt_secret_key: "kuTEjyEMhpVSWTwXBSOSeiiDAeMCOdyeuFZKiXAlhzjSKqswUWAgbCaYFivjvYzCWaWJbRszhjZuEQqsUycVzLSyMIaZiQLlRqlp",// Add your Secret Key Here
       pt_transaction_title: "Mr. John Doe",
       pt_amount: "2.0",
       pt_currency_code: "AED",
@@ -75,8 +73,8 @@ Future<void> applePayPressed() async {
       pt_country_code: "AE",
       pt_language: 'en',
       pt_preauth: false,
-      pt_merchant_identifier: 'merchant.bundleId'
-      pt_tokenization: true,
+      pt_merchant_identifier: 'merchant.bundleId',
+      pt_tokenization: true
     };
   FlutterPaytabsSdk.startApplePayPayment(args, (event) {
         setState(() {
@@ -86,38 +84,27 @@ Future<void> applePayPressed() async {
           if(firstEvent.keys.first == "EventPreparePaypage") {
             //_result = firstEvent.values.first.toString();
           } else {
-            _result = 'Response code:' + firstEvent["pt_response_code"] + '\n Transaction ID:' + firstEvent["pt_transaction_id"] 
-            + '\n StatementRef:'+ firstEvent["pt_statement_reference"]
-            + '\n Trace code:'+ firstEvent["pt_trace_code"];
+            _result = 'Response code:' + firstEvent["pt_response_code"] + '\nTransaction ID:' + firstEvent["pt_transaction_id"] 
+            + '\nStatementRef:'+ firstEvent["pt_statement_reference"]
+            + '\nTrace code:'+ firstEvent["pt_trace_code"]
+            + '\nResult message:'+ firstEvent["pt_result"];
           }
         });
     });
 }
 
-
-showAlertDialog(BuildContext context, String title, String message) {
-  // set up the button
-  Widget okButton = FlatButton(
-    child: Text("OK"),
-    onPressed: () { },
-  );
-
-  // set up the AlertDialog
-  AlertDialog alert = AlertDialog(
-    title: Text(title),
-    content: Text(message),
-    actions: [
-      okButton,
-    ],
-  );
-
-  // show the dialog
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return alert;
-    },
-  );
+Widget applePayButton() {
+  if(Platform.isIOS) {
+    return  FlatButton(
+              onPressed: () {
+                  applePayPressed();
+              },
+              color: Colors.blue,
+              textColor: Colors.white,
+              child: Text('Pay with Apple Pay'),
+            );
+  }
+  return SizedBox(height: 0);
 }
 
   @override
@@ -143,18 +130,7 @@ showAlertDialog(BuildContext context, String title, String message) {
               child: Text('Pay with PayTabs'),
             ),
             SizedBox(height: 16),
-            FlatButton(
-              onPressed: () {
-                if(Platform.isIOS) {
-                  applePayPressed();
-                } else {
-                  showAlertDialog(context, 'Error', 'Unsupported platform');
-                }
-              },
-              color: Colors.blue,
-              textColor: Colors.white,
-              child: Text('Pay with Apple Pay'),
-            )
+            applePayButton()
             ])
         ),
       ),
