@@ -115,6 +115,7 @@ public class FlutterPaytabsBridge implements FlutterPlugin, MethodCallHandler, A
 
       //Tokenization
       intent.putExtra(PaymentParams.IS_TOKENIZATION, paymentDetails.getBoolean("pt_tokenization"));
+      intent.putExtra(PaymentParams.REGION_ENDPOINT, paymentDetails.getString("pt_merchant_region"));
 
       //Pre auth
       intent.putExtra(PaymentParams.IS_PREAUTH, paymentDetails.getBoolean("pt_preauth"));

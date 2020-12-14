@@ -1,3 +1,1 @@
-## 1.0.1-beta
-
-* TODO: First version of paytabs bridge.
+## 1.0.2-beta

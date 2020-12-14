@@ -44,7 +44,8 @@ Future<void> payPressed() async {
       pt_color: "#cccccc",
       pt_language: 'en', // 'en', 'ar'
       pt_tokenization: true,
-      pt_preauth: false
+      pt_preauth: false,
+      pt_merchant_region: 'emirates'
     };
   FlutterPaytabsSdk.startPayment(args, (event) {
         setState(() {
@@ -74,7 +75,8 @@ Future<void> applePayPressed() async {
       pt_language: 'en',
       pt_preauth: false,
       pt_merchant_identifier: 'merchant.bundleId',
-      pt_tokenization: true
+      pt_tokenization: true,
+      pt_merchant_region: 'emirates'
     };
   FlutterPaytabsSdk.startApplePayPayment(args, (event) {
         setState(() {

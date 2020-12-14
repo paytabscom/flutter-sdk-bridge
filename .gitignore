@@ -5,3 +5,11 @@
 .pub/
 
 build/
+android/.idea/.name
+android/.idea/gradle.xml
+android/.idea/jarRepositories.xml
+android/.idea/misc.xml
+android/.idea/modules.xml
+android/.idea/runConfigurations.xml
+android/.idea/caches/build_file_checksums.ser
+android/.idea/codeStyles/Project.xml

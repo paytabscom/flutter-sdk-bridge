@@ -31,6 +31,7 @@ const String pt_tokenization = 'pt_tokenization';
 const String pt_preauth = 'pt_preauth';
 const String pt_merchant_identifier = 'pt_merchant_identifier';
 const String pt_country_code = 'pt_country_code';
+const String pt_merchant_region = 'pt_merchant_region';
 // --------
 
 class FlutterPaytabsSdk {

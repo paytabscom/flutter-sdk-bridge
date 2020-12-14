@@ -5,8 +5,8 @@
 Flutter PayTabs Bridge Emulator is a wrapper for the native PayTabs Android and iOS SDKs, It helps you integrate with PayTabs payment gateway.
 
 Flutter support:
-* [x] iOS
-* [x] Android
+* [x] iOS - 10 or later
+* [x] Android - 16 or later
 
 ## Usage
 
@@ -15,7 +15,7 @@ Add `flutter_paytabs_bridge_emulator` to your package's `pubspec.yaml` file:
 
 ```yaml
 dependencies:
-  flutter_paytabs_bridge_emulator: ^1.0.1-beta
+  flutter_paytabs_bridge_emulator: ^1.0.2-beta
 ```
 
 # Pay now
@@ -53,7 +53,8 @@ var args = {
       pt_color: "#cccccc",
       pt_language: 'en', // 'en', 'ar'
       pt_tokenization: true,
-      pt_preauth: false
+      pt_preauth: false,
+      pt_merchant_region: 'emirates'
     };
 ```
 
@@ -91,6 +92,7 @@ var args = {
   pt_preauth: false,
   pt_merchant_identifier: 'merchant.bundleId'
   pt_tokenization: true,
+  pt_merchant_region: 'emirates'
 };
 ```
 
@@ -109,8 +111,19 @@ FlutterPaytabsSdk.startApplePayPayment(args, (event) {
     }
     });
 ```
+
+# Supported Merchannt Region
+Pass the parameters `pt_merchant_region` with one value of the below list according to supported region.
+* UAE = `emirates`
+* Egypt = `egypt`
+* Saudi Arabia = `saudi`
+* Oman = `oman`
+* Jordan = `jordan`
+* Global =`global`
+* Demo = `demo`
+
 # Prerequisites (iOS) 
-Disable the perfect forward secrecy (PFS) only for paytabs.com
+Disable the perfect forward secrecy (PFS) only for paytabs.com.
 
 ```xml
 <key>NSAppTransportSecurity</key>
