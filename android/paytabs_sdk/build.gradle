@@ -1,2 +1,2 @@
 configurations.maybeCreate("default")
-artifacts.add("default", file('paytabs_sdk-v4.0.1.aar'))
+artifacts.add("default", file('paytabs_sdk.aar'))

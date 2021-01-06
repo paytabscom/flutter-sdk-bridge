@@ -16,7 +16,7 @@ Paytabs is a payment gateway
   s.source_files = 'Classes/**/*'
   s.public_header_files = 'Classes/**/*.h'
   s.dependency 'Flutter'
-  s.dependency 'PayTabs', '4.2.0'
+  s.dependency 'PayTabs', '4.3.0'
   s.platform = :ios, '9.0'
   s.static_framework = true
   # Flutter.framework does not contain a i386 slice. Only x86_64 simulators are supported.
