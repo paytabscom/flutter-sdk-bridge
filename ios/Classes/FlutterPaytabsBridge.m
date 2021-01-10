@@ -19,12 +19,15 @@
 
 - (void)handleMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result {
     self.flutterResult = result;
+    PTFWInitialSetupViewController *initialSetupViewController;
+    NSBundle *bundle = [NSBundle bundleWithURL:[[NSBundle mainBundle] URLForResource:@"Resources" withExtension:@"bundle"]];
+    UIViewController *rootViewController = [[[[UIApplication sharedApplication]delegate] window] rootViewController];
+    
     if ([@"startPayment" isEqualToString:call.method]) {
         NSDictionary *paymentDetails = call.arguments;
-        NSBundle *bundle = [NSBundle bundleWithURL:[[NSBundle mainBundle] URLForResource:@"Resources" withExtension:@"bundle"]];
-        UIViewController *rootViewController = [[[[UIApplication sharedApplication]delegate] window] rootViewController];
-        if([[paymentDetails valueForKey:@"pt_force_validate_shipping"] boolean] == true){
-         PTFWInitialSetupViewController *view =  [[PTFWInitialSetupViewController alloc] initWithBundle:bundle
+        BOOL isShippingRequired = [[paymentDetails valueForKey:@"pt_force_validate_shipping"] boolValue];
+        if(isShippingRequired){
+            initialSetupViewController =  [[PTFWInitialSetupViewController alloc] initWithBundle:bundle
                  andWithViewFrame:rootViewController.view.frame
                  andWithAmount:[[paymentDetails valueForKey:@"pt_amount"] intValue]
                  andWithCustomerTitle:[paymentDetails valueForKey:@"pt_transaction_title"]
@@ -53,7 +56,7 @@
                  andIsThemeColorLight:YES
                  ];
         }else{
-             PTFWInitialSetupViewController *view =  [[PTFWInitialSetupViewController alloc] initWithBundle:bundle
+            initialSetupViewController =  [[PTFWInitialSetupViewController alloc] initWithBundle:bundle
                  andWithViewFrame:rootViewController.view.frame
                  andWithAmount:[[paymentDetails valueForKey:@"pt_amount"] intValue]
                  andWithCustomerTitle:[paymentDetails valueForKey:@"pt_transaction_title"]
@@ -79,19 +82,17 @@
         }
 
         
-        view.didReceiveBackButtonCallback = ^{
-            UIViewController *rootViewController = [[[[UIApplication sharedApplication]delegate] window] rootViewController];
-            [rootViewController dismissViewControllerAnimated:YES completion:nil];
+        initialSetupViewController.didReceiveBackButtonCallback = ^{
         };
         
-        view.didStartPreparePaymentPage = ^{
+        initialSetupViewController.didStartPreparePaymentPage = ^{
             NSArray *resultArray = @[@{@"EventPreparePaypage" : @{@"action": @"start"}}];
              if (self.flutterListening) {
                  self.flutterEventSink(resultArray);
              }
         };
         
-        view.didFinishPreparePaymentPage = ^{
+        initialSetupViewController.didFinishPreparePaymentPage = ^{
             // Finish Prepare Payment Page
             if (self.flutterListening) {
                 NSArray *resultArray = @[@{@"EventPreparePaypage" : @{@"action": @"finish"}}];
@@ -99,7 +100,7 @@
             }
         };
         
-        view.didReceiveFinishTransactionCallback = ^(int responseCode, NSString *  callbackResult, int transactionID, NSString *  tokenizedCustomerEmail, NSString * tokenizedCustomerPassword, NSString * _Nonnull token, BOOL transactionState, NSString *statementReference, NSString *traceCode) {
+        initialSetupViewController.didReceiveFinishTransactionCallback = ^(int responseCode, NSString *  callbackResult, int transactionID, NSString *  tokenizedCustomerEmail, NSString * tokenizedCustomerPassword, NSString * _Nonnull token, BOOL transactionState, NSString *statementReference, NSString *traceCode) {
             if (self.flutterListening) {
                 NSArray *resultArray = @[@{ @"pt_response_code":[NSString stringWithFormat:@"%i", responseCode],
                                             @"pt_transaction_id":[NSString stringWithFormat:@"%i", transactionID],
@@ -111,31 +112,44 @@
                 }];
                 self.flutterEventSink(resultArray);
             }
-            [rootViewController dismissViewControllerAnimated:NO completion:nil];
-            [rootViewController.view removeFromSuperview];
-            [rootViewController removeFromParentViewController];
         };
+        [rootViewController.view addSubview:initialSetupViewController.view];
+        [rootViewController addChildViewController:initialSetupViewController];
+        [initialSetupViewController didMoveToParentViewController:rootViewController];
         
-        [rootViewController presentViewController:view animated:true completion:nil];
     } else if ([@"startApplePayPayment" isEqualToString:call.method]) {
         NSDictionary *paymentDetails = call.arguments;
-        NSBundle *bundle = [NSBundle bundleWithURL:[[NSBundle mainBundle] URLForResource:@"Resources" withExtension:@"bundle"]];
-        UIViewController *rootViewController = [[[[UIApplication sharedApplication]delegate] window] rootViewController];
-        PTFWInitialSetupViewController *viewController =  [[PTFWInitialSetupViewController alloc] initApplePayWithBundle:bundle andWithViewFrame:rootViewController.view.frame andWithAmount:[[paymentDetails valueForKey:@"pt_amount"] intValue] andWithCustomerTitle:[paymentDetails valueForKey:@"pt_transaction_title"] andWithCurrencyCode:[paymentDetails valueForKey:@"pt_currency_code"] andWithCountryCode:[paymentDetails valueForKey:@"pt_country_code"] andWithSDKLanguage:[paymentDetails valueForKey:@"pt_language"] andWithOrderID:[paymentDetails valueForKey:@"pt_order_id"] andIsTokenization:[[paymentDetails valueForKey:@"pt_tokenization"] boolValue] andIsPreAuth:[[paymentDetails valueForKey:@"pt_preauth"] boolValue] andWithMerchantEmail:[paymentDetails valueForKey:@"pt_merchant_email"] andWithMerchantSecretKey:[paymentDetails valueForKey:@"pt_secret_key"] andWithMerchantApplePayIdentifier:[paymentDetails valueForKey:@"pt_merchant_identifier"] andWithSupportedNetworks:@[PKPaymentNetworkVisa, PKPaymentNetworkMasterCard, PKPaymentNetworkAmex] andWithMerchantRegion:[paymentDetails valueForKey:@"pt_merchant_region"]  andWithAssigneeCode:@"SDK"];
+        BOOL isShippingRequired = [[paymentDetails valueForKey:@"pt_force_validate_shipping"] boolValue];
+        initialSetupViewController = [[PTFWInitialSetupViewController alloc]
+                                      initApplePayWithBundle:bundle
+                                      andWithViewFrame:rootViewController.view.frame
+                                      andWithAmount:[[paymentDetails valueForKey:@"pt_amount"] intValue]
+                                      andWithCustomerTitle:[paymentDetails valueForKey:@"pt_transaction_title"]
+                                      andWithCurrencyCode:[paymentDetails valueForKey:@"pt_currency_code"]
+                                      andWithCountryCode:[paymentDetails valueForKey:@"pt_country_code"]
+                                      andForceShippingInfo: isShippingRequired
+                                      andWithSDKLanguage:[paymentDetails valueForKey:@"pt_language"]
+                                      andWithOrderID:[paymentDetails valueForKey:@"pt_order_id"]
+                                      andIsTokenization:[[paymentDetails valueForKey:@"pt_tokenization"] boolValue]
+                                      andIsPreAuth:[[paymentDetails valueForKey:@"pt_preauth"] boolValue]
+                                      andWithMerchantEmail:[paymentDetails valueForKey:@"pt_merchant_email"]
+                                      andWithMerchantSecretKey:[paymentDetails valueForKey:@"pt_secret_key"]
+                                      andWithMerchantApplePayIdentifier:[paymentDetails valueForKey:@"pt_merchant_identifier"]
+                                      andWithSupportedNetworks:@[PKPaymentNetworkVisa, PKPaymentNetworkMasterCard, PKPaymentNetworkAmex]
+                                      andWithMerchantRegion:[paymentDetails valueForKey:@"pt_merchant_region"]
+                                      andWithAssigneeCode:@"SDK"];
         
-        viewController.didReceiveBackButtonCallback = ^{
-            UIViewController *rootViewController = [[[[UIApplication sharedApplication]delegate] window] rootViewController];
-            [rootViewController dismissViewControllerAnimated:YES completion:nil];
+        initialSetupViewController.didReceiveBackButtonCallback = ^{
         };
         
-        viewController.didStartPreparePaymentPage = ^{
+        initialSetupViewController.didStartPreparePaymentPage = ^{
             NSArray *resultArray = @[@{@"EventPreparePaypage" : @{@"action": @"start"}}];
              if (self.flutterListening) {
                  self.flutterEventSink(resultArray);
              }
         };
         
-        viewController.didFinishPreparePaymentPage = ^{
+        initialSetupViewController.didFinishPreparePaymentPage = ^{
             // Finish Prepare Payment Page
             if (self.flutterListening) {
                 NSArray *resultArray = @[@{@"EventPreparePaypage" : @{@"action": @"finish"}}];
@@ -143,7 +157,7 @@
             }
         };
         
-        viewController.didReceiveFinishTransactionCallback = ^(int responseCode, NSString *  callbackResult, int transactionID, NSString *  tokenizedCustomerEmail, NSString * tokenizedCustomerPassword, NSString * _Nonnull token, BOOL transactionState, NSString *statementReference, NSString *traceCode) {
+        initialSetupViewController.didReceiveFinishTransactionCallback = ^(int responseCode, NSString *  callbackResult, int transactionID, NSString *  tokenizedCustomerEmail, NSString * tokenizedCustomerPassword, NSString * _Nonnull token, BOOL transactionState, NSString *statementReference, NSString *traceCode) {
             if (self.flutterListening) {
                 NSArray *resultArray = @[@{ @"pt_response_code":[NSString stringWithFormat:@"%i", responseCode],
                                             @"pt_transaction_id":[NSString stringWithFormat:@"%i", transactionID],
@@ -156,12 +170,10 @@
                 }];
                 self.flutterEventSink(resultArray);
             }
-            [rootViewController dismissViewControllerAnimated:NO completion:nil];
-            [rootViewController.view removeFromSuperview];
-            [rootViewController removeFromParentViewController];
         };
-        
-        [rootViewController presentViewController:viewController animated:true completion:nil];
+        [rootViewController.view addSubview:initialSetupViewController.view];
+        [rootViewController addChildViewController:initialSetupViewController];
+        [initialSetupViewController didMoveToParentViewController:rootViewController];
     } else {
         result(FlutterMethodNotImplemented);
     }

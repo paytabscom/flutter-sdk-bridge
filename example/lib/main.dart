@@ -38,15 +38,15 @@ class _MyAppState extends State<MyApp> {
       //Optional
       pt_address_billing: "Flat 1,Building 123, Road 2345",
       pt_city_billing: "Dubai",
-      pt_state_billing: "3510",
-      pt_country_billing: "AE",
-      pt_postal_code_billing: "00973",
+      pt_state_billing: "Dubai",
+      pt_country_billing: "ARE",
+      pt_postal_code_billing: "12345",
       //Put Country Phone code if Postal code not available '00973'//
       pt_address_shipping: "Flat 1,Building 123, Road 2345",
       pt_city_shipping: "",
-      pt_state_shipping: "3510",
-      pt_country_shipping: "AE",
-      pt_postal_code_shipping: "00973",
+      pt_state_shipping: "Dubai",
+      pt_country_shipping: "ARE",
+      pt_postal_code_shipping: "12345",
       //Put Country Phone code if Postal
       pt_color: "#cccccc",
       pt_language: 'en',
@@ -54,7 +54,7 @@ class _MyAppState extends State<MyApp> {
       pt_tokenization: true,
       pt_preauth: false,
       pt_merchant_region: 'emirates',
-      pt_force_validate_shipping: true
+      pt_force_validate_shipping: false
     };
     FlutterPaytabsSdk.startPayment(args, (event) {
       setState(() {
@@ -92,6 +92,7 @@ class _MyAppState extends State<MyApp> {
       pt_merchant_identifier: 'merchant.bundleId',
       pt_tokenization: true,
       pt_merchant_region: 'emirates'
+      pt_force_validate_shipping: false
     };
     FlutterPaytabsSdk.startApplePayPayment(args, (event) {
       setState(() {
