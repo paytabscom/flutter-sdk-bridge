@@ -160,5 +160,6 @@ See [LICENSE][license].
  [1]: https://www.paytabs.com/en/support/
  [2]: https://www.paytabs.com/en/terms-of-use/
  [3]: https://www.paytabs.com/en/privacy-policy/
- [license]: https://github.com/paytabscom/flutter_paytabs_bridge/master/LICENSE
- [example]: https://github.com/paytabscom/flutter_paytabs_bridge/tree/master/example
+ [license]: https://github.com/paytabscom/flutter-sdk-bridge/blob/master/LICENSE
+ [example]: https://github.com/paytabscom/flutter-sdk-bridge/tree/master/example
+
