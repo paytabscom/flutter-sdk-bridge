@@ -15,7 +15,7 @@ Add `flutter_paytabs_bridge_emulator` to your package's `pubspec.yaml` file:
 
 ```yaml
 dependencies:
-  flutter_paytabs_bridge_emulator: ^1.0.2-beta
+  flutter_paytabs_bridge_emulator: ^1.0.3
 ```
 
 # Pay now
@@ -54,7 +54,8 @@ var args = {
       pt_language: 'en', // 'en', 'ar'
       pt_tokenization: true,
       pt_preauth: false,
-      pt_merchant_region: 'emirates'
+      pt_merchant_region: 'emirates',
+      pt_force_validate_shipping: false
     };
 ```
 
@@ -92,7 +93,8 @@ var args = {
   pt_preauth: false,
   pt_merchant_identifier: 'merchant.bundleId'
   pt_tokenization: true,
-  pt_merchant_region: 'emirates'
+  pt_merchant_region: 'emirates',
+  pt_force_validate_shipping: false
 };
 ```
 
@@ -112,7 +114,7 @@ FlutterPaytabsSdk.startApplePayPayment(args, (event) {
     });
 ```
 
-# Supported Merchannt Region
+# Supported merchant region
 Pass the parameters `pt_merchant_region` with one value of the below list according to supported region.
 * UAE = `emirates`
 * Egypt = `egypt`
@@ -145,7 +147,7 @@ Disable the perfect forward secrecy (PFS) only for paytabs.com.
 
 Check our complete [example][example].
 
-<img src="images/demo.png" width="300">
+<img src="https://user-images.githubusercontent.com/69899730/104836250-454e0d00-58b5-11eb-8982-9013060b7d3a.png" width="300">
 
 ## License
 

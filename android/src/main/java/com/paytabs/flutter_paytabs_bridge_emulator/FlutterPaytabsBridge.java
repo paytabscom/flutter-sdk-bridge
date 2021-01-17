@@ -110,6 +110,8 @@ public class FlutterPaytabsBridge implements FlutterPlugin, MethodCallHandler, A
       intent.putExtra(PaymentParams.COUNTRY_SHIPPING, paymentDetails.getString("pt_country_shipping"));
       intent.putExtra(PaymentParams.POSTAL_CODE_SHIPPING, paymentDetails.getString("pt_postal_code_shipping")); //Put Country Phone code if Postal code not available '00973'
 
+        intent.putExtra(PaymentParams.FORCE_SHIPPING_VALIDATION, paymentDetails.getBoolean("pt_force_validate_shipping"));
+
       //Payment Page Style
       intent.putExtra(PaymentParams.PAY_BUTTON_COLOR, paymentDetails.getString("pt_color"));
 
