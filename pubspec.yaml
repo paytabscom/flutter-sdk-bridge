@@ -1,6 +1,6 @@
 name: flutter_paytabs_bridge_emulator
 description: PayTabs plugin.
-version: 1.0.2-beta
+version: 1.0.3
 homepage: http://wwww.paytabs.com
 
 environment:

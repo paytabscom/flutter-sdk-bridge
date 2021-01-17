@@ -91,7 +91,7 @@ class _MyAppState extends State<MyApp> {
       pt_preauth: false,
       pt_merchant_identifier: 'merchant.bundleId',
       pt_tokenization: true,
-      pt_merchant_region: 'emirates'
+      pt_merchant_region: 'emirates',
       pt_force_validate_shipping: false
     };
     FlutterPaytabsSdk.startApplePayPayment(args, (event) {

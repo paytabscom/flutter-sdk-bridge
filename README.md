@@ -15,7 +15,7 @@ Add `flutter_paytabs_bridge_emulator` to your package's `pubspec.yaml` file:
 
 ```yaml
 dependencies:
-  flutter_paytabs_bridge_emulator: ^1.0.2-beta
+  flutter_paytabs_bridge_emulator: ^1.0.3
 ```
 
 # Pay now
@@ -54,7 +54,8 @@ var args = {
       pt_language: 'en', // 'en', 'ar'
       pt_tokenization: true,
       pt_preauth: false,
-      pt_merchant_region: 'emirates'
+      pt_merchant_region: 'emirates',
+      pt_force_validate_shipping: false
     };
 ```
 

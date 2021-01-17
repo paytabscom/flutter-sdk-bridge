@@ -1,20 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="d474f472-bdc4-4fd4-81c8-06d5780cc40b" name="Default Changelist" comment="adding">
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" afterDir="false" />
+    <list default="true" id="d474f472-bdc4-4fd4-81c8-06d5780cc40b" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/paytabs_sdk/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/android/paytabs_sdk/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/paytabs_sdk/paytabs_sdk.aar" beforeDir="false" afterPath="$PROJECT_DIR$/android/paytabs_sdk/paytabs_sdk.aar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/android/settings.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/src/main/java/com/paytabs/flutter_paytabs_bridge_emulator/FlutterPaytabsBridge.java" beforeDir="false" afterPath="$PROJECT_DIR$/android/src/main/java/com/paytabs/flutter_paytabs_bridge_emulator/FlutterPaytabsBridge.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/example/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/example/lib/main.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/example/pubspec.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/flutter_paytabs_bridge_emulator.iml" beforeDir="false" afterPath="$PROJECT_DIR$/flutter_paytabs_bridge_emulator.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Classes/FlutterPaytabsBridge.m" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Classes/FlutterPaytabsBridge.m" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/flutter_paytabs_bridge_emulator.podspec" beforeDir="false" afterPath="$PROJECT_DIR$/ios/flutter_paytabs_bridge_emulator.podspec" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/flutter_paytabs_bridge_emulator.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/flutter_paytabs_bridge_emulator.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,6 +11,11 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1mbFYMmEDbad6hJ8jfcMMnpKsQv" />
@@ -49,44 +43,68 @@
       <option name="presentableId" value="Default" />
       <updated>1609754429852</updated>
     </task>
+    <task id="LOCAL-00001" summary="adding force shipping parameter">
+      <created>1609929678220</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1609929678221</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="adding force shipping parameter" />
+    <option name="LAST_COMMIT_MESSAGE" value="adding force shipping parameter" />
   </component>
   <component name="WindowStateProjectService">
     <state x="96" y="0" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1609755884268">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="96" y="0" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1280.680@0.0.1280.680" timestamp="1609755884268" />
-    <state x="93" y="93" width="1095" height="495" key="AVDManager" timestamp="1609757557323">
+    <state x="93" y="93" width="1095" height="495" key="AVDManager" timestamp="1610268137784">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state x="93" y="93" width="1095" height="495" key="AVDManager/0.0.1280.680@0.0.1280.680" timestamp="1609757557323" />
-    <state x="211" y="0" key="CommitChangelistDialog2" timestamp="1609866023913">
+    <state x="93" y="93" width="1095" height="495" key="AVDManager/0.0.1280.680@0.0.1280.680" timestamp="1610268137784" />
+    <state x="211" y="0" key="CommitChangelistDialog2" timestamp="1609929676648">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state x="211" y="0" key="CommitChangelistDialog2/0.0.1280.680@0.0.1280.680" timestamp="1609866023913" />
+    <state x="211" y="0" key="CommitChangelistDialog2/0.0.1280.680@0.0.1280.680" timestamp="1609929676648" />
     <state x="422" y="95" key="FileChooserDialogImpl" timestamp="1609870216763">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="422" y="95" key="FileChooserDialogImpl/0.0.1280.680@0.0.1280.680" timestamp="1609870216763" />
-    <state width="1236" height="347" key="GridCell.Tab.0.bottom" timestamp="1609870390645">
+    <state width="1236" height="347" key="GridCell.Tab.0.bottom" timestamp="1610281327871">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1236" height="347" key="GridCell.Tab.0.bottom/0.0.1280.680@0.0.1280.680" timestamp="1609870390645" />
-    <state width="1236" height="347" key="GridCell.Tab.0.center" timestamp="1609870390645">
+    <state width="1236" height="347" key="GridCell.Tab.0.bottom/0.0.1280.680@0.0.1280.680" timestamp="1610281327871" />
+    <state width="1236" height="347" key="GridCell.Tab.0.center" timestamp="1610281327870">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1236" height="347" key="GridCell.Tab.0.center/0.0.1280.680@0.0.1280.680" timestamp="1609870390645" />
-    <state width="1236" height="347" key="GridCell.Tab.0.left" timestamp="1609870390644">
+    <state width="1236" height="347" key="GridCell.Tab.0.center/0.0.1280.680@0.0.1280.680" timestamp="1610281327870" />
+    <state width="1236" height="347" key="GridCell.Tab.0.left" timestamp="1610281327868">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1236" height="347" key="GridCell.Tab.0.left/0.0.1280.680@0.0.1280.680" timestamp="1609870390644" />
-    <state width="1236" height="347" key="GridCell.Tab.0.right" timestamp="1609870390645">
+    <state width="1236" height="347" key="GridCell.Tab.0.left/0.0.1280.680@0.0.1280.680" timestamp="1610281327868" />
+    <state width="1236" height="347" key="GridCell.Tab.0.right" timestamp="1610281327870">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1236" height="347" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1609870390645" />
+    <state width="1236" height="347" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1610281327870" />
     <state x="142" y="0" key="SettingsEditor" timestamp="1609842257605">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="142" y="0" key="SettingsEditor/0.0.1280.680@0.0.1280.680" timestamp="1609842257605" />
+    <state x="233" y="61" key="Vcs.Push.Dialog.v2" timestamp="1609929680900">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state x="233" y="61" key="Vcs.Push.Dialog.v2/0.0.1280.680@0.0.1280.680" timestamp="1609929680900" />
+    <state x="450" y="255" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1610276960597">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state x="450" y="255" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1280.680@0.0.1280.680" timestamp="1610276960597" />
+    <state x="303" y="1" width="672" height="678" key="search.everywhere.popup" timestamp="1610269124835">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state x="303" y="1" width="672" height="678" key="search.everywhere.popup/0.0.1280.680@0.0.1280.680" timestamp="1610269124835" />
   </component>
 </project>
