@@ -1,14 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="NONE" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="d474f472-bdc4-4fd4-81c8-06d5780cc40b" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/lib/BaseBillingShippingInfo.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/PaymentSdkConfigurationDetails.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/PaymentSdkLocale.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/PaymentSdkTokenFormat.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/PaymentSdkTokeniseType.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/android/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/src/main/java/com/paytabs/flutter_paytabs_bridge_emulator/FlutterPaytabsBridge.java" beforeDir="false" afterPath="$PROJECT_DIR$/android/src/main/java/com/paytabs/flutter_paytabs_bridge_emulator/FlutterPaytabsBridge.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/android/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/example/android/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/example/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/example/lib/main.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/flutter_paytabs_bridge_emulator.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/flutter_paytabs_bridge_emulator.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[C:\Users\Administrator\.android\avd\Pixel_2_API_28.avd]" />
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Dart File" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
@@ -28,10 +48,16 @@
     <property name="dart.analysis.tool.window.force.activate" value="true" />
     <property name="dart.analysis.tool.window.visible" value="false" />
     <property name="io.flutter.reload.alreadyRun" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/android" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/lib" />
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
     <property name="show.migrate.to.gradle.popup" value="false" />
   </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Administrator\StudioProjects\flutter-sdk-bridge\lib" />
+    </key>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -53,58 +79,20 @@
     <option name="localTasksCounter" value="2" />
     <servers />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="adding force shipping parameter" />
     <option name="LAST_COMMIT_MESSAGE" value="adding force shipping parameter" />
-  </component>
-  <component name="WindowStateProjectService">
-    <state x="96" y="0" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1609755884268">
-      <screen x="0" y="0" width="1280" height="680" />
-    </state>
-    <state x="96" y="0" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1280.680@0.0.1280.680" timestamp="1609755884268" />
-    <state x="93" y="93" width="1095" height="495" key="AVDManager" timestamp="1610268137784">
-      <screen x="0" y="0" width="1280" height="680" />
-    </state>
-    <state x="93" y="93" width="1095" height="495" key="AVDManager/0.0.1280.680@0.0.1280.680" timestamp="1610268137784" />
-    <state x="211" y="0" key="CommitChangelistDialog2" timestamp="1609929676648">
-      <screen x="0" y="0" width="1280" height="680" />
-    </state>
-    <state x="211" y="0" key="CommitChangelistDialog2/0.0.1280.680@0.0.1280.680" timestamp="1609929676648" />
-    <state x="422" y="95" key="FileChooserDialogImpl" timestamp="1609870216763">
-      <screen x="0" y="0" width="1280" height="680" />
-    </state>
-    <state x="422" y="95" key="FileChooserDialogImpl/0.0.1280.680@0.0.1280.680" timestamp="1609870216763" />
-    <state width="1236" height="347" key="GridCell.Tab.0.bottom" timestamp="1610281327871">
-      <screen x="0" y="0" width="1280" height="680" />
-    </state>
-    <state width="1236" height="347" key="GridCell.Tab.0.bottom/0.0.1280.680@0.0.1280.680" timestamp="1610281327871" />
-    <state width="1236" height="347" key="GridCell.Tab.0.center" timestamp="1610281327870">
-      <screen x="0" y="0" width="1280" height="680" />
-    </state>
-    <state width="1236" height="347" key="GridCell.Tab.0.center/0.0.1280.680@0.0.1280.680" timestamp="1610281327870" />
-    <state width="1236" height="347" key="GridCell.Tab.0.left" timestamp="1610281327868">
-      <screen x="0" y="0" width="1280" height="680" />
-    </state>
-    <state width="1236" height="347" key="GridCell.Tab.0.left/0.0.1280.680@0.0.1280.680" timestamp="1610281327868" />
-    <state width="1236" height="347" key="GridCell.Tab.0.right" timestamp="1610281327870">
-      <screen x="0" y="0" width="1280" height="680" />
-    </state>
-    <state width="1236" height="347" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1610281327870" />
-    <state x="142" y="0" key="SettingsEditor" timestamp="1609842257605">
-      <screen x="0" y="0" width="1280" height="680" />
-    </state>
-    <state x="142" y="0" key="SettingsEditor/0.0.1280.680@0.0.1280.680" timestamp="1609842257605" />
-    <state x="233" y="61" key="Vcs.Push.Dialog.v2" timestamp="1609929680900">
-      <screen x="0" y="0" width="1280" height="680" />
-    </state>
-    <state x="233" y="61" key="Vcs.Push.Dialog.v2/0.0.1280.680@0.0.1280.680" timestamp="1609929680900" />
-    <state x="450" y="255" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1610276960597">
-      <screen x="0" y="0" width="1280" height="680" />
-    </state>
-    <state x="450" y="255" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1280.680@0.0.1280.680" timestamp="1610276960597" />
-    <state x="303" y="1" width="672" height="678" key="search.everywhere.popup" timestamp="1610269124835">
-      <screen x="0" y="0" width="1280" height="680" />
-    </state>
-    <state x="303" y="1" width="672" height="678" key="search.everywhere.popup/0.0.1280.680@0.0.1280.680" timestamp="1610269124835" />
   </component>
 </project>

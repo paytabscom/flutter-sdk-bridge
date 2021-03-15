@@ -1,37 +1,45 @@
 package com.paytabs.flutter_paytabs_bridge_emulator;
 
-import androidx.annotation.NonNull;
+import static com.payment.paymentsdk.integrationmodels.PaymentSdkTokenFormatKt.createPaymentSdkTokenFormat;
+import static com.payment.paymentsdk.integrationmodels.PaymentSdkTokeniseKt.createPaymentSdkTokenise;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
 
-import io.flutter.embedding.engine.plugins.activity.ActivityAware;
+import androidx.annotation.NonNull;
+
+import com.google.gson.Gson;
+import com.payment.paymentsdk.PaymentSdkActivity;
+import com.payment.paymentsdk.PaymentSdkConfigBuilder;
+import com.payment.paymentsdk.integrationmodels.PaymentSdkBillingDetails;
+import com.payment.paymentsdk.integrationmodels.PaymentSdkConfigurationDetails;
+import com.payment.paymentsdk.integrationmodels.PaymentSdkError;
+import com.payment.paymentsdk.integrationmodels.PaymentSdkLanguageCode;
+import com.payment.paymentsdk.integrationmodels.PaymentSdkShippingDetails;
+import com.payment.paymentsdk.integrationmodels.PaymentSdkTokenFormat;
+import com.payment.paymentsdk.integrationmodels.PaymentSdkTokenise;
+import com.payment.paymentsdk.integrationmodels.PaymentSdkTransactionDetails;
+import com.payment.paymentsdk.sharedclasses.interfaces.CallbackPaymentInterface;
+
+import org.jetbrains.annotations.NotNull;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
+import io.flutter.embedding.engine.plugins.activity.ActivityAware;
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding;
 import io.flutter.plugin.common.EventChannel;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
-import io.flutter.plugin.common.PluginRegistry;
 import io.flutter.plugin.common.PluginRegistry.Registrar;
-import com.paytabs.paytabs_sdk.payment.ui.activities.PayTabActivity;
-import com.paytabs.paytabs_sdk.utils.PaymentParams;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
-import static android.app.Activity.RESULT_OK;
-
-/** FlutterPaytabsBridge */
-public class FlutterPaytabsBridge implements FlutterPlugin, MethodCallHandler, ActivityAware, PluginRegistry.ActivityResultListener {
+/**
+ * FlutterPaytabsBridge
+ */
+public class FlutterPaytabsBridge implements FlutterPlugin, MethodCallHandler, ActivityAware, CallbackPaymentInterface {
   /// The MethodChannel that will the communication between Flutter and native Android
   ///
   /// This local reference serves to register the plugin with the Flutter Engine and unregister it
@@ -41,6 +49,7 @@ public class FlutterPaytabsBridge implements FlutterPlugin, MethodCallHandler, A
   private Activity activity;
   private EventChannel.EventSink eventSink;
   static final String streamName = "flutter_paytabs_bridge_emulator_stream";
+
   @Override
   public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
     context = flutterPluginBinding.getApplicationContext();
@@ -80,53 +89,62 @@ public class FlutterPaytabsBridge implements FlutterPlugin, MethodCallHandler, A
   @Override
   public void onMethodCall(@NonNull MethodCall call, @NonNull Result result) {
     if (call.method.equals("startPayment")) {
-      HashMap<String, Object> arguments = call.arguments();
-      Intent intent = new Intent(context, PayTabActivity.class);
       try {
-      JSONObject paymentDetails = new JSONObject(arguments);
-      intent.putExtra(PaymentParams.MERCHANT_EMAIL, paymentDetails.getString("pt_merchant_email")); //this a demo account for testing the sdk
-      intent.putExtra(PaymentParams.SECRET_KEY,paymentDetails.getString("pt_secret_key"));//Add your Secret Key Here
-      intent.putExtra(PaymentParams.LANGUAGE,paymentDetails.getString("pt_language"));
-      intent.putExtra(PaymentParams.TRANSACTION_TITLE, paymentDetails.getString("pt_transaction_title"));
-      intent.putExtra(PaymentParams.AMOUNT, Double.parseDouble(paymentDetails.getString("pt_amount")));
+        HashMap<String, Object> arguments = call.arguments();
+        JSONObject paymentDetails = new JSONObject(arguments);
+        String profileId = paymentDetails.getString("pt_profile_id");
+        String serverKey = paymentDetails.getString("pt_server_key");
+        String clientKey = paymentDetails.getString("pt_client_key");
+        PaymentSdkLanguageCode locale = PaymentSdkLanguageCode.EN;
+        String screenTitle = paymentDetails.getString("pt_screen_title");
+        String orderId = paymentDetails.getString("pt_cart_id");
+        String cartDesc = paymentDetails.getString("pt_cart_description");
+        String currency = paymentDetails.getString("pt_currency_code");
+        String token = paymentDetails.getString("pt_token");
+        String transRef = paymentDetails.getString("pt_transaction_reference");
+        double amount = paymentDetails.getDouble("pt_amount");
+        PaymentSdkTokenise tokeniseType = createPaymentSdkTokenise("pt_tokenise_type");
+        PaymentSdkTokenFormat tokenFormat = createPaymentSdkTokenFormat("pt_token_format");
+        PaymentSdkBillingDetails billingData = new PaymentSdkBillingDetails(
+                paymentDetails.getString("pt_city_billing"),
+                paymentDetails.getString("pt_country_billing"),
+                paymentDetails.getString("pt_email_billing"),
+                paymentDetails.getString("pt_name_billing"),
+                paymentDetails.getString("pt_phone_billing"), paymentDetails.getString("pt_state_billing"),
+                paymentDetails.getString("pt_address_billing"), paymentDetails.getString("pt_zip_billing")
+        );
 
-      intent.putExtra(PaymentParams.CURRENCY_CODE, paymentDetails.getString("pt_currency_code"));
-      intent.putExtra(PaymentParams.CUSTOMER_PHONE_NUMBER, paymentDetails.getString("pt_customer_phone_number"));
-      intent.putExtra(PaymentParams.CUSTOMER_EMAIL, paymentDetails.getString("pt_customer_email"));
-      intent.putExtra(PaymentParams.ORDER_ID, paymentDetails.getString("pt_order_id"));
-      intent.putExtra(PaymentParams.PRODUCT_NAME, paymentDetails.getString("pt_product_name"));
-
-      //Billing Address
-      intent.putExtra(PaymentParams.ADDRESS_BILLING, paymentDetails.getString("pt_address_billing"));
-      intent.putExtra(PaymentParams.CITY_BILLING, paymentDetails.getString("pt_city_billing"));
-      intent.putExtra(PaymentParams.STATE_BILLING, paymentDetails.getString("pt_state_billing"));
-      intent.putExtra(PaymentParams.COUNTRY_BILLING, paymentDetails.getString("pt_country_billing"));
-      intent.putExtra(PaymentParams.POSTAL_CODE_BILLING, paymentDetails.getString("pt_postal_code_billing")); //Put Country Phone code if Postal code not available '00973'
-
-      //Shipping Address
-      intent.putExtra(PaymentParams.ADDRESS_SHIPPING, paymentDetails.getString("pt_address_shipping"));
-      intent.putExtra(PaymentParams.CITY_SHIPPING, paymentDetails.getString("pt_city_shipping"));
-      intent.putExtra(PaymentParams.STATE_SHIPPING, paymentDetails.getString("pt_state_shipping"));
-      intent.putExtra(PaymentParams.COUNTRY_SHIPPING, paymentDetails.getString("pt_country_shipping"));
-      intent.putExtra(PaymentParams.POSTAL_CODE_SHIPPING, paymentDetails.getString("pt_postal_code_shipping")); //Put Country Phone code if Postal code not available '00973'
-
-        intent.putExtra(PaymentParams.FORCE_SHIPPING_VALIDATION, paymentDetails.getBoolean("pt_force_validate_shipping"));
-
-      //Payment Page Style
-      intent.putExtra(PaymentParams.PAY_BUTTON_COLOR, paymentDetails.getString("pt_color"));
-
-      //Tokenization
-      intent.putExtra(PaymentParams.IS_TOKENIZATION, paymentDetails.getBoolean("pt_tokenization"));
-      intent.putExtra(PaymentParams.REGION_ENDPOINT, paymentDetails.getString("pt_merchant_region"));
-
-      //Pre auth
-      intent.putExtra(PaymentParams.IS_PREAUTH, paymentDetails.getBoolean("pt_preauth"));
-      } catch (JSONException e) {
-        e.printStackTrace();
+        PaymentSdkShippingDetails shippingData = new PaymentSdkShippingDetails(
+                paymentDetails.getString("pt_city_shipping"),
+                paymentDetails.getString("pt_country_shipping"),
+                paymentDetails.getString("pt_email_shipping"),
+                paymentDetails.getString("pt_name_shipping"),
+                paymentDetails.getString("pt_phone_shipping"), paymentDetails.getString("pt_state_shipping"),
+                paymentDetails.getString("pt_address_shipping"), paymentDetails.getString("pt_zip_shipping")
+        );
+        PaymentSdkConfigurationDetails configData = new PaymentSdkConfigBuilder(
+                profileId, serverKey, clientKey, amount, currency)
+                .setCartDescription(cartDesc)
+                .setLanguageCode(locale)
+                .setBillingData(billingData)
+                .setMerchantCountryCode(paymentDetails.getString("pt_merchant_country_code"))
+                .setShippingData(shippingData)
+                .setCartId(orderId)
+                .setTokenise(tokeniseType, tokenFormat)
+                .setTokenisationData(token, transRef)
+                .showBillingInfo(paymentDetails.getBoolean("pt_show_billing_info"))
+                .showShippingInfo(paymentDetails.getBoolean("pt_show_shipping_info"))
+                .forceShippingInfo(paymentDetails.getBoolean("pt_force_validate_shipping"))
+                .setScreenTitle(screenTitle)
+                .build();
+        String pt_samsung_token = paymentDetails.getString("pt_samsung_token");
+        if (pt_samsung_token != null && pt_samsung_token.length() > 0)
+          PaymentSdkActivity.startSamsungPayment(activity, configData, pt_samsung_token, this);
+        else
+          PaymentSdkActivity.startCardPayment(activity, configData, this);
+      } catch (Exception e) {
+        eventSink.error("0", e.getMessage(), "{}");
       }
-      activity.startActivityForResult(intent, PaymentParams.PAYMENT_REQUEST_CODE, new Bundle());
-    } else {
-      result.notImplemented();
     }
   }
 
@@ -138,7 +156,6 @@ public class FlutterPaytabsBridge implements FlutterPlugin, MethodCallHandler, A
   @Override
   public void onAttachedToActivity(@NonNull ActivityPluginBinding binding) {
     activity = binding.getActivity();
-    binding.addActivityResultListener(this);
   }
 
   @Override
@@ -157,22 +174,17 @@ public class FlutterPaytabsBridge implements FlutterPlugin, MethodCallHandler, A
   }
 
   @Override
-  public boolean onActivityResult(int requestCode, int resultCode, Intent data) {
-    HashMap<String, Object> map = new HashMap();
-    if (resultCode == RESULT_OK && requestCode == PaymentParams.PAYMENT_REQUEST_CODE) {
-        map.put("pt_response_code", data.getStringExtra(PaymentParams.RESPONSE_CODE));
-        map.put("pt_transaction_id", data.getStringExtra(PaymentParams.TRANSACTION_ID));
-        map.put("pt_result", data.getStringExtra(PaymentParams.RESULT_MESSAGE));
-        if (data.hasExtra(PaymentParams.TOKEN) && !data.getStringExtra(PaymentParams.TOKEN).isEmpty()) {
-          map.put("pt_token", data.getStringExtra(PaymentParams.TOKEN));
-          map.put("pt_token_customer_password", data.getStringExtra(PaymentParams.CUSTOMER_PASSWORD));
-          map.put("pt_token_customer_email", data.getStringExtra(PaymentParams.CUSTOMER_EMAIL));
-        }
-        ArrayList list = new ArrayList();
-        list.add(map);
-        eventSink.success(list);
-    }
-    return true;
+  public void onError(@NotNull PaymentSdkError err) {
+    eventSink.error(err.getCode() + "", err.getMsg(), new Gson().toJson(err));
   }
 
+  @Override
+  public void onPaymentFinish(@NotNull PaymentSdkTransactionDetails paymentSdkTransactionDetails) {
+    eventSink.success(new Gson().toJson(paymentSdkTransactionDetails));
   }
+
+  @Override
+  public void onPaymentCancel() {
+    eventSink.error("0", "Cancelled", "{}");
+  }
+}
