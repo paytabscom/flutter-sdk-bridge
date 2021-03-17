@@ -5,17 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d474f472-bdc4-4fd4-81c8-06d5780cc40b" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/lib/BaseBillingShippingInfo.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/PaymentSdkConfigurationDetails.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/PaymentSdkLocale.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/PaymentSdkTokenFormat.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/PaymentSdkTokeniseType.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/IOSThemeConfiguration.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/android/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/src/main/java/com/paytabs/flutter_paytabs_bridge_emulator/FlutterPaytabsBridge.java" beforeDir="false" afterPath="$PROJECT_DIR$/android/src/main/java/com/paytabs/flutter_paytabs_bridge_emulator/FlutterPaytabsBridge.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/android/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/example/android/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/example/lib/main.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/flutter_paytabs_bridge_emulator.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/flutter_paytabs_bridge_emulator.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
