@@ -1,3 +1,5 @@
+## 1.0.8
+solve NPE in android PaytabActivity
 ## 1.0.7
  solve proguarding issue in android apk
 ## 1.0.6
