@@ -43,6 +43,22 @@ const String pt_language = 'pt_language';
 const String pt_show_billing_info = 'pt_show_billing_info';
 const String pt_show_shipping_info = 'pt_show_shipping_info';
 const String pt_force_validate_shipping = 'pt_force_validate_shipping';
+const String pt_ios_primary_color = 'pt_ios_primary_color';
+const String pt_ios_primary_font_color = 'pt_ios_primary_font_color';
+const String pt_ios_secondary_color = 'pt_ios_secondary_color';
+const String pt_ios_secondary_font_color = 'pt_ios_secondary_font_color';
+const String pt_ios_stroke_color = 'pt_ios_stroke_color';
+const String pt_ios_button_color = 'pt_ios_button_color';
+const String pt_ios_button_font_color = 'pt_ios_button_font_color';
+const String pt_ios_title_font_color = 'pt_ios_title_font_color';
+const String pt_ios_background_color = 'pt_ios_background_color';
+const String pt_ios_placeholder_color = 'pt_ios_placeholder_color';
+const String pt_ios_primary_font_size = 'pt_ios_primary_font_size';
+const String pt_ios_secondary_font_size = 'pt_ios_secondary_font_size';
+const String pt_ios_stroke_thinckness = 'pt_ios_stroke_thinckness';
+const String pt_ios_inputs_corner_radius = 'pt_ios_inputs_corner_radius';
+const String pt_ios_button_font_size = 'pt_ios_button_font_size';
+const String pt_ios_title_font_size = 'pt_ios_title_font_size';
 
 class FlutterPaytabsSdk {
   static const MethodChannel _channel =

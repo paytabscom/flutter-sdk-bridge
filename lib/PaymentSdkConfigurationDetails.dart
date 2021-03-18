@@ -2,6 +2,7 @@ import 'package:flutter_paytabs_bridge_emulator/BaseBillingShippingInfo.dart';
 import 'package:flutter_paytabs_bridge_emulator/PaymentSdkTokenFormat.dart';
 import 'package:flutter_paytabs_bridge_emulator/PaymentSdkTokeniseType.dart';
 
+import 'IOSThemeConfiguration.dart';
 import 'PaymentSdkLocale.dart';
 import 'flutter_paytabs_bridge_emulator.dart';
 
@@ -26,28 +27,34 @@ class PaymentSdkConfigurationDetails {
   PaymentSdkLocale locale;
   PaymentSdkTokenFormat tokenFormat;
   PaymentSdkTokeniseType tokeniseType;
+  IOSThemeConfigurations iOSThemeConfigurations;
 
-  PaymentSdkConfigurationDetails(
-      {this.billingDetails,
-      this.shippingDetails,
-      this.profileId,
-      this.serverKey,
-      this.clientKey,
-      this.amount,
-      this.merchantCountryCode,
-      this.currencyCode,
-      this.token,
-      this.transactionReference,
-      this.tokenFormat,
-      this.tokeniseType,
-      this.screentTitle,
-      this.cartId,
-      this.cartDescription,
-      this.samsungPayToken,
-      this.showBillingInfo,
-      this.showShippingInfo,
-      this.forceShippingInfo,
-      this.locale});
+  PaymentSdkConfigurationDetails({
+    this.billingDetails,
+    this.shippingDetails,
+    this.profileId,
+    this.serverKey,
+    this.clientKey,
+    this.amount,
+    this.merchantCountryCode,
+    this.currencyCode,
+    this.token,
+    this.transactionReference,
+    this.tokenFormat,
+    this.tokeniseType,
+    this.screentTitle,
+    this.cartId,
+    this.cartDescription,
+    this.samsungPayToken,
+    this.showBillingInfo,
+    this.showShippingInfo,
+    this.forceShippingInfo,
+    this.locale,
+    this.iOSThemeConfigurations,
+  }) {
+    if (iOSThemeConfigurations == null)
+      iOSThemeConfigurations = IOSThemeConfigurations();
+  }
 }
 extension PaymentSdkConfigurationDetailsExtension on PaymentSdkConfigurationDetails {
 
@@ -78,16 +85,34 @@ extension PaymentSdkConfigurationDetailsExtension on PaymentSdkConfigurationDeta
       pt_name_shipping:this.shippingDetails.name,
       pt_email_shipping:this.shippingDetails.email,
       pt_phone_shipping:this.shippingDetails.phone,
-      pt_city_shipping:this.shippingDetails.city,
-      pt_state_shipping:this.shippingDetails.state,
-      pt_country_shipping:this.shippingDetails.country,
-      pt_zip_shipping:this.shippingDetails.zipCode,
-      pt_color:"",
-      pt_theme_light:"",
-      pt_language:this.locale.name,
-      pt_show_billing_info:this.showBillingInfo,
-      pt_show_shipping_info:this.showShippingInfo,
-      pt_force_validate_shipping:this.forceShippingInfo,
+      pt_city_shipping: this.shippingDetails.city,
+      pt_state_shipping: this.shippingDetails.state,
+      pt_country_shipping: this.shippingDetails.country,
+      pt_zip_shipping: this.shippingDetails.zipCode,
+      pt_color: "",
+      pt_theme_light: "",
+      pt_language: this.locale.name,
+      pt_show_billing_info: this.showBillingInfo,
+      pt_show_shipping_info: this.showShippingInfo,
+      pt_force_validate_shipping: this.forceShippingInfo,
+      pt_ios_primary_color: this.iOSThemeConfigurations.primaryColor,
+      pt_ios_primary_font_color: this.iOSThemeConfigurations.primaryFontColor,
+      pt_ios_secondary_color: this.iOSThemeConfigurations.secondaryColor,
+      pt_ios_secondary_font_color:
+          this.iOSThemeConfigurations.secondaryFontColor,
+      pt_ios_stroke_color: this.iOSThemeConfigurations.strokeColor,
+      pt_ios_button_color: this.iOSThemeConfigurations.buttonColor,
+      pt_ios_button_font_color: this.iOSThemeConfigurations.buttonFontColor,
+      pt_ios_title_font_color: this.iOSThemeConfigurations.titleFontColor,
+      pt_ios_background_color: this.iOSThemeConfigurations.backgroundColor,
+      pt_ios_placeholder_color: this.iOSThemeConfigurations.placeholderColor,
+      pt_ios_primary_font_size: this.iOSThemeConfigurations.primaryFontSize,
+      pt_ios_secondary_font_size: this.iOSThemeConfigurations.secondaryFontSize,
+      pt_ios_stroke_thinckness: this.iOSThemeConfigurations.strokeThinckness,
+      pt_ios_inputs_corner_radius:
+          this.iOSThemeConfigurations.inputsCornerRadius,
+      pt_ios_button_font_size: this.iOSThemeConfigurations.buttonFontSize,
+      pt_ios_title_font_size: this.iOSThemeConfigurations.titleFontSize,
     };
   }
 }
