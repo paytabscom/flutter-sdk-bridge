@@ -1,9 +1,6 @@
 buildscript {
     repositories {
         google()
-        maven {
-            url  "https://dl.bintray.com/paytabsandroidsdk/paytabs-sdk"
-        }
         jcenter()
     }
 
@@ -15,9 +12,6 @@ buildscript {
 allprojects {
     repositories {
         google()
-        maven {
-            url  "https://dl.bintray.com/paytabsandroidsdk/paytabs-sdk"
-        }
         jcenter()
     }
 }

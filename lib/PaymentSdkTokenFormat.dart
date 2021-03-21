@@ -8,7 +8,7 @@ enum PaymentSdkTokenFormat {
 }
 
 extension PaymentSdkTokenFormatExtension on PaymentSdkTokenFormat {
-  String get name {
+  String? get name {
     switch (this) {
       case PaymentSdkTokenFormat.Hex32Format:
         return 'hex32Format';

@@ -1,5 +1,6 @@
-group 'com.paytabs.flutter_paytabs_bridge_emulator'
+group 'com.paytabs.flutter_paytabs_bridge'
 version '1.0'
+
 
 buildscript {
     repositories {

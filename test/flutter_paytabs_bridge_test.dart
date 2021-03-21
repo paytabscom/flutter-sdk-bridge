@@ -1,8 +1,9 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_paytabs_bridge/flutter_paytabs_bridge.dart';
 
 void main() {
-  const MethodChannel channel = MethodChannel('flutter_paytabs_bridge_emulator');
+  const MethodChannel channel = MethodChannel('flutter_paytabs_bridge');
 
   TestWidgetsFlutterBinding.ensureInitialized();
 
@@ -16,4 +17,7 @@ void main() {
     channel.setMockMethodCallHandler(null);
   });
 
+  test('getPlatformVersion', () async {
+    expect(await FlutterPaytabsBridge.platformVersion, '42');
+  });
 }

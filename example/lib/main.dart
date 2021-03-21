@@ -2,12 +2,12 @@ import 'dart:async';
 import 'dart:io' show Platform;
 
 import 'package:flutter/material.dart';
-import 'package:flutter_paytabs_bridge_emulator/BaseBillingShippingInfo.dart';
-import 'package:flutter_paytabs_bridge_emulator/PaymentSdkConfigurationDetails.dart';
-import 'package:flutter_paytabs_bridge_emulator/PaymentSdkLocale.dart';
-import 'package:flutter_paytabs_bridge_emulator/PaymentSdkTokenFormat.dart';
-import 'package:flutter_paytabs_bridge_emulator/PaymentSdkTokeniseType.dart';
-import 'package:flutter_paytabs_bridge_emulator/flutter_paytabs_bridge_emulator.dart';
+import 'package:flutter_paytabs_bridge/BaseBillingShippingInfo.dart';
+import 'package:flutter_paytabs_bridge/PaymentSdkConfigurationDetails.dart';
+import 'package:flutter_paytabs_bridge/PaymentSdkLocale.dart';
+import 'package:flutter_paytabs_bridge/PaymentSdkTokenFormat.dart';
+import 'package:flutter_paytabs_bridge/PaymentSdkTokeniseType.dart';
+import 'package:flutter_paytabs_bridge/flutter_paytabs_bridge.dart';
 
 void main() {
   runApp(MyApp());
@@ -28,81 +28,72 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> payPressed() async {
-    var billingDetails = new BillingDetails(
-        "name", "phone", "email", "country", "city", "zip", "state", "address");
-    var shippingDetails = new ShippingDetails(
-        "name", "phone", "email", "country", "city", "zip", "state", "address");
-
-    PaymentSdkConfigurationDetails arg = PaymentSdkConfigurationDetails(
+    var billingDetails = new BillingDetails("Mohamed Adly", 
+    "m.adly@paytabs.com", 
+    "+201113655936",
+        "st. 12", 
+        "ae", 
+        "dubai", 
+        "dubai", 
+        "12345");
+    var shippingDetails = new ShippingDetails("Mohamed Adly", 
+    "m.adly@paytabs.com", 
+    "+201113655936",
+        "st. 12", 
+        "ae", 
+        "dubai", 
+        "dubai", 
+        "12345");
+    var configuration = PaymentSdkConfigurationDetails(
+        profileId: "49611",
+        serverKey: "SMJNLTR2G6-JBGNGKBBM9-2MB6HGBG6M",
+        clientKey: "CKKMDG-KDD262-TQTK22-GQGMHN",
+        cartId: "12433",
+        cartDescription: "Flowers",
+        merchantName: "Flowers Store",
+        screentTitle: "Pay with Card",
         billingDetails: billingDetails,
         shippingDetails: shippingDetails,
-        serverKey: "",
-        clientKey: "",
-        profileId: "",
         locale: PaymentSdkLocale.DEFAULT,
         amount: 20.0,
         currencyCode: "AED",
-        merchantCountryCode: "AR",
+        merchantCountryCode: "ae",
         tokenFormat: PaymentSdkTokenFormat.Hex32Format,
         tokeniseType: PaymentSdkTokeniseType.NONE);
-
-    FlutterPaytabsSdk.startPayment(arg, (event) {
+    FlutterPaytabsBridge.startCardPayment(configuration, (event) {
       setState(() {
         print(event);
       });
     });
   }
-
   Future<void> applePayPressed() async {
-    var args = {
-      pt_merchant_email: "test@example.com",
-      pt_secret_key:
-          "kuTEjyEMhpVSWTwXBSOSeiiDAeMCOdyeuFZKiXAlhzjSKqswUWAgbCaYFivjvYzCWaWJbRszhjZuEQqsUycVzLSyMIaZiQLlRqlp",
-      // Add your Secret Key Here
-      pt_transaction_title: "Mr. John Doe",
-      pt_amount: "2.0",
-      pt_currency_code: "AED",
-      pt_customer_email: "test@example.com",
-      pt_order_id: "1234567",
-      pt_country_code: "AE",
-      pt_language: 'en',
-      pt_preauth: false,
-      pt_merchant_identifier: 'merchant.bundleId',
-      pt_tokenization: true,
-      pt_merchant_region: 'emirates',
-      pt_force_validate_shipping: false
-    };
-    FlutterPaytabsSdk.startApplePayPayment(args, (event) {
+    var configuration = PaymentSdkConfigurationDetails(
+        profileId: "49611",
+        serverKey: "SMJNLTR2G6-JBGNGKBBM9-2MB6HGBG6M",
+        clientKey: "CKKMDG-KDD262-TQTK22-GQGMHN",
+        cartId: "12433",
+        cartDescription: "Flowers",
+        merchantName: "Flowers Store",
+        locale: PaymentSdkLocale.DEFAULT,
+        amount: 20.0,
+        currencyCode: "AED",
+        merchantCountryCode: "ae",
+        merchantApplePayIndentifier: "merchant.com.paytabs.applepay",
+        tokenFormat: PaymentSdkTokenFormat.Hex32Format,
+        tokeniseType: PaymentSdkTokeniseType.NONE);
+    FlutterPaytabsBridge.startApplePayPayment(configuration, (event) {
       setState(() {
         print(event);
-        List<dynamic> eventList = event;
-        Map firstEvent = eventList.first;
-        if (firstEvent.keys.first == "EventPreparePaypage") {
-          //_result = firstEvent.values.first.toString();
-        } else {
-          _result = 'Response code:' +
-              firstEvent["pt_response_code"] +
-              '\nTransaction ID:' +
-              firstEvent["pt_transaction_id"] +
-              '\nStatementRef:' +
-              firstEvent["pt_statement_reference"] +
-              '\nTrace code:' +
-              firstEvent["pt_trace_code"] +
-              '\nResult message:' +
-              firstEvent["pt_result"];
-        }
       });
     });
   }
 
   Widget applePayButton() {
     if (Platform.isIOS) {
-      return FlatButton(
+      return TextButton(
         onPressed: () {
           applePayPressed();
         },
-        color: Colors.blue,
-        textColor: Colors.white,
         child: Text('Pay with Apple Pay'),
       );
     }
@@ -123,12 +114,10 @@ class _MyAppState extends State<MyApp> {
               Text('$_instructions'),
               SizedBox(height: 16),
               Text('Result: $_result\n'),
-              FlatButton(
+              TextButton(
                 onPressed: () {
                   payPressed();
                 },
-                color: Colors.blue,
-                textColor: Colors.white,
                 child: Text('Pay with PayTabs'),
               ),
               SizedBox(height: 16),

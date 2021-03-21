@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.paytabs.flutter_paytabs_bridge_emulator_example">
+    package="com.paytabs.flutter_paytabs_bridge_example">
     <!-- Flutter needs it to communicate with the running application
          to allow setting breakpoints, to provide hot reload, etc.
     -->

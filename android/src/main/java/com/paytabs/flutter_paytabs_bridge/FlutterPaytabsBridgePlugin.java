@@ -1,5 +1,4 @@
-package com.paytabs.flutter_paytabs_bridge_emulator;
-
+package com.paytabs.flutter_paytabs_bridge;
 import static com.payment.paymentsdk.integrationmodels.PaymentSdkTokenFormatKt.createPaymentSdkTokenFormat;
 import static com.payment.paymentsdk.integrationmodels.PaymentSdkTokeniseKt.createPaymentSdkTokenise;
 
@@ -37,9 +36,9 @@ import io.flutter.plugin.common.MethodChannel.Result;
 import io.flutter.plugin.common.PluginRegistry.Registrar;
 
 /**
- * FlutterPaytabsBridge
+ * FlutterPaytabsBridgePlugin
  */
-public class FlutterPaytabsBridge implements FlutterPlugin, MethodCallHandler, ActivityAware, CallbackPaymentInterface {
+public class FlutterPaytabsBridgePlugin implements FlutterPlugin, MethodCallHandler, ActivityAware, CallbackPaymentInterface {
   /// The MethodChannel that will the communication between Flutter and native Android
   ///
   /// This local reference serves to register the plugin with the Flutter Engine and unregister it
@@ -48,12 +47,12 @@ public class FlutterPaytabsBridge implements FlutterPlugin, MethodCallHandler, A
   private Context context;
   private Activity activity;
   private EventChannel.EventSink eventSink;
-  static final String streamName = "flutter_paytabs_bridge_emulator_stream";
+  static final String streamName = "flutter_paytabs_bridge_stream";
 
   @Override
   public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
     context = flutterPluginBinding.getApplicationContext();
-    channel = new MethodChannel(flutterPluginBinding.getFlutterEngine().getDartExecutor(), "flutter_paytabs_bridge_emulator");
+    channel = new MethodChannel(flutterPluginBinding.getFlutterEngine().getDartExecutor(), "flutter_paytabs_bridge");
     channel.setMethodCallHandler(this);
     EventChannel eventChannel = new EventChannel(flutterPluginBinding.getFlutterEngine().getDartExecutor().getBinaryMessenger(),streamName);
     eventChannel.setStreamHandler(
@@ -83,7 +82,7 @@ public class FlutterPaytabsBridge implements FlutterPlugin, MethodCallHandler, A
   // in the same class.
   public static void registerWith(Registrar registrar) {
     final MethodChannel channel = new MethodChannel(registrar.messenger(), "flutter_paytabs_bridge_emulator");
-    channel.setMethodCallHandler(new FlutterPaytabsBridge());
+    channel.setMethodCallHandler(new FlutterPaytabsBridgePlugin());
   }
 
   @Override
@@ -105,23 +104,27 @@ public class FlutterPaytabsBridge implements FlutterPlugin, MethodCallHandler, A
         double amount = paymentDetails.getDouble("pt_amount");
         PaymentSdkTokenise tokeniseType = createPaymentSdkTokenise("pt_tokenise_type");
         PaymentSdkTokenFormat tokenFormat = createPaymentSdkTokenFormat("pt_token_format");
+
+        JSONObject billingDetails = paymentDetails.getJSONObject("billingDetails");
         PaymentSdkBillingDetails billingData = new PaymentSdkBillingDetails(
-                paymentDetails.getString("pt_city_billing"),
-                paymentDetails.getString("pt_country_billing"),
-                paymentDetails.getString("pt_email_billing"),
-                paymentDetails.getString("pt_name_billing"),
-                paymentDetails.getString("pt_phone_billing"), paymentDetails.getString("pt_state_billing"),
-                paymentDetails.getString("pt_address_billing"), paymentDetails.getString("pt_zip_billing")
+                billingDetails.getString("pt_city_billing"),
+                billingDetails.getString("pt_country_billing"),
+                billingDetails.getString("pt_email_billing"),
+                billingDetails.getString("pt_name_billing"),
+                billingDetails.getString("pt_phone_billing"), billingDetails.getString("pt_state_billing"),
+                billingDetails.getString("pt_address_billing"), billingDetails.getString("pt_zip_billing")
         );
 
+        JSONObject shippingDetails = paymentDetails.getJSONObject("shippingDetails");
         PaymentSdkShippingDetails shippingData = new PaymentSdkShippingDetails(
-                paymentDetails.getString("pt_city_shipping"),
-                paymentDetails.getString("pt_country_shipping"),
-                paymentDetails.getString("pt_email_shipping"),
-                paymentDetails.getString("pt_name_shipping"),
-                paymentDetails.getString("pt_phone_shipping"), paymentDetails.getString("pt_state_shipping"),
-                paymentDetails.getString("pt_address_shipping"), paymentDetails.getString("pt_zip_shipping")
+                shippingDetails.getString("pt_city_shipping"),
+                shippingDetails.getString("pt_country_shipping"),
+                shippingDetails.getString("pt_email_shipping"),
+                shippingDetails.getString("pt_name_shipping"),
+                shippingDetails.getString("pt_phone_shipping"), shippingDetails.getString("pt_state_shipping"),
+                shippingDetails.getString("pt_address_shipping"), shippingDetails.getString("pt_zip_shipping")
         );
+        
         PaymentSdkConfigurationDetails configData = new PaymentSdkConfigBuilder(
                 profileId, serverKey, clientKey, amount, currency)
                 .setCartDescription(cartDesc)
