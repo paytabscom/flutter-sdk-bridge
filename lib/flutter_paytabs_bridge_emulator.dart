@@ -81,12 +81,12 @@ class FlutterPaytabsSdk {
   }
 
   static Future<dynamic> startApplePayPayment(
-      Map args, void eventsCallBack(dynamic)) async {
+      PaymentSdkConfigurationDetails args, void eventsCallBack(dynamic)) async {
     if (!Platform.isIOS) {
       return null;
     }
     _createEventsSubscription(eventsCallBack);
-    return await _channel.invokeMethod('startApplePayPayment', args);
+    return await _channel.invokeMethod('startApplePayPayment', args.map);
   }
 
   static void _createEventsSubscription(void eventsCallBack(dynamic dynamic)) {

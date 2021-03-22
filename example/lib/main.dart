@@ -54,43 +54,27 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> applePayPressed() async {
-    var args = {
-      pt_merchant_email: "test@example.com",
-      pt_secret_key:
-          "kuTEjyEMhpVSWTwXBSOSeiiDAeMCOdyeuFZKiXAlhzjSKqswUWAgbCaYFivjvYzCWaWJbRszhjZuEQqsUycVzLSyMIaZiQLlRqlp",
-      // Add your Secret Key Here
-      pt_transaction_title: "Mr. John Doe",
-      pt_amount: "2.0",
-      pt_currency_code: "AED",
-      pt_customer_email: "test@example.com",
-      pt_order_id: "1234567",
-      pt_country_code: "AE",
-      pt_language: 'en',
-      pt_preauth: false,
-      pt_merchant_identifier: 'merchant.bundleId',
-      pt_tokenization: true,
-      pt_merchant_region: 'emirates',
-      pt_force_validate_shipping: false
-    };
-    FlutterPaytabsSdk.startApplePayPayment(args, (event) {
+    var billingDetails = new BillingDetails(
+        "name", "phone", "email", "country", "city", "zip", "state", "address");
+    var shippingDetails = new ShippingDetails(
+        "name", "phone", "email", "country", "city", "zip", "state", "address");
+
+    PaymentSdkConfigurationDetails arg = PaymentSdkConfigurationDetails(
+        billingDetails: billingDetails,
+        shippingDetails: shippingDetails,
+        serverKey: "",
+        clientKey: "",
+        profileId: "",
+        locale: PaymentSdkLocale.DEFAULT,
+        amount: 20.0,
+        currencyCode: "AED",
+        merchantCountryCode: "AR",
+        tokenFormat: PaymentSdkTokenFormat.Hex32Format,
+        tokeniseType: PaymentSdkTokeniseType.NONE);
+
+    FlutterPaytabsSdk.startApplePayPayment(arg, (event) {
       setState(() {
         print(event);
-        List<dynamic> eventList = event;
-        Map firstEvent = eventList.first;
-        if (firstEvent.keys.first == "EventPreparePaypage") {
-          //_result = firstEvent.values.first.toString();
-        } else {
-          _result = 'Response code:' +
-              firstEvent["pt_response_code"] +
-              '\nTransaction ID:' +
-              firstEvent["pt_transaction_id"] +
-              '\nStatementRef:' +
-              firstEvent["pt_statement_reference"] +
-              '\nTrace code:' +
-              firstEvent["pt_trace_code"] +
-              '\nResult message:' +
-              firstEvent["pt_result"];
-        }
       });
     });
   }

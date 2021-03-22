@@ -39,7 +39,7 @@ import io.flutter.plugin.common.PluginRegistry.Registrar;
 /**
  * FlutterPaytabsBridge
  */
-public class FlutterPaytabsBridge implements FlutterPlugin, MethodCallHandler, ActivityAware, CallbackPaymentInterface {
+public class FlutterPaytabsBridge implements FlutterPlugin, MethodCallHandler, ActivityAware {
   /// The MethodChannel that will the communication between Flutter and native Android
   ///
   /// This local reference serves to register the plugin with the Flutter Engine and unregister it
@@ -139,9 +139,39 @@ public class FlutterPaytabsBridge implements FlutterPlugin, MethodCallHandler, A
                 .build();
         String pt_samsung_token = paymentDetails.getString("pt_samsung_token");
         if (pt_samsung_token != null && pt_samsung_token.length() > 0)
-          PaymentSdkActivity.startSamsungPayment(activity, configData, pt_samsung_token, this);
+          PaymentSdkActivity.startSamsungPayment(activity, configData, pt_samsung_token, new CallbackPaymentInterface() {
+            @Override
+            public void onError(@NotNull PaymentSdkError err) {
+              eventSink.error(err.getCode() + "", err.getMsg(), new Gson().toJson(err));
+            }
+
+            @Override
+            public void onPaymentFinish(@NotNull PaymentSdkTransactionDetails paymentSdkTransactionDetails) {
+              eventSink.success(new Gson().toJson(paymentSdkTransactionDetails));
+            }
+
+            @Override
+            public void onPaymentCancel() {
+              eventSink.error("0", "Cancelled", "{}");
+            }
+          });
         else
-          PaymentSdkActivity.startCardPayment(activity, configData, this);
+          PaymentSdkActivity.startCardPayment(activity, configData, new CallbackPaymentInterface() {
+            @Override
+            public void onError(@NotNull PaymentSdkError err) {
+              eventSink.error(err.getCode() + "", err.getMsg(), new Gson().toJson(err));
+            }
+
+            @Override
+            public void onPaymentFinish(@NotNull PaymentSdkTransactionDetails paymentSdkTransactionDetails) {
+              eventSink.success(new Gson().toJson(paymentSdkTransactionDetails));
+            }
+
+            @Override
+            public void onPaymentCancel() {
+              eventSink.error("0", "Cancelled", "{}");
+            }
+          });
       } catch (Exception e) {
         eventSink.error("0", e.getMessage(), "{}");
       }
@@ -173,18 +203,5 @@ public class FlutterPaytabsBridge implements FlutterPlugin, MethodCallHandler, A
 
   }
 
-  @Override
-  public void onError(@NotNull PaymentSdkError err) {
-    eventSink.error(err.getCode() + "", err.getMsg(), new Gson().toJson(err));
-  }
 
-  @Override
-  public void onPaymentFinish(@NotNull PaymentSdkTransactionDetails paymentSdkTransactionDetails) {
-    eventSink.success(new Gson().toJson(paymentSdkTransactionDetails));
-  }
-
-  @Override
-  public void onPaymentCancel() {
-    eventSink.error("0", "Cancelled", "{}");
-  }
 }
