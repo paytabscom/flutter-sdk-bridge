@@ -62,7 +62,7 @@ class _MyAppState extends State<MyApp> {
         tokeniseType: PaymentSdkTokeniseType.NONE);
     FlutterPaytabsBridge.startCardPayment(configuration, (event) {
       setState(() {
-        print(event);
+      //  print(event);
       });
     });
   }

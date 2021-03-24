@@ -62,6 +62,10 @@ class PaymentSdkConfigurationDetails {
   }) {
     if (iOSThemeConfigurations == null)
       iOSThemeConfigurations = IOSThemeConfigurations();
+    if(showBillingInfo==null)showBillingInfo=false;
+    if(showShippingInfo==null)showShippingInfo=false;
+    if(hideCardScanner==null)hideCardScanner=false;
+    if(forceShippingInfo==null)forceShippingInfo=false;
   }
 }
 
