@@ -37,14 +37,14 @@ public class SwiftFlutterPaytabsBridgePlugin: NSObject, FlutterPlugin {
     private func startCarPayment(arguments: [String : Any]) {
         let configuration = generateConfiguration(dictionary: arguments)
         if let rootViewController = getRootController() {
-            PaymentSDK.startCardPayment(on: rootViewController, configuration: configuration, delegate: self)
+            PaymentManager.startCardPayment(on: rootViewController, configuration: configuration, delegate: self)
         }
     }
     
     private func startApplePayPayment(arguments: [String : Any]) {
         let configuration = generateConfiguration(dictionary: arguments)
         if let rootViewController = getRootController() {
-            PaymentSDK.startApplePayPayment(on: rootViewController, configuration: configuration, delegate: self)
+            PaymentManager.startApplePayPayment(on: rootViewController, configuration: configuration, delegate: self)
         }
     }
     func getRootController() -> UIViewController? {
@@ -201,8 +201,8 @@ extension SwiftFlutterPaytabsBridgePlugin: FlutterStreamHandler {
 }
 
 
-extension SwiftFlutterPaytabsBridgePlugin: PaymentSDKDelegate {
-    public func paymentSDK(didFinishTransaction transactionDetails: PaymentSDKTransactionDetails?, error: Error?) {
+extension SwiftFlutterPaytabsBridgePlugin: PaymentManagerDelegate {
+    public func paymentManager(didFinishTransaction transactionDetails: PaymentSDKTransactionDetails?, error: Error?) {
         if let flutterEventSink = flutterEventSink, flutterListening {
             if let error = error {
                 flutterEventSink(error)
