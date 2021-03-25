@@ -22,6 +22,7 @@ const String pt_samsung_pay_token = 'pt_samsung_pay_token';
 const String pt_merchant_name = 'pt_merchant_name';
 const String pt_merchant_id = "pt_merchant_id";
 const String pt_server_ip = "pt_server_ip";
+const String pt_transaction_class = "pt_transaction_class";
 const String pt_hide_card_scanner = "pt_hide_card_scanner";
 const String pt_simplify_apple_pay_validation = "pt_simplify_apple_pay_validation";
 // Billing

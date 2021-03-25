@@ -1,3 +1,5 @@
+import 'package:flutter_paytabs_bridge/PaymentSdkTransactionClass.dart';
+
 import 'BaseBillingShippingInfo.dart';
 import 'IOSThemeConfiguration.dart';
 import 'PaymentSdkLocale.dart';
@@ -30,6 +32,7 @@ class PaymentSdkConfigurationDetails {
   PaymentSdkLocale? locale;
   PaymentSdkTokenFormat? tokenFormat;
   PaymentSdkTokeniseType? tokeniseType;
+  PaymentSdkTransactionClass? transactionClass;
   IOSThemeConfigurations? iOSThemeConfigurations;
 
 
@@ -59,6 +62,7 @@ class PaymentSdkConfigurationDetails {
     this.hideCardScanner,
     this.locale,
     this.iOSThemeConfigurations,
+    this.transactionClass,
   }) {
     if (iOSThemeConfigurations == null)
       iOSThemeConfigurations = IOSThemeConfigurations();
@@ -66,6 +70,7 @@ class PaymentSdkConfigurationDetails {
     if(showShippingInfo==null)showShippingInfo=false;
     if(hideCardScanner==null)hideCardScanner=false;
     if(forceShippingInfo==null)forceShippingInfo=false;
+    if(transactionClass==null)transactionClass=PaymentSdkTransactionClass.ECOM;
   }
 }
 
@@ -98,6 +103,7 @@ extension PaymentSdkConfigurationDetailsExtension
       pt_merchant_id: this.merchantApplePayIndentifier,
       pt_simplify_apple_pay_validation: this.simplifyApplePayValidation,
       pt_hide_card_scanner: this.hideCardScanner,
+      pt_transaction_class: this.transactionClass?.name,
     };
   }
 }

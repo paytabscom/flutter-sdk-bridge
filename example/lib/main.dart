@@ -8,6 +8,7 @@ import 'package:flutter_paytabs_bridge/PaymentSdkLocale.dart';
 import 'package:flutter_paytabs_bridge/PaymentSdkTokenFormat.dart';
 import 'package:flutter_paytabs_bridge/PaymentSdkTokeniseType.dart';
 import 'package:flutter_paytabs_bridge/flutter_paytabs_bridge.dart';
+import 'package:flutter_paytabs_bridge/PaymentSdkTransactionClass.dart';
 
 void main() {
   runApp(MyApp());
@@ -50,12 +51,14 @@ class _MyAppState extends State<MyApp> {
         clientKey: "CKKMDG-KDD262-TQTK22-GQGMHN",
         cartId: "12433",
         cartDescription: "Flowers",
+        transactionClass: PaymentSdkTransactionClass.ECOM,
         merchantName: "Flowers Store",
         screentTitle: "Pay with Card",
         billingDetails: billingDetails,
         shippingDetails: shippingDetails,
         locale: PaymentSdkLocale.DEFAULT,
         amount: 20.0,
+        token: "",
         currencyCode: "AED",
         merchantCountryCode: "ae",
         tokenFormat: PaymentSdkTokenFormat.Hex32Format,

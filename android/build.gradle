@@ -47,5 +47,5 @@ android {
 
 dependencies {
 
-    implementation 'com.paytabs:payment-sdk:6.0.1'
+    implementation 'com.paytabs:payment-sdk:6.0.2-rc04'
 }

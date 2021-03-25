@@ -2,6 +2,7 @@ package com.paytabs.flutter_paytabs_bridge;
 
 import static com.payment.paymentsdk.integrationmodels.PaymentSdkTokenFormatKt.createPaymentSdkTokenFormat;
 import static com.payment.paymentsdk.integrationmodels.PaymentSdkTokeniseKt.createPaymentSdkTokenise;
+import static com.payment.paymentsdk.integrationmodels.PaymentSdkTransactionClassKt.createPaymentSdkTransactionClass;
 
 import android.app.Activity;
 import android.content.Context;
@@ -18,7 +19,9 @@ import com.payment.paymentsdk.integrationmodels.PaymentSdkLanguageCode;
 import com.payment.paymentsdk.integrationmodels.PaymentSdkShippingDetails;
 import com.payment.paymentsdk.integrationmodels.PaymentSdkTokenFormat;
 import com.payment.paymentsdk.integrationmodels.PaymentSdkTokenise;
+import com.payment.paymentsdk.integrationmodels.PaymentSdkTransactionClass;
 import com.payment.paymentsdk.integrationmodels.PaymentSdkTransactionDetails;
+import com.payment.paymentsdk.integrationmodels.PaymentSdkTransactionType;
 import com.payment.paymentsdk.sharedclasses.interfaces.CallbackPaymentInterface;
 
 import org.jetbrains.annotations.NotNull;
@@ -134,6 +137,8 @@ public class FlutterPaytabsBridgePlugin implements FlutterPlugin, MethodCallHand
                         .setMerchantCountryCode(paymentDetails.getString("pt_merchant_country_code"))
                         .setShippingData(shippingData)
                         .setCartId(orderId)
+                        .setTransactionClass(createPaymentSdkTransactionClass(paymentDetails.getString("pt_transaction_class")))
+                        .setTransactionType(PaymentSdkTransactionType.SALE)
                         .setTokenise(tokeniseType, tokenFormat)
                         .setTokenisationData(token, transRef)
                         .showBillingInfo(paymentDetails.getBoolean("pt_show_billing_info"))
@@ -141,28 +146,6 @@ public class FlutterPaytabsBridgePlugin implements FlutterPlugin, MethodCallHand
                         .forceShippingInfo(paymentDetails.getBoolean("pt_force_validate_shipping"))
                         .setScreenTitle(screenTitle)
                         .build();
-                String pt_samsung_token = paymentDetails.getString("pt_samsung_pay_token");
-                if (pt_samsung_token != null && pt_samsung_token.length() > 0)
-                    PaymentSdkActivity.startSamsungPayment(activity, configData, pt_samsung_token, new CallbackPaymentInterface() {
-                        @Override
-                        public void onError(@NotNull PaymentSdkError err) {
-                            eventSink.error(err.getCode() + "", err.getMsg(), new Gson().toJson(err));
-
-                        }
-
-                        @Override
-                        public void onPaymentFinish(@NotNull PaymentSdkTransactionDetails paymentSdkTransactionDetails) {
-                            eventSink.success(new Gson().toJson(paymentSdkTransactionDetails));
-
-                        }
-
-                        @Override
-                        public void onPaymentCancel() {
-                            eventSink.error("0", "Cancelled", "{}");
-
-                        }
-                    });
-                else
                     PaymentSdkActivity.startCardPayment(activity, configData, new CallbackPaymentInterface() {
                         @Override
                         public void onError(@NotNull PaymentSdkError err) {
