@@ -71,6 +71,8 @@ class PaymentSdkConfigurationDetails {
     if(hideCardScanner==null)hideCardScanner=false;
     if(forceShippingInfo==null)forceShippingInfo=false;
     if(transactionClass==null)transactionClass=PaymentSdkTransactionClass.ECOM;
+    if(token==null)token="";
+    if(transactionReference==null)transactionReference="";
   }
 }
 

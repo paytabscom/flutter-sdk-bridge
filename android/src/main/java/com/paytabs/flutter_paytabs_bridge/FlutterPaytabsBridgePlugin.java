@@ -1,5 +1,6 @@
 package com.paytabs.flutter_paytabs_bridge;
 
+import static com.payment.paymentsdk.integrationmodels.PaymentSdkLanguageCodeKt.createPaymentSdkLanguageCode;
 import static com.payment.paymentsdk.integrationmodels.PaymentSdkTokenFormatKt.createPaymentSdkTokenFormat;
 import static com.payment.paymentsdk.integrationmodels.PaymentSdkTokeniseKt.createPaymentSdkTokenise;
 import static com.payment.paymentsdk.integrationmodels.PaymentSdkTransactionClassKt.createPaymentSdkTransactionClass;
@@ -98,7 +99,7 @@ public class FlutterPaytabsBridgePlugin implements FlutterPlugin, MethodCallHand
                 String profileId = paymentDetails.getString("pt_profile_id");
                 String serverKey = paymentDetails.getString("pt_server_key");
                 String clientKey = paymentDetails.getString("pt_client_key");
-                PaymentSdkLanguageCode locale = PaymentSdkLanguageCode.EN;
+                PaymentSdkLanguageCode locale = createPaymentSdkLanguageCode(paymentDetails.getString("pt_language"));
                 String screenTitle = paymentDetails.getString("pt_screen_title");
                 String orderId = paymentDetails.getString("pt_cart_id");
                 String cartDesc = paymentDetails.getString("pt_cart_description");
@@ -106,8 +107,8 @@ public class FlutterPaytabsBridgePlugin implements FlutterPlugin, MethodCallHand
                 String token = paymentDetails.getString("pt_token");
                 String transRef = paymentDetails.getString("pt_transaction_reference");
                 double amount = paymentDetails.getDouble("pt_amount");
-                PaymentSdkTokenise tokeniseType = createPaymentSdkTokenise("pt_tokenise_type");
-                PaymentSdkTokenFormat tokenFormat = createPaymentSdkTokenFormat("pt_token_format");
+                PaymentSdkTokenise tokeniseType = createPaymentSdkTokenise(paymentDetails.getString("pt_tokenise_type"));
+                PaymentSdkTokenFormat tokenFormat = createPaymentSdkTokenFormat(paymentDetails.getString("pt_token_format"));
 
                 JSONObject billingDetails = paymentDetails.getJSONObject("pt_billing_details");
                 PaymentSdkBillingDetails billingData = new PaymentSdkBillingDetails(
