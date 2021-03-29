@@ -73,6 +73,7 @@ class PaymentSdkConfigurationDetails {
     if(transactionClass==null)transactionClass=PaymentSdkTransactionClass.ECOM;
     if(token==null)token="";
     if(transactionReference==null)transactionReference="";
+    if(samsungPayToken==null)samsungPayToken="";
   }
 }
 

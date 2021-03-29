@@ -20,12 +20,12 @@ import com.payment.paymentsdk.integrationmodels.PaymentSdkLanguageCode;
 import com.payment.paymentsdk.integrationmodels.PaymentSdkShippingDetails;
 import com.payment.paymentsdk.integrationmodels.PaymentSdkTokenFormat;
 import com.payment.paymentsdk.integrationmodels.PaymentSdkTokenise;
-import com.payment.paymentsdk.integrationmodels.PaymentSdkTransactionClass;
 import com.payment.paymentsdk.integrationmodels.PaymentSdkTransactionDetails;
 import com.payment.paymentsdk.integrationmodels.PaymentSdkTransactionType;
 import com.payment.paymentsdk.sharedclasses.interfaces.CallbackPaymentInterface;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -93,83 +93,111 @@ public class FlutterPaytabsBridgePlugin implements FlutterPlugin, MethodCallHand
     @Override
     public void onMethodCall(@NonNull MethodCall call, @NonNull Result result) {
         if (call.method.equals("startCardPayment")) {
-            try {
-                HashMap<String, Object> arguments = call.arguments();
-                JSONObject paymentDetails = new JSONObject(arguments);
-                String profileId = paymentDetails.getString("pt_profile_id");
-                String serverKey = paymentDetails.getString("pt_server_key");
-                String clientKey = paymentDetails.getString("pt_client_key");
-                PaymentSdkLanguageCode locale = createPaymentSdkLanguageCode(paymentDetails.getString("pt_language"));
-                String screenTitle = paymentDetails.getString("pt_screen_title");
-                String orderId = paymentDetails.getString("pt_cart_id");
-                String cartDesc = paymentDetails.getString("pt_cart_description");
-                String currency = paymentDetails.getString("pt_currency_code");
-                String token = paymentDetails.getString("pt_token");
-                String transRef = paymentDetails.getString("pt_transaction_reference");
-                double amount = paymentDetails.getDouble("pt_amount");
-                PaymentSdkTokenise tokeniseType = createPaymentSdkTokenise(paymentDetails.getString("pt_tokenise_type"));
-                PaymentSdkTokenFormat tokenFormat = createPaymentSdkTokenFormat(paymentDetails.getString("pt_token_format"));
-
-                JSONObject billingDetails = paymentDetails.getJSONObject("pt_billing_details");
-                PaymentSdkBillingDetails billingData = new PaymentSdkBillingDetails(
-                        billingDetails.getString("pt_city_billing"),
-                        billingDetails.getString("pt_country_billing"),
-                        billingDetails.getString("pt_email_billing"),
-                        billingDetails.getString("pt_name_billing"),
-                        billingDetails.getString("pt_phone_billing"), billingDetails.getString("pt_state_billing"),
-                        billingDetails.getString("pt_address_billing"), billingDetails.getString("pt_zip_billing")
-                );
-
-                JSONObject shippingDetails = paymentDetails.getJSONObject("pt_shipping_details");
-                PaymentSdkShippingDetails shippingData = new PaymentSdkShippingDetails(
-                        shippingDetails.getString("pt_city_shipping"),
-                        shippingDetails.getString("pt_country_shipping"),
-                        shippingDetails.getString("pt_email_shipping"),
-                        shippingDetails.getString("pt_name_shipping"),
-                        shippingDetails.getString("pt_phone_shipping"), shippingDetails.getString("pt_state_shipping"),
-                        shippingDetails.getString("pt_address_shipping"), shippingDetails.getString("pt_zip_shipping")
-                );
-
-                PaymentSdkConfigurationDetails configData = new PaymentSdkConfigBuilder(
-                        profileId, serverKey, clientKey, amount, currency)
-                        .setCartDescription(cartDesc)
-                        .setLanguageCode(locale)
-                        .setBillingData(billingData)
-                        .setMerchantCountryCode(paymentDetails.getString("pt_merchant_country_code"))
-                        .setShippingData(shippingData)
-                        .setCartId(orderId)
-                        .setTransactionClass(createPaymentSdkTransactionClass(paymentDetails.getString("pt_transaction_class")))
-                        .setTransactionType(PaymentSdkTransactionType.SALE)
-                        .setTokenise(tokeniseType, tokenFormat)
-                        .setTokenisationData(token, transRef)
-                        .showBillingInfo(paymentDetails.getBoolean("pt_show_billing_info"))
-                        .showShippingInfo(paymentDetails.getBoolean("pt_show_shipping_info"))
-                        .forceShippingInfo(paymentDetails.getBoolean("pt_force_validate_shipping"))
-                        .setScreenTitle(screenTitle)
-                        .build();
-                    PaymentSdkActivity.startCardPayment(activity, configData, new CallbackPaymentInterface() {
-                        @Override
-                        public void onError(@NotNull PaymentSdkError err) {
-                            eventSink.error(err.getCode() + "", err.getMsg(), new Gson().toJson(err));
-
-                        }
-
-                        @Override
-                        public void onPaymentFinish(@NotNull PaymentSdkTransactionDetails paymentSdkTransactionDetails) {
-                            eventSink.success(new Gson().toJson(paymentSdkTransactionDetails));
-
-                        }
-
-                        @Override
-                        public void onPaymentCancel() {
-                            eventSink.error("0", "Cancelled", "{}");
-
-                        }
-                    });
-            } catch (Exception e) {
-                eventSink.error("0", e.getMessage(), "{}");
-            }
+            makeCardPayment(call);
+        } else if (call.method.equals("startSamsungPayPayment")) {
+            makeSamsungPayment(call);
         }
+    }
+
+    private void makeCardPayment(@NonNull MethodCall call) {
+        try {
+            HashMap<String, Object> arguments = call.arguments();
+            JSONObject paymentDetails = new JSONObject(arguments);
+            PaymentSdkActivity.startCardPayment(activity, getPaymentSdkConfigurationDetails(paymentDetails), getCallback());
+        } catch (Exception e) {
+            eventSink.error("0", e.getMessage(), "{}");
+        }
+    }
+
+    private void makeSamsungPayment(@NonNull MethodCall call) {
+        try {
+            HashMap<String, Object> arguments = call.arguments();
+            JSONObject paymentDetails = new JSONObject(arguments);
+            String samToken = paymentDetails.getString("pt_samsung_pay_token");
+
+            PaymentSdkActivity.startSamsungPayment(activity, getPaymentSdkConfigurationDetails(paymentDetails), samToken, getCallback());
+        } catch (Exception e) {
+            eventSink.error("0", e.getMessage(), "{}");
+        }
+    }
+
+    @NotNull
+    private CallbackPaymentInterface getCallback() {
+        return new CallbackPaymentInterface() {
+            @Override
+            public void onError(@NotNull PaymentSdkError err) {
+                eventSink.error(err.getCode() + "", err.getMsg(), new Gson().toJson(err));
+
+            }
+
+            @Override
+            public void onPaymentFinish(@NotNull PaymentSdkTransactionDetails paymentSdkTransactionDetails) {
+                eventSink.success(new Gson().toJson(paymentSdkTransactionDetails));
+
+            }
+
+            @Override
+            public void onPaymentCancel() {
+                eventSink.error("0", "Cancelled", "{}");
+
+            }
+        };
+    }
+
+    @NotNull
+    private PaymentSdkConfigurationDetails getPaymentSdkConfigurationDetails(JSONObject paymentDetails) throws JSONException {
+
+        String profileId = paymentDetails.getString("pt_profile_id");
+        String serverKey = paymentDetails.getString("pt_server_key");
+        String clientKey = paymentDetails.getString("pt_client_key");
+        PaymentSdkLanguageCode locale = createPaymentSdkLanguageCode(paymentDetails.getString("pt_language"));
+        String screenTitle = paymentDetails.getString("pt_screen_title");
+        String orderId = paymentDetails.getString("pt_cart_id");
+        String cartDesc = paymentDetails.getString("pt_cart_description");
+        String currency = paymentDetails.getString("pt_currency_code");
+        String token = paymentDetails.getString("pt_token");
+        String transRef = paymentDetails.getString("pt_transaction_reference");
+        double amount = paymentDetails.getDouble("pt_amount");
+        PaymentSdkTokenise tokeniseType = createPaymentSdkTokenise(paymentDetails.getString("pt_tokenise_type"));
+        PaymentSdkTokenFormat tokenFormat = createPaymentSdkTokenFormat(paymentDetails.getString("pt_token_format"));
+
+        JSONObject billingDetails = paymentDetails.getJSONObject("pt_billing_details");
+        PaymentSdkBillingDetails billingData = new PaymentSdkBillingDetails(
+                billingDetails.getString("pt_city_billing"),
+                billingDetails.getString("pt_country_billing"),
+                billingDetails.getString("pt_email_billing"),
+                billingDetails.getString("pt_name_billing"),
+                billingDetails.getString("pt_phone_billing"), billingDetails.getString("pt_state_billing"),
+                billingDetails.getString("pt_address_billing"), billingDetails.getString("pt_zip_billing")
+        );
+
+        JSONObject shippingDetails = paymentDetails.getJSONObject("pt_shipping_details");
+        PaymentSdkShippingDetails shippingData = new PaymentSdkShippingDetails(
+                shippingDetails.getString("pt_city_shipping"),
+                shippingDetails.getString("pt_country_shipping"),
+                shippingDetails.getString("pt_email_shipping"),
+                shippingDetails.getString("pt_name_shipping"),
+                shippingDetails.getString("pt_phone_shipping"), shippingDetails.getString("pt_state_shipping"),
+                shippingDetails.getString("pt_address_shipping"), shippingDetails.getString("pt_zip_shipping")
+        );
+
+        return new PaymentSdkConfigBuilder(
+                profileId, serverKey, clientKey, amount, currency)
+                .setCartDescription(cartDesc)
+                .setLanguageCode(locale)
+                .setBillingData(billingData)
+                .setMerchantCountryCode(paymentDetails.getString("pt_merchant_country_code"))
+                .setShippingData(shippingData)
+                .setCartId(orderId)
+                .setTransactionClass(createPaymentSdkTransactionClass(paymentDetails.getString("pt_transaction_class")))
+                .setTransactionType(PaymentSdkTransactionType.SALE)
+                .setTokenise(tokeniseType, tokenFormat)
+                .setTokenisationData(token, transRef)
+                .showBillingInfo(paymentDetails.getBoolean("pt_show_billing_info"))
+                .showShippingInfo(paymentDetails.getBoolean("pt_show_shipping_info"))
+                .forceShippingInfo(paymentDetails.getBoolean("pt_force_validate_shipping"))
+                .setScreenTitle(screenTitle)
+                .build();
     }
 
     @Override
