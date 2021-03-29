@@ -126,22 +126,32 @@ public class FlutterPaytabsBridgePlugin implements FlutterPlugin, MethodCallHand
         return new CallbackPaymentInterface() {
             @Override
             public void onError(@NotNull PaymentSdkError err) {
-                eventSink.error(err.getCode() + "", err.getMsg(), new Gson().toJson(err));
+                if (err.getCode() != null)
+                    returnResponseToFlutter(err.getCode(), err.getMsg(), "error", null);
+                else
+                    returnResponseToFlutter(0, err.getMsg(), "error", null);
 
             }
 
             @Override
             public void onPaymentFinish(@NotNull PaymentSdkTransactionDetails paymentSdkTransactionDetails) {
-                eventSink.success(new Gson().toJson(paymentSdkTransactionDetails));
-
+                returnResponseToFlutter(200, "success", "success", paymentSdkTransactionDetails);
             }
 
             @Override
             public void onPaymentCancel() {
-                eventSink.error("0", "Cancelled", "{}");
-
+                returnResponseToFlutter(0, "Cancelled", "Cancelled", null);
             }
         };
+    }
+
+    private void returnResponseToFlutter(int code, String msg, String status, PaymentSdkTransactionDetails data) {
+        ResponseWrapper<Object> responseWrapper = new ResponseWrapper<>();
+        responseWrapper.code = code;
+        responseWrapper.message = msg;
+        responseWrapper.status = status;
+        responseWrapper.data = data;
+        eventSink.success(new Gson().toJson(responseWrapper));
     }
 
     @NotNull

@@ -56,14 +56,10 @@ class _MyAppState extends State<MyApp> {
         screentTitle: "Pay with Card",
         billingDetails: billingDetails,
         shippingDetails: shippingDetails,
-        locale: PaymentSdkLocale.AR,
         amount: 20.0,
-        token: "",
         currencyCode: "AED",
-        transactionReference:"TST2108600124864" ,
         merchantCountryCode: "ae",
-        tokenFormat: PaymentSdkTokenFormat.Hex32Format,
-        tokeniseType: PaymentSdkTokeniseType.USER_MANDATORY);
+       );
     FlutterPaytabsBridge.startCardPayment(configuration, (event) {
       setState(() {
         print(event);
