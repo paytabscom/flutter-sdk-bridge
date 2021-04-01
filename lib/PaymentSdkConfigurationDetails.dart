@@ -23,18 +23,17 @@ class PaymentSdkConfigurationDetails {
   String? screentTitle;
   String? cartId;
   String? samsungPayToken;
-  bool? showBillingInfo;
-  bool? showShippingInfo;
-  bool? forceShippingInfo;
+  bool? showBillingInfo = false;
+  bool? showShippingInfo = false;
+  bool? forceShippingInfo = false;
   String? merchantApplePayIndentifier;
   bool? simplifyApplePayValidation;
-  bool? hideCardScanner;
+  bool? hideCardScanner = false;
   PaymentSdkLocale? locale;
   PaymentSdkTokenFormat? tokenFormat;
   PaymentSdkTokeniseType? tokeniseType;
   PaymentSdkTransactionClass? transactionClass;
   IOSThemeConfigurations? iOSThemeConfigurations;
-
 
   PaymentSdkConfigurationDetails({
     this.profileId,
@@ -63,18 +62,7 @@ class PaymentSdkConfigurationDetails {
     this.locale,
     this.iOSThemeConfigurations,
     this.transactionClass,
-  }) {
-    if (iOSThemeConfigurations == null)
-      iOSThemeConfigurations = IOSThemeConfigurations();
-    if(showBillingInfo==null)showBillingInfo=false;
-    if(showShippingInfo==null)showShippingInfo=false;
-    if(hideCardScanner==null)hideCardScanner=false;
-    if(forceShippingInfo==null)forceShippingInfo=false;
-    if(transactionClass==null)transactionClass=PaymentSdkTransactionClass.ECOM;
-    if(token==null)token="";
-    if(transactionReference==null)transactionReference="";
-    if(samsungPayToken==null)samsungPayToken="";
-  }
+  });
 }
 
 extension PaymentSdkConfigurationDetailsExtension

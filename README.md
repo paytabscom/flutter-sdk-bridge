@@ -1,16 +1,17 @@
-# flutter_sdk-paytabs
-![Version](https://img.shields.io/badge/flutter%20sdk%20Paytabs-v2.0.1-beta-green)
+# Flutter PayTabs Bridge
+![Version](https://img.shields.io/badge/flutter%20paytabs%20bridge-v2.0.1_beta-green)
 
-Flutter sdk paytabs library is a wrapper for the native PayTabs Android and iOS SDKs, It helps you integrate with PayTabs payment gateway.
+Flutter paytabs plugin is a wrapper for the native PayTabs Android and iOS SDKs, It helps you integrate with PayTabs payment gateway.
 
 Library Support:
+
 * [x] iOS
 * [x] Android
 
 # Installation
 
 `dependencies:
-   flutter_paytabs_bridge: ^2.0.1-beta01`
+   flutter_paytabs_bridge: ^2.0.1-beta`
 
 ## Usage
 
@@ -37,7 +38,8 @@ import 'package:flutter_paytabs_bridge/PaymentSdkTransactionClass.dart';
         "city", 
         "state", 
         "zip code");
-    var shippingDetails = new ShippingDetails("shipping name", 
+        
+var shippingDetails = new ShippingDetails("shipping name", 
      "shipping email", 
      "shipping phone",
      "address line", 
@@ -62,7 +64,7 @@ import 'package:flutter_paytabs_bridge/PaymentSdkTransactionClass.dart';
         screentTitle: "Pay with Card",
         billingDetails: billingDetails,
         shippingDetails: shippingDetails,
-        locale: PaymentSdkLocale.AR, //PaymentSdkLocale.EN or PaymentSdkLocale.DEFAULT 
+        locale: PaymentSdkLocale.EN, //PaymentSdkLocale.AR or PaymentSdkLocale.DEFAULT 
         amount: "amount in double",
         currencyCode: "Currency code",
         merchantCountryCode: "2 chars iso country code");
@@ -73,7 +75,6 @@ Options to show billing and shipping info
 ```dart
 	configuration.showBillingInfo = true;
 	configuration.showShippingInfo = true;
-	
 ```
 
 3. Start payment by calling `startCardPayment` method and handle the transaction details 
@@ -82,7 +83,15 @@ Options to show billing and shipping info
 
 FlutterPaytabsBridge.startCardPayment(configuration, (event) {
       setState(() {
-        print(event);
+        if (event["status"] == "success") {
+          // Handle transaction details here.
+          var transactionDetails = event["data"];
+          print(transactionDetails);
+        } else if (event["status"] == "error") {
+          // Handle error here.
+        } else if (event["status"] == "event") {
+          // Handle events here.
+        }
       });
     });
      
@@ -107,7 +116,9 @@ FlutterPaytabsBridge.startCardPayment(configuration, (event) {
         locale: PaymentSdkLocale.AR, //PaymentSdkLocale.EN or PaymentSdkLocale.DEFAULT 
         amount: "amount in double",
         currencyCode: "Currency code",
-        merchantCountryCode: "2 chars iso country code");
+        merchantCountryCode: "2 chars iso country code",
+        merchantApplePayIndentifier: "merchant.com.bundleID",
+        );
 ```
 
 3. To simplify ApplePay validation on all user's billing info, pass **simplifyApplePayValidation** parameter in the configuration with **true**.
@@ -123,7 +134,17 @@ configuration.simplifyApplePayValidation = true;
 ```dart
 FlutterPaytabsBridge.startApplePayPayment(configuration, (event) {
       setState(() {
-        print(event);
+        setState(() {
+        if (event["status"] == "success") {
+          // Handle transaction details here.
+          var transactionDetails = event["data"];
+          print(transactionDetails);
+        } else if (event["status"] == "error") {
+          // Handle error here.
+        } else if (event["status"] == "event") {
+          // Handle events here.
+        }
+      });
       });
     });
 ```
@@ -135,6 +156,17 @@ Pass Samsung Pay token to the configuration and call `startSamsungPayPayment`
 ```dart
 configuration.samsungToken = "{Json token returned from the samsung pay payment}"
 ```
+
+## Theme
+Use the following guide to cusomize the colors, font, and logo by configuring the theme and pass it to the payment configuration.
+
+```dart
+	var theme = IOSThemeConfigurations();
+	theme.backgroundColor = "e0556e"; // Color hex value
+	configuration.iOSThemeConfigurations = theme;
+```
+
+![UI guide](https://user-images.githubusercontent.com/13621658/109432213-d7981380-7a12-11eb-9224-c8fc12b0024d.jpg)
 
 ## Enums
 

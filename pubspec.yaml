@@ -1,6 +1,6 @@
 name: flutter_paytabs_bridge
-description: A new flutter plugin project.
-version: 2.0.1-beta01
+description: Flutter plugin for Paytabs.
+version: 2.0.1-beta
 
 environment:
   sdk: ">=2.12.0 <3.0.0"

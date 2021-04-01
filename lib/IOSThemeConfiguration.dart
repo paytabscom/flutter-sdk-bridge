@@ -3,16 +3,16 @@ import 'package:flutter_paytabs_bridge/flutter_paytabs_bridge.dart';
 
 class IOSThemeConfigurations {
   String? logoImage;
-  Color? primaryColor;
-  Color? primaryFontColor;
-  Color? secondaryColor;
-  Color? secondaryFontColor;
-  Color? strokeColor;
-  Color? buttonColor;
-  Color? buttonFontColor;
-  Color? titleFontColor;
-  Color? backgroundColor;
-  Color? placeholderColor;
+  String? primaryColor;
+  String? primaryFontColor;
+  String? secondaryColor;
+  String? secondaryFontColor;
+  String? strokeColor;
+  String? buttonColor;
+  String? buttonFontColor;
+  String? titleFontColor;
+  String? backgroundColor;
+  String? placeholderColor;
   String? primaryFont;
   String? secondaryFont;
   int? strokeThinckness;

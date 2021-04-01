@@ -36,6 +36,7 @@ public class SwiftFlutterPaytabsBridgePlugin: NSObject, FlutterPlugin {
     
     private func startCarPayment(arguments: [String : Any]) {
         let configuration = generateConfiguration(dictionary: arguments)
+        print(configuration)
         if let rootViewController = getRootController() {
             PaymentManager.startCardPayment(on: rootViewController, configuration: configuration, delegate: self)
         }
@@ -184,6 +185,19 @@ public class SwiftFlutterPaytabsBridgePlugin: NSObject, FlutterPlugin {
         }
         return theme
     }
+    
+    private func eventSink(code: Int, message: String, status: String, transactionDetails: [String: Any]? = nil) {
+        var response = [String: Any]()
+        response["code"] = code
+        response["message"] = message
+        response["status"] = status
+        if let transactionDetails = transactionDetails {
+            response["data"] = transactionDetails
+        }
+        if let flutterEventSink = flutterEventSink {
+            flutterEventSink(response)
+        }
+    }
 }
 
 
@@ -198,24 +212,36 @@ extension SwiftFlutterPaytabsBridgePlugin: FlutterStreamHandler {
         flutterListening = false;
         return nil
     }
+
 }
 
 
 extension SwiftFlutterPaytabsBridgePlugin: PaymentManagerDelegate {
     public func paymentManager(didFinishTransaction transactionDetails: PaymentSDKTransactionDetails?, error: Error?) {
-        if let flutterEventSink = flutterEventSink, flutterListening {
+        if flutterListening {
             if let error = error {
-                flutterEventSink(error)
+                eventSink(code: (error as NSError).code,
+                          message: error.localizedDescription,
+                          status: "error")
             } else {
                 do {
                     let encoder = JSONEncoder()
                     let data = try encoder.encode(transactionDetails)
                     let dictionary = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any]
-                    flutterEventSink(dictionary)
+                    eventSink(code: 200,
+                              message: "",
+                              status: "success",
+                              transactionDetails: dictionary)
                 } catch  {
-                    flutterEventSink(error)
+                    eventSink(code: (error as NSError).code,
+                              message: error.localizedDescription,
+                              status: "error")
                 }
             }
         }
+    }
+    
+    public func paymentManager(didCancelPayment error: Error?) {
+        eventSink(code: 0, message: "Cancelled", status: "event")
     }
 }

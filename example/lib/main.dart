@@ -3,6 +3,7 @@ import 'dart:io' show Platform;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_paytabs_bridge/BaseBillingShippingInfo.dart';
+import 'package:flutter_paytabs_bridge/IOSThemeConfiguration.dart';
 import 'package:flutter_paytabs_bridge/PaymentSdkConfigurationDetails.dart';
 import 'package:flutter_paytabs_bridge/PaymentSdkLocale.dart';
 import 'package:flutter_paytabs_bridge/PaymentSdkTokenFormat.dart';
@@ -20,7 +21,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  String _result = '---';
   String _instructions = 'Tap on "Pay" Button to try PayTabs plugin';
 
   @override
@@ -29,61 +29,82 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> payPressed() async {
-    var billingDetails = new BillingDetails("Mohamed Adly", 
-    "m.adly@paytabs.com", 
-    "+201113655936",
-        "st. 12", 
-        "ae", 
-        "dubai", 
-        "dubai", 
+    var billingDetails = new BillingDetails(
+        "Mohamed Adly",
+        "m.adly@paytabs.com",
+        "+201111111111",
+        "st. 12",
+        "ae",
+        "dubai",
+        "dubai",
         "12345");
-    var shippingDetails = new ShippingDetails("Mohamed Adly", 
-    "m.adly@paytabs.com", 
-    "+201113655936",
-        "st. 12", 
-        "ae", 
-        "dubai", 
-        "dubai", 
+    var shippingDetails = new ShippingDetails(
+        "Mohamed Adly",
+        "email@example.com",
+        "+201111111111",
+        "st. 12",
+        "ae",
+        "dubai",
+        "dubai",
         "12345");
     var configuration = PaymentSdkConfigurationDetails(
-        profileId: "49611",
-        serverKey: "SMJNLTR2G6-JBGNGKBBM9-2MB6HGBG6M",
-        clientKey: "CKKMDG-KDD262-TQTK22-GQGMHN",
-        cartId: "12433",
-        cartDescription: "Flowers",
-        transactionClass: PaymentSdkTransactionClass.ECOM,
-        merchantName: "Flowers Store",
-        screentTitle: "Pay with Card",
-        billingDetails: billingDetails,
-        shippingDetails: shippingDetails,
-        amount: 20.0,
-        currencyCode: "AED",
-        merchantCountryCode: "ae",
-       );
+      profileId: "*Your profile id*",
+      serverKey: "*server key*",
+      clientKey: "*client key*",
+      cartId: "12433",
+      cartDescription: "Flowers",
+      merchantName: "Flowers Store",
+      screentTitle: "Pay with Card",
+      billingDetails: billingDetails,
+      shippingDetails: shippingDetails,
+      amount: 20.0,
+      currencyCode: "AED",
+      merchantCountryCode: "ae",
+    );
+    if (Platform.isIOS) {
+      // Set up here your custom theme
+      // var theme = IOSThemeConfigurations();
+      // configuration.iOSThemeConfigurations = theme;
+    }
     FlutterPaytabsBridge.startCardPayment(configuration, (event) {
       setState(() {
-        print(event);
+        if (event["status"] == "success") {
+          // Handle transaction details here.
+          var transactionDetails = event["data"];
+          print(transactionDetails);
+        } else if (event["status"] == "error") {
+          // Handle error here.
+        } else if (event["status"] == "event") {
+          // Handle events here.
+        }
       });
     });
   }
+
   Future<void> applePayPressed() async {
     var configuration = PaymentSdkConfigurationDetails(
-        profileId: "49611",
-        serverKey: "SMJNLTR2G6-JBGNGKBBM9-2MB6HGBG6M",
-        clientKey: "CKKMDG-KDD262-TQTK22-GQGMHN",
+        profileId: "*Your profile id*",
+        serverKey: "*server key*",
+        clientKey: "*client key*",
         cartId: "12433",
         cartDescription: "Flowers",
         merchantName: "Flowers Store",
-        locale: PaymentSdkLocale.DEFAULT,
         amount: 20.0,
         currencyCode: "AED",
         merchantCountryCode: "ae",
-        merchantApplePayIndentifier: "merchant.com.paytabs.applepay",
-        tokenFormat: PaymentSdkTokenFormat.Hex32Format,
-        tokeniseType: PaymentSdkTokeniseType.NONE);
+        merchantApplePayIndentifier: "merchant.com.bunldeId",
+        simplifyApplePayValidation: true);
     FlutterPaytabsBridge.startApplePayPayment(configuration, (event) {
       setState(() {
-        print(event);
+        if (event["status"] == "success") {
+          // Handle transaction details here.
+          var transactionDetails = event["data"];
+          print(transactionDetails);
+        } else if (event["status"] == "error") {
+          // Handle error here.
+        } else if (event["status"] == "event") {
+          // Handle events here.
+        }
       });
     });
   }
@@ -113,12 +134,11 @@ class _MyAppState extends State<MyApp> {
                 children: <Widget>[
               Text('$_instructions'),
               SizedBox(height: 16),
-              Text('Result: $_result\n'),
               TextButton(
                 onPressed: () {
                   payPressed();
                 },
-                child: Text('Pay with PayTabs'),
+                child: Text('Pay with Card'),
               ),
               SizedBox(height: 16),
               applePayButton()
