@@ -3,15 +3,17 @@
 
 Flutter paytabs plugin is a wrapper for the native PayTabs Android and iOS SDKs, It helps you integrate with PayTabs payment gateway.
 
-Library Support:
+Plugin Support:
 
 * [x] iOS
 * [x] Android
 
 # Installation
 
-`dependencies:
+```
+dependencies:
    flutter_paytabs_bridge: ^2.0.1-beta`
+```
 
 ## Usage
 
@@ -225,5 +227,5 @@ See [LICENSE][license].
  [1]: https://www.paytabs.com/en/support/
  [2]: https://www.paytabs.com/en/terms-of-use/
  [3]: https://www.paytabs.com/en/privacy-policy/
- [license]: https://github.com/paytabscom/flutter-sdk-paytabs-library/blob/PT2/LICENSE
- [applepayguide]: https://github.com/paytabscom/flutter-sdk-paytabs-library/blob/PT2/ApplePayConfiguration.md
+ [license]: https://github.com/paytabscom/flutter-sdk-bridge/blob/pt2/LICENSE
+ [applepayguide]: https://github.com/paytabscom/flutter-sdk-bridge/blob/pt2/ApplePayConfiguration.md
