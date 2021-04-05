@@ -1,4 +1,4 @@
-package com.paytabs.flutter_paytabs_bridge_emulator_example;
+package com.paytabs.flutter_paytabs_bridge_example;
 
 import io.flutter.embedding.android.FlutterActivity;
 

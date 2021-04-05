@@ -8,20 +8,20 @@ enum PaymentSdkTokenFormat {
 }
 
 extension PaymentSdkTokenFormatExtension on PaymentSdkTokenFormat {
-  String get name {
+  String? get name {
     switch (this) {
-      case PaymentSdkTokenFormat.Hex32Format:
-        return 'hex32Format';
       case PaymentSdkTokenFormat.NoneFormat:
-        return 'noneFormat';
+        return '1';
+      case PaymentSdkTokenFormat.Hex32Format:
+        return '2';
       case PaymentSdkTokenFormat.AlphaNum20Format:
-        return 'alphaNum20Format';
-      case PaymentSdkTokenFormat.AlphaNum32Format:
-        return 'alphaNum32Format';
-      case PaymentSdkTokenFormat.Digit16Format:
-        return 'Digit16Format';
+        return '3';
       case PaymentSdkTokenFormat.Digit22Format:
-        return 'digit22Format';
+        return '4';
+      case PaymentSdkTokenFormat.Digit16Format:
+        return '5';
+      case PaymentSdkTokenFormat.AlphaNum32Format:
+        return '6';
       default:
         return null;
     }

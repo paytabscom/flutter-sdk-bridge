@@ -1,16 +1,16 @@
-# Flutter Paytabs Bridge Emulator Example
+# flutter_paytabs_bridge_example
 
-Demonstrates how to use the flutter_paytabs_bridge_emulator plugin.
+Demonstrates how to use the flutter_paytabs_bridge plugin.
 
-## License
+## Getting Started
 
-See [LICENSE][license].
+This project is a starting point for a Flutter application.
 
-## Paytabs
+A few resources to get you started if this is your first Flutter project:
 
-[Support][1] | [Terms of Use][2] | [Privacy Policy][3]
+- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
+- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
 
- [1]: https://www.paytabs.com/en/support/
- [2]: https://www.paytabs.com/en/terms-of-use/
- [3]: https://www.paytabs.com/en/privacy-policy/
- [license]: https://github.com/paytabscom/flutter-sdk-bridge/blob/master/LICENSE
+For help getting started with Flutter, view our
+[online documentation](https://flutter.dev/docs), which offers tutorials,
+samples, guidance on mobile development, and a full API reference.

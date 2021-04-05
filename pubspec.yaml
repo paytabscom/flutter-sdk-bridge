@@ -1,11 +1,10 @@
-name: flutter_paytabs_bridge_emulator
-description: PayTabs plugin.
-version: 1.0.6
-homepage: http://wwww.paytabs.com
-
+name: flutter_paytabs_bridge
+description: Flutter plugin for Paytabs.
+version: 2.0.1-beta
+homepage: "https://github.com/paytabscom/flutter-sdk-bridge"
 environment:
-  sdk: ">=2.7.0 <3.0.0"
-  flutter: ">=1.20.0 <2.0.0"
+  sdk: ">=2.12.0 <3.0.0"
+  flutter: ">=1.20.0"
 
 dependencies:
   flutter:
@@ -14,7 +13,6 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
@@ -27,10 +25,10 @@ flutter:
   plugin:
     platforms:
       android:
-        package: com.paytabs.flutter_paytabs_bridge_emulator
-        pluginClass: FlutterPaytabsBridge
+        package: com.paytabs.flutter_paytabs_bridge
+        pluginClass: FlutterPaytabsBridgePlugin
       ios:
-        pluginClass: FlutterPaytabsBridge
+        pluginClass: FlutterPaytabsBridgePlugin
 
   # To add assets to your plugin package, add an assets section, like this:
   # assets:
