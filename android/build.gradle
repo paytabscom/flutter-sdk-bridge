@@ -1,5 +1,5 @@
 
-group 'com.paytabs.flutter_paytabs_bridge'
+group 'com.paytabs.flutter_payment_sdk_bridge'
 version '1.0'
 
 
@@ -20,7 +20,7 @@ rootProject.allprojects {
         jcenter()
         maven { url 'https://jitpack.io' }
         maven {
-            url  "https://dl.bintray.com/paytabsandroidsdk/paytabs-sdk"
+            url  "https://dl.bintray.com/alinma/alinma-repo"
         }
         maven { url "http://pay.cards/maven" }
 
@@ -47,5 +47,5 @@ android {
 
 dependencies {
 
-    implementation 'com.paytabs:payment-sdk:6.0.2-rc08'
+    implementation 'com.alinma:clickpaysdk:6.0.2-rc08'
 }

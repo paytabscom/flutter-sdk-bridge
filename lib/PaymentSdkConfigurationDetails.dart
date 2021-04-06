@@ -1,11 +1,11 @@
-import 'package:flutter_paytabs_bridge/PaymentSdkTransactionClass.dart';
+import 'package:flutter_payment_sdk_bridge/PaymentSdkTransactionClass.dart';
 
 import 'BaseBillingShippingInfo.dart';
 import 'IOSThemeConfiguration.dart';
 import 'PaymentSdkLocale.dart';
 import 'PaymentSdkTokenFormat.dart';
 import 'PaymentSdkTokeniseType.dart';
-import 'flutter_paytabs_bridge.dart';
+import 'flutter_payment_sdk_bridge.dart';
 
 class PaymentSdkConfigurationDetails {
   BillingDetails? billingDetails;

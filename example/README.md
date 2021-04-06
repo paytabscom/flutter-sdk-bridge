@@ -1,6 +1,6 @@
-# flutter_paytabs_bridge_example
+# flutter_payment_sdk_bridge_example
 
-Demonstrates how to use the flutter_paytabs_bridge plugin.
+Demonstrates how to use the flutter_payment_sdk_bridge plugin.
 
 ## Getting Started
 

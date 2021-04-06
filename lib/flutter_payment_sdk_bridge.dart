@@ -73,8 +73,8 @@ const String pt_ios_logo = "pt_ios_logo";
 
 class FlutterPaytabsBridge {
   static const MethodChannel _channel =
-      const MethodChannel('flutter_paytabs_bridge');
-  static const stream = const EventChannel('flutter_paytabs_bridge_stream');
+      const MethodChannel('flutter_payment_sdk_bridge');
+  static const stream = const EventChannel('flutter_payment_sdk_bridge_stream');
   // ignore: cancel_subscriptions
   static StreamSubscription? _eventsubscription;
 

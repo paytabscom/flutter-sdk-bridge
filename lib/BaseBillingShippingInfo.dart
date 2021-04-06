@@ -1,4 +1,4 @@
-import 'package:flutter_paytabs_bridge/flutter_paytabs_bridge.dart';
+import 'package:flutter_payment_sdk_bridge/flutter_payment_sdk_bridge.dart';
 
 class BillingDetails {
   String name, email, phone, addressLine, country, city, state, zipCode;

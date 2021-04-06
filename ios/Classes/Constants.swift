@@ -1,6 +1,6 @@
 //
 //  Constants.swift
-//  flutter_paytabs_bridge
+//  flutter_payment_sdk_bridge
 //
 //  Created by Mohamed Adly on 21/03/2021.
 //

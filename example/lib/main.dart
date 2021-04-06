@@ -2,14 +2,14 @@ import 'dart:async';
 import 'dart:io' show Platform;
 
 import 'package:flutter/material.dart';
-import 'package:flutter_paytabs_bridge/BaseBillingShippingInfo.dart';
-import 'package:flutter_paytabs_bridge/IOSThemeConfiguration.dart';
-import 'package:flutter_paytabs_bridge/PaymentSdkConfigurationDetails.dart';
-import 'package:flutter_paytabs_bridge/PaymentSdkLocale.dart';
-import 'package:flutter_paytabs_bridge/PaymentSdkTokenFormat.dart';
-import 'package:flutter_paytabs_bridge/PaymentSdkTokeniseType.dart';
-import 'package:flutter_paytabs_bridge/flutter_paytabs_bridge.dart';
-import 'package:flutter_paytabs_bridge/PaymentSdkTransactionClass.dart';
+import 'package:flutter_payment_sdk_bridge/BaseBillingShippingInfo.dart';
+import 'package:flutter_payment_sdk_bridge/IOSThemeConfiguration.dart';
+import 'package:flutter_payment_sdk_bridge/PaymentSdkConfigurationDetails.dart';
+import 'package:flutter_payment_sdk_bridge/PaymentSdkLocale.dart';
+import 'package:flutter_payment_sdk_bridge/PaymentSdkTokenFormat.dart';
+import 'package:flutter_payment_sdk_bridge/PaymentSdkTokeniseType.dart';
+import 'package:flutter_payment_sdk_bridge/flutter_payment_sdk_bridge.dart';
+import 'package:flutter_payment_sdk_bridge/PaymentSdkTransactionClass.dart';
 
 void main() {
   runApp(MyApp());
@@ -48,9 +48,9 @@ class _MyAppState extends State<MyApp> {
         "dubai",
         "12345");
     var configuration = PaymentSdkConfigurationDetails(
-      profileId: "*Your profile id*",
-      serverKey: "*server key*",
-      clientKey: "*client key*",
+      profileId: "42007",
+      serverKey: "STJNLJWLDL-JBJRGGBRBD-6NHBMHTKMM",
+      clientKey: "CKKMD9-HQVQ62-6RTT2R-GRMP2B",
       cartId: "12433",
       cartDescription: "Flowers",
       merchantName: "Flowers Store",

@@ -1,4 +1,4 @@
-package com.paytabs.flutter_paytabs_bridge;
+package com.payment_sdk.flutter_payment_sdk_bridge;
 
 import static com.payment.paymentsdk.integrationmodels.PaymentSdkLanguageCodeKt.createPaymentSdkLanguageCode;
 import static com.payment.paymentsdk.integrationmodels.PaymentSdkTokenFormatKt.createPaymentSdkTokenFormat;
@@ -41,9 +41,9 @@ import io.flutter.plugin.common.MethodChannel.Result;
 import io.flutter.plugin.common.PluginRegistry.Registrar;
 
 /**
- * FlutterPaytabsBridgePlugin
+ * FlutterPaymentSdkBridgePlugin
  */
-public class FlutterPaytabsBridgePlugin implements FlutterPlugin, MethodCallHandler, ActivityAware {
+public class FlutterPaymentSdkBridgePlugin implements FlutterPlugin, MethodCallHandler, ActivityAware {
     /// The MethodChannel that will the communication between Flutter and native Android
     ///
     /// This local reference serves to register the plugin with the Flutter Engine and unregister it
@@ -52,12 +52,12 @@ public class FlutterPaytabsBridgePlugin implements FlutterPlugin, MethodCallHand
     private Context context;
     private Activity activity;
     private EventChannel.EventSink eventSink;
-    static final String streamName = "flutter_paytabs_bridge_stream";
+    static final String streamName = "flutter_payment_sdk_bridge_stream";
 
     @Override
     public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
         context = flutterPluginBinding.getApplicationContext();
-        channel = new MethodChannel(flutterPluginBinding.getFlutterEngine().getDartExecutor(), "flutter_paytabs_bridge");
+        channel = new MethodChannel(flutterPluginBinding.getFlutterEngine().getDartExecutor(), "flutter_payment_sdk_bridge");
         channel.setMethodCallHandler(this);
         EventChannel eventChannel = new EventChannel(flutterPluginBinding.getFlutterEngine().getDartExecutor().getBinaryMessenger(), streamName);
         eventChannel.setStreamHandler(
@@ -86,8 +86,8 @@ public class FlutterPaytabsBridgePlugin implements FlutterPlugin, MethodCallHand
     // depending on the user's project. onAttachedToEngine or registerWith must both be defined
     // in the same class.
     public static void registerWith(Registrar registrar) {
-        final MethodChannel channel = new MethodChannel(registrar.messenger(), "flutter_paytabs_bridge_emulator");
-        channel.setMethodCallHandler(new FlutterPaytabsBridgePlugin());
+        final MethodChannel channel = new MethodChannel(registrar.messenger(), "flutter_payment_sdk_bridge_emulator");
+        channel.setMethodCallHandler(new FlutterPaymentSdkBridgePlugin());
     }
 
     @Override

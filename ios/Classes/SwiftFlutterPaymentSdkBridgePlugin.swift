@@ -2,8 +2,8 @@ import Flutter
 import UIKit
 import PaymentSDK
 
-let channelName = "flutter_paytabs_bridge"
-let streamChannelName = "flutter_paytabs_bridge_stream"
+let channelName = "flutter_payment_sdk_bridge"
+let streamChannelName = "flutter_payment_sdk_bridge_stream"
 
 public class SwiftFlutterPaytabsBridgePlugin: NSObject, FlutterPlugin {
     var flutterEventSink: FlutterEventSink?

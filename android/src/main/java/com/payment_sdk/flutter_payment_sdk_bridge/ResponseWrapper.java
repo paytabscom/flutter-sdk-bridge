@@ -1,4 +1,4 @@
-package com.paytabs.flutter_paytabs_bridge;
+package com.paytabs.flutter_payment_sdk_bridge;
 
 public class ResponseWrapper<T> {
     String status;

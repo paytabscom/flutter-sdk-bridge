@@ -12,19 +12,19 @@ Plugin Support:
 
 ```
 dependencies:
-   flutter_paytabs_bridge: ^2.0.3-beta`
+   flutter_payment_sdk_bridge: ^2.0.3-beta`
 ```
 
 ## Usage
 
 ```dart
-import 'package:flutter_paytabs_bridge/BaseBillingShippingInfo.dart';
-import 'package:flutter_paytabs_bridge/PaymentSdkConfigurationDetails.dart';
-import 'package:flutter_paytabs_bridge/PaymentSdkLocale.dart';
-import 'package:flutter_paytabs_bridge/PaymentSdkTokenFormat.dart';
-import 'package:flutter_paytabs_bridge/PaymentSdkTokeniseType.dart';
-import 'package:flutter_paytabs_bridge/flutter_paytabs_bridge.dart';
-import 'package:flutter_paytabs_bridge/PaymentSdkTransactionClass.dart';
+import 'package:flutter_payment_sdk_bridge/BaseBillingShippingInfo.dart';
+import 'package:flutter_payment_sdk_bridge/PaymentSdkConfigurationDetails.dart';
+import 'package:flutter_payment_sdk_bridge/PaymentSdkLocale.dart';
+import 'package:flutter_payment_sdk_bridge/PaymentSdkTokenFormat.dart';
+import 'package:flutter_payment_sdk_bridge/PaymentSdkTokeniseType.dart';
+import 'package:flutter_payment_sdk_bridge/flutter_payment_sdk_bridge.dart';
+import 'package:flutter_payment_sdk_bridge/PaymentSdkTransactionClass.dart';
 ```
 
 ### Pay with Card
