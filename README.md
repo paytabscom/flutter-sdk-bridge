@@ -18,13 +18,13 @@ dependencies:
 ## Usage
 
 ```dart
-import 'package:flutter_payment_sdk_bridge/BaseBillingShippingInfo.dart';
-import 'package:flutter_payment_sdk_bridge/PaymentSdkConfigurationDetails.dart';
-import 'package:flutter_payment_sdk_bridge/PaymentSdkLocale.dart';
-import 'package:flutter_payment_sdk_bridge/PaymentSdkTokenFormat.dart';
-import 'package:flutter_payment_sdk_bridge/PaymentSdkTokeniseType.dart';
-import 'package:flutter_payment_sdk_bridge/flutter_payment_sdk_bridge.dart';
-import 'package:flutter_payment_sdk_bridge/PaymentSdkTransactionClass.dart';
+import 'package:flutter_clickpay_bridge/BaseBillingShippingInfo.dart';
+import 'package:flutter_clickpay_bridge/PaymentSdkConfigurationDetails.dart';
+import 'package:flutter_clickpay_bridge/PaymentSdkLocale.dart';
+import 'package:flutter_clickpay_bridge/PaymentSdkTokenFormat.dart';
+import 'package:flutter_clickpay_bridge/PaymentSdkTokeniseType.dart';
+import 'package:flutter_clickpay_bridge/flutter_clickpay_bridge.dart';
+import 'package:flutter_clickpay_bridge/PaymentSdkTransactionClass.dart';
 ```
 
 ### Pay with Card

@@ -1,6 +1,6 @@
 #import "FlutterPaytabsBridgePlugin.h"
-#if __has_include(<flutter_payment_sdk_bridge/flutter_payment_sdk_bridge-Swift.h>)
-#import <flutter_payment_sdk_bridge/flutter_payment_sdk_bridge-Swift.h>
+#if __has_include(<flutter_payment_sdk_bridge/flutter_clickpay_bridge-Swift.h>)
+#import <flutter_payment_sdk_bridge/flutter_clickpay_bridge-Swift.h>
 #else
 // Support project import fallback if the generated compatibility header
 // is not copied when this plugin is created as a library.

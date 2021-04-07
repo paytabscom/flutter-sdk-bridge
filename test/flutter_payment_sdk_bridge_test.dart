@@ -1,6 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_payment_sdk_bridge/flutter_payment_sdk_bridge.dart';
+import 'package:flutter_clickpay_bridge/flutter_clickpay_bridge.dart';
 
 void main() {
   const MethodChannel channel = MethodChannel('flutter_payment_sdk_bridge');

@@ -1,4 +1,4 @@
-name: flutter_payment_sdk_bridge
+name: flutter_clickpay_bridge
 description: Flutter plugin for Paytabs.
 version: 2.0.3-beta
 homepage: "https://github.com/paytabscom/flutter-sdk-bridge"
