@@ -126,7 +126,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('PayTabs Plugin Example App'),
+          title: const Text('Clickpay Plugin Example App'),
         ),
         body: Center(
             child: Column(

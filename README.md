@@ -1,7 +1,7 @@
-# Flutter PayTabs Bridge
-![Version](https://img.shields.io/badge/flutter%20paytabs%20bridge-v2.0.3_beta-green)
+# Flutter Clickpay Bridge
+![Version](https://img.shields.io/badge/flutter%20clickpay%20bridge-v2.0.3_beta-green)
 
-Flutter paytabs plugin is a wrapper for the native PayTabs Android and iOS SDKs, It helps you integrate with PayTabs payment gateway.
+Flutter ClickPay plugin is a wrapper for the native ClickPay Android and iOS SDKs, It helps you integrate with ClickPay payment gateway.
 
 Plugin Support:
 
@@ -12,7 +12,7 @@ Plugin Support:
 
 ```
 dependencies:
-   flutter_payment_sdk_bridge: ^2.0.3-beta`
+   flutter_clickpay_bridge: ^2.0.4-beta`
 ```
 
 ## Usage
