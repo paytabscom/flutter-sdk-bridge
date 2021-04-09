@@ -1,4 +1,4 @@
-## 1.0.9
+## 1.0.11
 local aar dependency
 ## 1.0.8
 solve NPE in android PaytabActivity
