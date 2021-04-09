@@ -15,7 +15,7 @@ Add `flutter_paytabs_bridge_emulator` to your package's `pubspec.yaml` file:
 
 ```yaml
 dependencies:
-  flutter_paytabs_bridge_emulator: ^1.0.8
+  flutter_paytabs_bridge_emulator: ^1.0.9
 ```
 
 # Pay now

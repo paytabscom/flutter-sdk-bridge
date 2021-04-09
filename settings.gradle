@@ -1,0 +1,2 @@
+include ':paytabs_sdk'
+project(':paytabs_sdk').projectDir = file('android/paytabs_sdk')

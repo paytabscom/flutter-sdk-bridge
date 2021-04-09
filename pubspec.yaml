@@ -1,11 +1,11 @@
 name: flutter_paytabs_bridge_emulator
 description: PayTabs plugin.
-version: 1.0.8
+version: 1.0.9
 homepage: http://wwww.paytabs.com
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
-  flutter: ">=1.20.0 <2.0.0"
+  flutter: ">=1.20.0"
 
 dependencies:
   flutter:
