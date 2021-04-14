@@ -146,12 +146,20 @@ public class FlutterPaytabsBridgePlugin implements FlutterPlugin, MethodCallHand
     }
 
     private void returnResponseToFlutter(int code, String msg, String status, PaymentSdkTransactionDetails data) {
-        HashMap<String,Object> map=new HashMap<String,Object>();
-        String details = new Gson().toJson(data);
+         HashMap<String,Object> map = new HashMap<String,Object>();
+        if (data != null) {
+            String detailsString = new Gson().toJson(data);
+            JSONObject transactionDetails;
+            try {
+                transactionDetails = new JSONObject(detailsString);
+                map.put("data", transactionDetails);
+            } catch (JSONException e) {
+                map.put("data", null);
+            }
+        }
         map.put("code", code);
         map.put("message", msg);
         map.put("status", status);
-        map.put("data", details);
         eventSink.success(map);
     }
 
