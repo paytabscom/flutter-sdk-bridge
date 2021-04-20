@@ -36,7 +36,6 @@ public class SwiftFlutterPaytabsBridgePlugin: NSObject, FlutterPlugin {
     
     private func startCarPayment(arguments: [String : Any]) {
         let configuration = generateConfiguration(dictionary: arguments)
-        print(configuration)
         if let rootViewController = getRootController() {
             PaymentManager.startCardPayment(on: rootViewController, configuration: configuration, delegate: self)
         }

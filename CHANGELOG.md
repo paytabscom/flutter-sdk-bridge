@@ -1,2 +1,4 @@
 ## 2.0.3-beta
-* TODO: Describe initial release.
+* First releases
+## 2.0.4
+* Fixed android issue

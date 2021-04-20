@@ -11,6 +11,7 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.payment.paymentsdk.PaymentSdkActivity;
 import com.payment.paymentsdk.PaymentSdkConfigBuilder;
 import com.payment.paymentsdk.integrationmodels.PaymentSdkBillingDetails;
@@ -29,6 +30,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
 import io.flutter.embedding.engine.plugins.activity.ActivityAware;
@@ -149,13 +151,10 @@ public class FlutterPaytabsBridgePlugin implements FlutterPlugin, MethodCallHand
          HashMap<String,Object> map = new HashMap<String,Object>();
         if (data != null) {
             String detailsString = new Gson().toJson(data);
-            JSONObject transactionDetails;
-            try {
-                transactionDetails = new JSONObject(detailsString);
-                map.put("data", transactionDetails);
-            } catch (JSONException e) {
-                map.put("data", null);
-            }
+            Map<String, Object>  detailsMap = new Gson().fromJson(
+                    detailsString, new TypeToken<HashMap<String, Object>>() {}.getType()
+            );
+            map.put("data", detailsMap);
         }
         map.put("code", code);
         map.put("message", msg);
