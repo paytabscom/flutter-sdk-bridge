@@ -59,6 +59,7 @@ class _MyAppState extends State<MyApp> {
       shippingDetails: shippingDetails,
       amount: 20.0,
       currencyCode: "AED",
+
       merchantCountryCode: "ae",
     );
     if (Platform.isIOS) {

@@ -159,7 +159,7 @@ Pass Samsung Pay token to the configuration and call `startSamsungPayPayment`
 configuration.samsungToken = "{Json token returned from the samsung pay payment}"
 ```
 
-## Theme
+## Theme IOS
 Use the following guide to cusomize the colors, font, and logo by configuring the theme and pass it to the payment configuration.
 
 ```dart
@@ -169,6 +169,42 @@ Use the following guide to cusomize the colors, font, and logo by configuring th
 ```
 
 ![UI guide](https://user-images.githubusercontent.com/13621658/109432213-d7981380-7a12-11eb-9224-c8fc12b0024d.jpg)
+
+## Theme Android
+Use the following guide to customize the colors, font, and logo by configuring the theme and pass it to the payment configuration.
+
+![UI guide](https://github.com/paytabscom/paytabs-android-library-sample/tree/PT2/res/UIguide.jpg)
+
+-- Override strings
+To override string you can find the keys with the default values here
+![english]( https://github.com/paytabscom/paytabs-android-library-sample/blob/PT2/res/strings.xml)
+![arabic](https://github.com/paytabscom/paytabs-android-library-sample/blob/PT2/res/strings-ar.xml)
+
+````xml
+<resourse>
+  // to override colors
+     <color name="payment_sdk_primary_color">#5C13DF</color>
+     <color name="payment_sdk_secondary_color">#FFC107</color>
+     <color name="payment_sdk_primary_font_color">#111112</color>
+     <color name="payment_sdk_secondary_font_color">#6D6C70</color>
+     <color name="payment_sdk_separators_color">#FFC107</color>
+     <color name="payment_sdk_stroke_color">#673AB7</color>
+     <color name="payment_sdk_button_text_color">#FFF</color>
+     <color name="payment_sdk_title_text_color">#FFF</color>
+     <color name="payment_sdk_button_background_color">#3F51B5</color>
+     <color name="payment_sdk_background_color">#F9FAFD</color>
+     <color name="payment_sdk_card_background_color">#F9FAFD</color> 
+   
+  // to override dimens
+     <dimen name="payment_sdk_primary_font_size">17sp</dimen>
+     <dimen name="payment_sdk_secondary_font_size">15sp</dimen>
+     <dimen name="payment_sdk_separator_thickness">1dp</dimen>
+     <dimen name="payment_sdk_stroke_thickness">.5dp</dimen>
+     <dimen name="payment_sdk_input_corner_radius">8dp</dimen>
+     <dimen name="payment_sdk_button_corner_radius">8dp</dimen>
+     
+</resourse>
+````
 
 ## Enums
 
