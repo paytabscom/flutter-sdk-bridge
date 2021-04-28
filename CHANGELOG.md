@@ -1,9 +1,6 @@
-## 1.0.11
-local aar dependency
-## 1.0.8
-solve NPE in android PaytabActivity
-## 1.0.7
- solve proguarding issue in android apk
-## 1.0.6
- solve proguarding issue in android apk
-## 1.0.5
+## 2.0.3-beta
+* First releases
+## 2.0.4
+* Fixed android issue
+## 2.0.5
+* logs

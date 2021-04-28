@@ -1,5 +1,7 @@
-group 'com.paytabs.flutter_paytabs_bridge_emulator'
+
+group 'com.paytabs.flutter_paytabs_bridge'
 version '1.0'
+
 
 buildscript {
     repositories {
@@ -8,7 +10,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.5.0'
+        classpath 'com.android.tools.build:gradle:4.1.3'
     }
 }
 
@@ -17,6 +19,8 @@ rootProject.allprojects {
         google()
         jcenter()
         maven { url 'https://jitpack.io' }
+        maven { url "http://pay.cards/maven" }
+
     }
 }
 
@@ -31,14 +35,14 @@ android {
     lintOptions {
         disable 'InvalidPackage'
     }
+    configurations.all {
+        resolutionStrategy {
+            exclude group: "org.jetbrains.kotlinx", module: "kotlinx-coroutines-debug"
+        }
+    }
 }
 
 dependencies {
-    implementation 'com.android.support:design:28.0.0'
-    implementation 'com.android.support:appcompat-v7:28.0.0'
-    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
-    implementation 'com.google.code.gson:gson:2.8.5'
-    implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
-    implementation 'com.github.dbachelder:CreditCardEntry:1.4.9'
-    implementation project(":paytabs_sdk")
+
+    implementation 'com.paytabs:payment-sdk:6.0.4'
 }
