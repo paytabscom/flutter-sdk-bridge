@@ -8,6 +8,7 @@ import 'package:flutter_paytabs_bridge/PaymentSdkConfigurationDetails.dart';
 import 'package:flutter_paytabs_bridge/PaymentSdkLocale.dart';
 import 'package:flutter_paytabs_bridge/PaymentSdkTokenFormat.dart';
 import 'package:flutter_paytabs_bridge/PaymentSdkTokeniseType.dart';
+import 'package:flutter_paytabs_bridge/PaymentSdkTransactionType.dart';
 import 'package:flutter_paytabs_bridge/flutter_paytabs_bridge.dart';
 import 'package:flutter_paytabs_bridge/PaymentSdkTransactionClass.dart';
 
@@ -59,7 +60,7 @@ class _MyAppState extends State<MyApp> {
       shippingDetails: shippingDetails,
       amount: 20.0,
       currencyCode: "AED",
-
+      transactionType: PaymentSdkTransactionType.AUTH,
       merchantCountryCode: "ae",
     );
     if (Platform.isIOS) {

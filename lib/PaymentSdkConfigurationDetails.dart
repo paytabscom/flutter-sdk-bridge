@@ -1,4 +1,5 @@
 import 'package:flutter_paytabs_bridge/PaymentSdkTransactionClass.dart';
+import 'package:flutter_paytabs_bridge/PaymentSdkTransactionType.dart';
 
 import 'BaseBillingShippingInfo.dart';
 import 'IOSThemeConfiguration.dart';
@@ -33,6 +34,7 @@ class PaymentSdkConfigurationDetails {
   PaymentSdkTokenFormat? tokenFormat;
   PaymentSdkTokeniseType? tokeniseType;
   PaymentSdkTransactionClass? transactionClass;
+  PaymentSdkTransactionType? transactionType;
   IOSThemeConfigurations? iOSThemeConfigurations;
 
   PaymentSdkConfigurationDetails({
@@ -62,6 +64,7 @@ class PaymentSdkConfigurationDetails {
     this.locale,
     this.iOSThemeConfigurations,
     this.transactionClass,
+    this.transactionType,
   });
 }
 
@@ -95,6 +98,7 @@ extension PaymentSdkConfigurationDetailsExtension
       pt_simplify_apple_pay_validation: this.simplifyApplePayValidation,
       pt_hide_card_scanner: this.hideCardScanner,
       pt_transaction_class: this.transactionClass?.name,
+      pt_transaction_type: this.transactionType?.name,
     };
   }
 }

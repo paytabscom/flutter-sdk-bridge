@@ -4,6 +4,7 @@ import static com.payment.paymentsdk.integrationmodels.PaymentSdkLanguageCodeKt.
 import static com.payment.paymentsdk.integrationmodels.PaymentSdkTokenFormatKt.createPaymentSdkTokenFormat;
 import static com.payment.paymentsdk.integrationmodels.PaymentSdkTokeniseKt.createPaymentSdkTokenise;
 import static com.payment.paymentsdk.integrationmodels.PaymentSdkTransactionClassKt.createPaymentSdkTransactionClass;
+import static com.payment.paymentsdk.integrationmodels.PaymentSdkTransactionTypeKt.createPaymentSdkTransactionType;
 
 import android.app.Activity;
 import android.content.Context;
@@ -180,6 +181,7 @@ public class FlutterPaytabsBridgePlugin implements FlutterPlugin, MethodCallHand
         double amount = paymentDetails.optDouble("pt_amount");
         PaymentSdkTokenise tokeniseType = createPaymentSdkTokenise(paymentDetails.optString("pt_tokenise_type"));
         PaymentSdkTokenFormat tokenFormat = createPaymentSdkTokenFormat(paymentDetails.optString("pt_token_format"));
+        PaymentSdkTransactionType transaction_type = createPaymentSdkTransactionType(paymentDetails.optString("pt_transaction_type"));
 
         JSONObject billingDetails = paymentDetails.optJSONObject("pt_billing_details");
         PaymentSdkBillingDetails billingData = null;
@@ -214,7 +216,7 @@ public class FlutterPaytabsBridgePlugin implements FlutterPlugin, MethodCallHand
                 .setShippingData(shippingData)
                 .setCartId(orderId)
                 .setTransactionClass(createPaymentSdkTransactionClass(paymentDetails.optString("pt_transaction_class")))
-                .setTransactionType(PaymentSdkTransactionType.SALE)
+                .setTransactionType(transaction_type)
                 .setTokenise(tokeniseType, tokenFormat)
                 .setTokenisationData(token, transRef)
                 .showBillingInfo(paymentDetails.optBoolean("pt_show_billing_info"))
