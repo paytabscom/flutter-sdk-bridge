@@ -84,7 +84,9 @@ public class SwiftFlutterPaytabsBridgePlugin: NSObject, FlutterPlugin {
            let type = TokenFormat.getType(type: tokenFormat) {
             configuration.tokenFormat = type
         }
-        
+        if let transactionType = dictionary[pt_transaction_type] as? String {
+         configuration.transactionType = TransactionType.init(rawValue: transactionType) ?? .sale
+         }
 //        public var paymentNetworks: [PKPaymentNetwork]?
 
         if let themeDictionary = dictionary[pt_ios_theme] as? [String: Any],
