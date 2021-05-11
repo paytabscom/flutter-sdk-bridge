@@ -173,12 +173,12 @@ Use the following guide to cusomize the colors, font, and logo by configuring th
 ## Theme Android
 Use the following guide to customize the colors, font, and logo by configuring the theme and pass it to the payment configuration.
 
-![UI guide](https://github.com/paytabscom/paytabs-android-library-sample/tree/PT2/res/UIguide.jpg)
+![UI guide](https://github.com/paytabscom/paytabs-android-library-sample/tree/master/res/UIguide.jpg)
 
 -- Override strings
 To override string you can find the keys with the default values here
-![english]( https://github.com/paytabscom/paytabs-android-library-sample/blob/PT2/res/strings.xml)
-![arabic](https://github.com/paytabscom/paytabs-android-library-sample/blob/PT2/res/strings-ar.xml)
+![english]( https://github.com/paytabscom/paytabs-android-library-sample/blob/master/res/strings.xml)
+![arabic](https://github.com/paytabscom/paytabs-android-library-sample/blob/master/res/strings-ar.xml)
 
 ````xml
 <resourse>
@@ -240,6 +240,18 @@ enum PaymentSdkTokenFormat {
   Digit22Format,
   Digit16Format,
   AlphaNum32Format
+}
+
+```
+
+* Transaction Type
+
+The default type is PaymentSdkTransactionType.SALE
+
+```dart
+enum PaymentSdkTransactionType {
+  SALE,
+  AUTH
 }
 ```
 
