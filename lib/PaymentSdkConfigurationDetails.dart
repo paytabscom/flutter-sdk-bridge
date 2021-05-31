@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_paytabs_bridge/PaymentSdkApms.dart';
 import 'package:flutter_paytabs_bridge/PaymentSdkTransactionClass.dart';
 import 'package:flutter_paytabs_bridge/PaymentSdkTransactionType.dart';
 
@@ -5,6 +7,7 @@ import 'BaseBillingShippingInfo.dart';
 import 'IOSThemeConfiguration.dart';
 import 'PaymentSdkLocale.dart';
 import 'PaymentSdkTokenFormat.dart';
+import 'PaymentSdkApms.dart';
 import 'PaymentSdkTokeniseType.dart';
 import 'flutter_paytabs_bridge.dart';
 
@@ -36,7 +39,7 @@ class PaymentSdkConfigurationDetails {
   PaymentSdkTransactionClass? transactionClass;
   PaymentSdkTransactionType? transactionType;
   IOSThemeConfigurations? iOSThemeConfigurations;
-
+  List<PaymentSdkAPms>? apms;
   PaymentSdkConfigurationDetails({
     this.profileId,
     this.serverKey,
@@ -65,11 +68,20 @@ class PaymentSdkConfigurationDetails {
     this.iOSThemeConfigurations,
     this.transactionClass,
     this.transactionType,
+    this.apms
   });
+
+  String getApmsConcatenated(List<PaymentSdkAPms>? list){
+          if(list ==null || list.isEmpty) return "";
+          String apmsStr="";
+            for (var apm in list) {
+              apmsStr+="${apm.name},";
+            }
+            return apmsStr;
+  }
 }
 
-extension PaymentSdkConfigurationDetailsExtension
-    on PaymentSdkConfigurationDetails {
+extension PaymentSdkConfigurationDetailsExtension on PaymentSdkConfigurationDetails {
   Map<String, dynamic> get map {
     return {
       pt_profile_id: this.profileId,
@@ -99,6 +111,8 @@ extension PaymentSdkConfigurationDetailsExtension
       pt_hide_card_scanner: this.hideCardScanner,
       pt_transaction_class: this.transactionClass?.name,
       pt_transaction_type: this.transactionType?.name,
-    };
-  }
+      pt_apms : getApmsConcatenated(this.apms)
+    };}
+
+ 
 }

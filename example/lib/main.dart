@@ -4,6 +4,7 @@ import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 import 'package:flutter_paytabs_bridge/BaseBillingShippingInfo.dart';
 import 'package:flutter_paytabs_bridge/IOSThemeConfiguration.dart';
+import 'package:flutter_paytabs_bridge/PaymentSdkApms.dart';
 import 'package:flutter_paytabs_bridge/PaymentSdkConfigurationDetails.dart';
 import 'package:flutter_paytabs_bridge/PaymentSdkLocale.dart';
 import 'package:flutter_paytabs_bridge/PaymentSdkTokenFormat.dart';
@@ -48,6 +49,9 @@ class _MyAppState extends State<MyApp> {
         "dubai",
         "dubai",
         "12345");
+
+    List<PaymentSdkAPms> apms= new List();
+    apms.add(PaymentSdkAPms.KNET_DEBIT);
     var configuration = PaymentSdkConfigurationDetails(
       profileId: "*Your profile id*",
       serverKey: "*server key*",
@@ -60,6 +64,7 @@ class _MyAppState extends State<MyApp> {
       shippingDetails: shippingDetails,
       amount: 20.0,
       currencyCode: "AED",
+      apms:apms ,
       transactionType: PaymentSdkTransactionType.AUTH,
       merchantCountryCode: "ae",
     );
@@ -68,7 +73,7 @@ class _MyAppState extends State<MyApp> {
       // var theme = IOSThemeConfigurations();
       // configuration.iOSThemeConfigurations = theme;
     }
-    FlutterPaytabsBridge.startCardPayment(configuration, (event) {
+    FlutterPaytabsBridge.startAlternativePaymentMethod(configuration, (event) {
       setState(() {
         if (event["status"] == "success") {
           // Handle transaction details here.

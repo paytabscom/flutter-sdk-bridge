@@ -13,6 +13,7 @@ public class SwiftFlutterPaytabsBridgePlugin: NSObject, FlutterPlugin {
     enum CallMethods: String {
         case startCardPayment
         case startApplePayPayment
+        case startAlternativePaymentMethod
     }
     public static func register(with registrar: FlutterPluginRegistrar) {
         let channel = FlutterMethodChannel(name: channelName, binaryMessenger: registrar.messenger())
@@ -29,18 +30,35 @@ public class SwiftFlutterPaytabsBridgePlugin: NSObject, FlutterPlugin {
             startCarPayment(arguments: arguments)
         case CallMethods.startApplePayPayment.rawValue:
             startApplePayPayment(arguments: arguments)
+        case CallMethods.startAlternativePaymentMethod.rawValue:
+            startAlternativePaymentMethod(arguments: arguments)
         default:
             break
         }
     }
     
+    private func generateAlternativePaymentMethods(apmsArray: [String]) -> [AlternativePaymentMethod] {
+        var apms = [AlternativePaymentMethod]()
+        for apmValue in apmsArray {
+            if let apm = AlternativePaymentMethod.init(rawValue: apmValue) {
+                apms.append(apm)
+            }
+        }
+        return apms
+    }
+
     private func startCarPayment(arguments: [String : Any]) {
         let configuration = generateConfiguration(dictionary: arguments)
         if let rootViewController = getRootController() {
             PaymentManager.startCardPayment(on: rootViewController, configuration: configuration, delegate: self)
         }
     }
-    
+    private func startAlternativePaymentMethod(arguments: [String : Any]) {
+        let configuration = generateConfiguration(dictionary: arguments)
+        if let rootViewController = getRootController() {
+            PaymentManager.startAlternativePaymentMethod(on: rootViewController, configuration: configuration, delegate: self)
+        }
+    }
     private func startApplePayPayment(arguments: [String : Any]) {
         let configuration = generateConfiguration(dictionary: arguments)
         if let rootViewController = getRootController() {
@@ -75,7 +93,10 @@ public class SwiftFlutterPaytabsBridgePlugin: NSObject, FlutterPlugin {
         configuration.transactionReference = dictionary[pt_transaction_reference] as? String
         configuration.hideCardScanner = dictionary[pt_hide_card_scanner] as? Bool ?? false
         configuration.serverIP = dictionary[pt_server_ip] as? String
-        
+
+        if let alternativePaymentMethods = dictionary[pt_key] as? [String] {
+            configuration.alternativePaymentMethods = generateAlternativePaymentMethods(apmsArray: alternativePaymentMethods)
+}
         if let tokeniseType = dictionary[pt_tokenise_type] as? Int,
            let type = TokeniseType.getType(type: tokeniseType) {
             configuration.tokeniseType = type
