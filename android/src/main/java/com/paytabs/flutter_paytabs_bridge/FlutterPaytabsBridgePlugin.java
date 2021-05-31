@@ -1,11 +1,5 @@
 package com.paytabs.flutter_paytabs_bridge;
 
-import static com.payment.paymentsdk.integrationmodels.PaymentSdkLanguageCodeKt.createPaymentSdkLanguageCode;
-import static com.payment.paymentsdk.integrationmodels.PaymentSdkTokenFormatKt.createPaymentSdkTokenFormat;
-import static com.payment.paymentsdk.integrationmodels.PaymentSdkTokeniseKt.createPaymentSdkTokenise;
-import static com.payment.paymentsdk.integrationmodels.PaymentSdkTransactionClassKt.createPaymentSdkTransactionClass;
-import static com.payment.paymentsdk.integrationmodels.PaymentSdkTransactionTypeKt.createPaymentSdkTransactionType;
-
 import android.app.Activity;
 import android.content.Context;
 
@@ -15,6 +9,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.payment.paymentsdk.PaymentSdkActivity;
 import com.payment.paymentsdk.PaymentSdkConfigBuilder;
+import com.payment.paymentsdk.integrationmodels.PaymentSdkApms;
 import com.payment.paymentsdk.integrationmodels.PaymentSdkBillingDetails;
 import com.payment.paymentsdk.integrationmodels.PaymentSdkConfigurationDetails;
 import com.payment.paymentsdk.integrationmodels.PaymentSdkError;
@@ -30,6 +25,7 @@ import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,6 +38,13 @@ import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
 import io.flutter.plugin.common.PluginRegistry.Registrar;
+
+import static com.payment.paymentsdk.integrationmodels.PaymentSdkApmsKt.createPaymentSdkApms;
+import static com.payment.paymentsdk.integrationmodels.PaymentSdkLanguageCodeKt.createPaymentSdkLanguageCode;
+import static com.payment.paymentsdk.integrationmodels.PaymentSdkTokenFormatKt.createPaymentSdkTokenFormat;
+import static com.payment.paymentsdk.integrationmodels.PaymentSdkTokeniseKt.createPaymentSdkTokenise;
+import static com.payment.paymentsdk.integrationmodels.PaymentSdkTransactionClassKt.createPaymentSdkTransactionClass;
+import static com.payment.paymentsdk.integrationmodels.PaymentSdkTransactionTypeKt.createPaymentSdkTransactionType;
 
 /**
  * FlutterPaytabsBridgePlugin
@@ -99,10 +102,22 @@ public class FlutterPaytabsBridgePlugin implements FlutterPlugin, MethodCallHand
             makeCardPayment(call);
         } else if (call.method.equals("startSamsungPayPayment")) {
             makeSamsungPayment(call);
+        } else if (call.method.equals("startApmsPayment")) {
+            makeSamsungPayment(call);
         }
     }
 
     private void makeCardPayment(@NonNull MethodCall call) {
+        try {
+            HashMap<String, Object> arguments = call.arguments();
+            JSONObject paymentDetails = new JSONObject(arguments);
+            PaymentSdkActivity.startCardPayment(activity, getPaymentSdkConfigurationDetails(paymentDetails), getCallback());
+        } catch (Exception e) {
+            eventSink.error("0", e.getMessage(), "{}");
+        }
+    }
+
+    private void makeApmsPayment(@NonNull MethodCall call) {
         try {
             HashMap<String, Object> arguments = call.arguments();
             JSONObject paymentDetails = new JSONObject(arguments);
@@ -182,10 +197,10 @@ public class FlutterPaytabsBridgePlugin implements FlutterPlugin, MethodCallHand
         PaymentSdkTokenise tokeniseType = createPaymentSdkTokenise(paymentDetails.optString("pt_tokenise_type"));
         PaymentSdkTokenFormat tokenFormat = createPaymentSdkTokenFormat(paymentDetails.optString("pt_token_format"));
         PaymentSdkTransactionType transaction_type = createPaymentSdkTransactionType(paymentDetails.optString("pt_transaction_type"));
-
+        ArrayList<PaymentSdkApms> aPmsList = getAPmsList(paymentDetails.optString("pt_apms"));
         JSONObject billingDetails = paymentDetails.optJSONObject("pt_billing_details");
         PaymentSdkBillingDetails billingData = null;
-        if(billingDetails != null) {
+        if (billingDetails != null) {
             billingData = new PaymentSdkBillingDetails(
                     billingDetails.optString("pt_city_billing"),
                     billingDetails.optString("pt_country_billing"),
@@ -219,11 +234,28 @@ public class FlutterPaytabsBridgePlugin implements FlutterPlugin, MethodCallHand
                 .setTransactionType(transaction_type)
                 .setTokenise(tokeniseType, tokenFormat)
                 .setTokenisationData(token, transRef)
+                .setAlternativePaymentMethods(aPmsList)
                 .showBillingInfo(paymentDetails.optBoolean("pt_show_billing_info"))
                 .showShippingInfo(paymentDetails.optBoolean("pt_show_shipping_info"))
                 .forceShippingInfo(paymentDetails.optBoolean("pt_force_validate_shipping"))
                 .setScreenTitle(screenTitle)
                 .build();
+    }
+
+    private ArrayList<PaymentSdkApms> getAPmsList(String pt_apms) {
+        ArrayList<PaymentSdkApms> apmsArrayList = new ArrayList<>();
+        if (pt_apms == null || pt_apms.isEmpty()) {
+            return apmsArrayList;
+        }
+        String[] splits = pt_apms.split(",");
+        for (String split : splits) {
+            if (split.length() > 0) {
+                PaymentSdkApms apms = createPaymentSdkApms(split);
+                if (apms != null)
+                    apmsArrayList.add(apms);
+            }
+        }
+        return apmsArrayList;
     }
 
     @Override
@@ -250,4 +282,6 @@ public class FlutterPaytabsBridgePlugin implements FlutterPlugin, MethodCallHand
     public void onDetachedFromActivity() {
 
     }
+
+
 }
