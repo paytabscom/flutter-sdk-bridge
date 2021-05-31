@@ -6,5 +6,5 @@
 * logs
 ## 2.0.6
 * Auth Transaction Type
-## 2.0.6
+## 2.1.0
 * Added alternative payment methods

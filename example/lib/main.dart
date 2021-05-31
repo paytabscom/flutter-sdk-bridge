@@ -54,9 +54,9 @@ PaymentSdkConfigurationDetails generateConfig(){
     apms.add(PaymentSdkAPms.KNET_DEBIT);
     apms.add(PaymentSdkAPms.KNET_CREDIT);
     var configuration = PaymentSdkConfigurationDetails(
-      profileId: "47579",
-      serverKey: "SWJNLLBK29-HZZWR9G9DJ-996NT2RHRR",
-      clientKey: "CMKMDM-QG76H9-9VRPTP-9M2DM2",
+      profileId: "####",
+      serverKey: "#####",
+      clientKey: "######",
       cartId: "12433",
       cartDescription: "Flowers",
       merchantName: "Flowers Store",
