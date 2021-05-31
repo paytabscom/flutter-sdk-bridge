@@ -94,7 +94,7 @@ public class SwiftFlutterPaytabsBridgePlugin: NSObject, FlutterPlugin {
         configuration.hideCardScanner = dictionary[pt_hide_card_scanner] as? Bool ?? false
         configuration.serverIP = dictionary[pt_server_ip] as? String
 
-        if let alternativePaymentMethods = dictionary[pt_key] as? [String] {
+        if let alternativePaymentMethods = dictionary[pt_apms] as? [String] {
             configuration.alternativePaymentMethods = generateAlternativePaymentMethods(apmsArray: alternativePaymentMethods)
 }
         if let tokeniseType = dictionary[pt_tokenise_type] as? Int,
