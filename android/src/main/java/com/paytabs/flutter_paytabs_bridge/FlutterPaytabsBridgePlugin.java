@@ -103,7 +103,7 @@ public class FlutterPaytabsBridgePlugin implements FlutterPlugin, MethodCallHand
         } else if (call.method.equals("startSamsungPayPayment")) {
             makeSamsungPayment(call);
         } else if (call.method.equals("startApmsPayment")) {
-            makeSamsungPayment(call);
+            makeApmsPayment(call);
         }
     }
 
@@ -121,7 +121,7 @@ public class FlutterPaytabsBridgePlugin implements FlutterPlugin, MethodCallHand
         try {
             HashMap<String, Object> arguments = call.arguments();
             JSONObject paymentDetails = new JSONObject(arguments);
-            PaymentSdkActivity.startCardPayment(activity, getPaymentSdkConfigurationDetails(paymentDetails), getCallback());
+            PaymentSdkActivity.startAlternativePaymentMethods(activity, getPaymentSdkConfigurationDetails(paymentDetails), getCallback());
         } catch (Exception e) {
             eventSink.error("0", e.getMessage(), "{}");
         }

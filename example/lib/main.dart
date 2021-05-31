@@ -30,7 +30,7 @@ class _MyAppState extends State<MyApp> {
     super.initState();
   }
 
-  Future<void> payPressed() async {
+PaymentSdkConfigurationDetails generateConfig(){
     var billingDetails = new BillingDetails(
         "Mohamed Adly",
         "m.adly@paytabs.com",
@@ -52,10 +52,11 @@ class _MyAppState extends State<MyApp> {
 
     List<PaymentSdkAPms> apms= new List();
     apms.add(PaymentSdkAPms.KNET_DEBIT);
+    apms.add(PaymentSdkAPms.KNET_CREDIT);
     var configuration = PaymentSdkConfigurationDetails(
-      profileId: "*Your profile id*",
-      serverKey: "*server key*",
-      clientKey: "*client key*",
+      profileId: "47579",
+      serverKey: "SWJNLLBK29-HZZWR9G9DJ-996NT2RHRR",
+      clientKey: "CMKMDM-QG76H9-9VRPTP-9M2DM2",
       cartId: "12433",
       cartDescription: "Flowers",
       merchantName: "Flowers Store",
@@ -63,7 +64,7 @@ class _MyAppState extends State<MyApp> {
       billingDetails: billingDetails,
       shippingDetails: shippingDetails,
       amount: 20.0,
-      currencyCode: "AED",
+      currencyCode: "KWD",
       apms:apms ,
       transactionType: PaymentSdkTransactionType.AUTH,
       merchantCountryCode: "ae",
@@ -73,7 +74,11 @@ class _MyAppState extends State<MyApp> {
       // var theme = IOSThemeConfigurations();
       // configuration.iOSThemeConfigurations = theme;
     }
-    FlutterPaytabsBridge.startAlternativePaymentMethod(configuration, (event) {
+    return configuration;
+}
+  Future<void> payPressed() async {
+
+    FlutterPaytabsBridge.startCardPayment(generateConfig(), (event) {
       setState(() {
         if (event["status"] == "success") {
           // Handle transaction details here.
@@ -87,7 +92,21 @@ class _MyAppState extends State<MyApp> {
       });
     });
   }
-
+ Future<void> apmsPayPressed() async {
+    FlutterPaytabsBridge.startAlternativePaymentMethod(generateConfig(), (event) {
+      setState(() {
+        if (event["status"] == "success") {
+          // Handle transaction details here.
+          var transactionDetails = event["data"];
+          print(transactionDetails);
+        } else if (event["status"] == "error") {
+          // Handle error here.
+        } else if (event["status"] == "event") {
+          // Handle events here.
+        }
+      });
+    });
+  }
   Future<void> applePayPressed() async {
     var configuration = PaymentSdkConfigurationDetails(
         profileId: "*Your profile id*",
@@ -146,6 +165,13 @@ class _MyAppState extends State<MyApp> {
                   payPressed();
                 },
                 child: Text('Pay with Card'),
+              ),
+               SizedBox(height: 16),
+              TextButton(
+                onPressed: () {
+                  apmsPayPressed();
+                },
+                child: Text('Pay with Alternative payment methods'),
               ),
               SizedBox(height: 16),
               applePayButton()
