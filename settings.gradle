@@ -1,6 +1,0 @@
-include ':paytabs_sdk'
-include ':flutter_paytabs_bridge_emulator'
-
-project(':flutter_paytabs_bridge_emulator').projectDir = file('android')
-
-project(':paytabs_sdk').projectDir = file('android/paytabs_sdk')
