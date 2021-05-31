@@ -159,6 +159,16 @@ Pass Samsung Pay token to the configuration and call `startSamsungPayPayment`
 configuration.samsungToken = "{Json token returned from the samsung pay payment}"
 ```
 
+## Pay with Alternative Payment Methods
+It becomes easy to integrate with other payment methods in your region like STCPay, OmanNet, KNet, Valu, Fawry, UnionPay, and Meeza, to serve a large sector of customers.
+
+1. Do the steps 1 and 2 from **Pay with Card**
+2. Choose one or more of the payment methods you want to support
+
+```dart
+.alternativePaymentMethods(list Of PaymentSdkApms) // add the Payment Methods you want to the list
+```
+
 ## Theme IOS
 Use the following guide to cusomize the colors, font, and logo by configuring the theme and pass it to the payment configuration.
 

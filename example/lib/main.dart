@@ -65,7 +65,7 @@ PaymentSdkConfigurationDetails generateConfig(){
       shippingDetails: shippingDetails,
       amount: 20.0,
       currencyCode: "KWD",
-      apms:apms ,
+      alternativePaymentMethods:apms ,
       transactionType: PaymentSdkTransactionType.AUTH,
       merchantCountryCode: "ae",
     );

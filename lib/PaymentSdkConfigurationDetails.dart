@@ -39,7 +39,7 @@ class PaymentSdkConfigurationDetails {
   PaymentSdkTransactionClass? transactionClass;
   PaymentSdkTransactionType? transactionType;
   IOSThemeConfigurations? iOSThemeConfigurations;
-  List<PaymentSdkAPms>? apms;
+  List<PaymentSdkAPms>? alternativePaymentMethods;
   PaymentSdkConfigurationDetails({
     this.profileId,
     this.serverKey,
@@ -68,7 +68,7 @@ class PaymentSdkConfigurationDetails {
     this.iOSThemeConfigurations,
     this.transactionClass,
     this.transactionType,
-    this.apms
+    this.alternativePaymentMethods
   });
 
   String getApmsConcatenated(List<PaymentSdkAPms>? list){
@@ -111,7 +111,7 @@ extension PaymentSdkConfigurationDetailsExtension on PaymentSdkConfigurationDeta
       pt_hide_card_scanner: this.hideCardScanner,
       pt_transaction_class: this.transactionClass?.name,
       pt_transaction_type: this.transactionType?.name,
-      pt_apms : getApmsConcatenated(this.apms)
+      pt_apms : getApmsConcatenated(this.alternativePaymentMethods)
     };}
 
  
