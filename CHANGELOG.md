@@ -8,3 +8,5 @@
 * Auth Transaction Type
 ## 2.1.0
 * Added alternative payment methods
+## 2.1.1
+* apply some fixes
