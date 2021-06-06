@@ -40,48 +40,51 @@ class PaymentSdkConfigurationDetails {
   PaymentSdkTransactionType? transactionType;
   IOSThemeConfigurations? iOSThemeConfigurations;
   List<PaymentSdkAPms>? alternativePaymentMethods;
-  PaymentSdkConfigurationDetails({
-    this.profileId,
-    this.serverKey,
-    this.clientKey,
-    this.amount,
-    this.merchantCountryCode,
-    this.merchantName,
-    this.currencyCode,
-    this.token,
-    this.transactionReference,
-    this.tokenFormat,
-    this.tokeniseType,
-    this.screentTitle,
-    this.cartId,
-    this.cartDescription,
-    this.samsungPayToken,
-    this.showBillingInfo,
-    this.showShippingInfo,
-    this.forceShippingInfo,
-    this.billingDetails,
-    this.shippingDetails,
-    this.merchantApplePayIndentifier,
-    this.simplifyApplePayValidation,
-    this.hideCardScanner,
-    this.locale,
-    this.iOSThemeConfigurations,
-    this.transactionClass,
-    this.transactionType,
-    this.alternativePaymentMethods
-  });
+  PaymentSdkConfigurationDetails(
+      {this.profileId,
+      this.serverKey,
+      this.clientKey,
+      this.amount,
+      this.merchantCountryCode,
+      this.merchantName,
+      this.currencyCode,
+      this.token,
+      this.transactionReference,
+      this.tokenFormat,
+      this.tokeniseType,
+      this.screentTitle,
+      this.cartId,
+      this.cartDescription,
+      this.samsungPayToken,
+      this.showBillingInfo,
+      this.showShippingInfo,
+      this.forceShippingInfo,
+      this.billingDetails,
+      this.shippingDetails,
+      this.merchantApplePayIndentifier,
+      this.simplifyApplePayValidation,
+      this.hideCardScanner,
+      this.locale,
+      this.iOSThemeConfigurations,
+      this.transactionClass,
+      this.transactionType,
+      this.alternativePaymentMethods});
 
-  String getApmsConcatenated(List<PaymentSdkAPms>? list){
-          if(list ==null || list.isEmpty) return "";
-          String apmsStr="";
-            for (var apm in list) {
-              apmsStr+="${apm.name},";
-            }
-            return apmsStr;
+  String getApmsConcatenated(List<PaymentSdkAPms>? list) {
+    if (list == null || list.isEmpty) return "";
+    String apmsStr = "";
+    for (var apm in list) {
+      if (apmsStr != "") {
+        apmsStr += ",";
+      }
+      apmsStr += "${apm.name}";
+    }
+    return apmsStr;
   }
 }
 
-extension PaymentSdkConfigurationDetailsExtension on PaymentSdkConfigurationDetails {
+extension PaymentSdkConfigurationDetailsExtension
+    on PaymentSdkConfigurationDetails {
   Map<String, dynamic> get map {
     return {
       pt_profile_id: this.profileId,
@@ -111,8 +114,7 @@ extension PaymentSdkConfigurationDetailsExtension on PaymentSdkConfigurationDeta
       pt_hide_card_scanner: this.hideCardScanner,
       pt_transaction_class: this.transactionClass?.name,
       pt_transaction_type: this.transactionType?.name,
-      pt_apms : getApmsConcatenated(this.alternativePaymentMethods)
-    };}
-
- 
+      pt_apms: getApmsConcatenated(this.alternativePaymentMethods)
+    };
+  }
 }

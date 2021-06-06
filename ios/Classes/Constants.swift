@@ -72,4 +72,5 @@ let pt_ios_inputs_corner_radius = "pt_ios_inputs_corner_radius"
 let pt_ios_button_font = "pt_ios_button_font"
 let pt_ios_title_font = "pt_ios_title_font"
 let pt_ios_logo = "pt_ios_logo"
-
+let pt_transaction_type = "pt_transaction_type"
+let pt_apms = "pt_apms"

@@ -13,7 +13,7 @@ public class SwiftFlutterPaytabsBridgePlugin: NSObject, FlutterPlugin {
     enum CallMethods: String {
         case startCardPayment
         case startApplePayPayment
-        case startAlternativePaymentMethod
+        case startApmsPayment
     }
     public static func register(with registrar: FlutterPluginRegistrar) {
         let channel = FlutterMethodChannel(name: channelName, binaryMessenger: registrar.messenger())
@@ -30,7 +30,7 @@ public class SwiftFlutterPaytabsBridgePlugin: NSObject, FlutterPlugin {
             startCarPayment(arguments: arguments)
         case CallMethods.startApplePayPayment.rawValue:
             startApplePayPayment(arguments: arguments)
-        case CallMethods.startAlternativePaymentMethod.rawValue:
+        case CallMethods.startApmsPayment.rawValue:
             startAlternativePaymentMethod(arguments: arguments)
         default:
             break
@@ -94,7 +94,8 @@ public class SwiftFlutterPaytabsBridgePlugin: NSObject, FlutterPlugin {
         configuration.hideCardScanner = dictionary[pt_hide_card_scanner] as? Bool ?? false
         configuration.serverIP = dictionary[pt_server_ip] as? String
 
-        if let alternativePaymentMethods = dictionary[pt_apms] as? [String] {
+        if let apmsString = dictionary[pt_apms] as? String {
+            let alternativePaymentMethods = apmsString.components(separatedBy: ",")
             configuration.alternativePaymentMethods = generateAlternativePaymentMethods(apmsArray: alternativePaymentMethods)
 }
         if let tokeniseType = dictionary[pt_tokenise_type] as? Int,

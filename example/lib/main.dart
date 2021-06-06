@@ -32,18 +32,18 @@ class _MyAppState extends State<MyApp> {
 
 PaymentSdkConfigurationDetails generateConfig(){
     var billingDetails = new BillingDetails(
-        "Mohamed Adly",
-        "m.adly@paytabs.com",
-        "+201111111111",
+        "John Smith",
+        "email@domain.com",
+        "+97311111111",
         "st. 12",
         "ae",
         "dubai",
         "dubai",
         "12345");
     var shippingDetails = new ShippingDetails(
-        "Mohamed Adly",
-        "email@example.com",
-        "+201111111111",
+        "John Smith",
+        "email@domain.com",
+        "+97311111111",
         "st. 12",
         "ae",
         "dubai",
@@ -51,12 +51,12 @@ PaymentSdkConfigurationDetails generateConfig(){
         "12345");
 
     List<PaymentSdkAPms> apms= new List();
-    apms.add(PaymentSdkAPms.KNET_DEBIT);
-    apms.add(PaymentSdkAPms.KNET_CREDIT);
+    apms.add(PaymentSdkAPms.STC_PAY);
+    
     var configuration = PaymentSdkConfigurationDetails(
-      profileId: "####",
-      serverKey: "#####",
-      clientKey: "######",
+      profileId: "*Profile id*",
+      serverKey: "*server key*",
+      clientKey: "*client key*",
       cartId: "12433",
       cartDescription: "Flowers",
       merchantName: "Flowers Store",
@@ -64,10 +64,9 @@ PaymentSdkConfigurationDetails generateConfig(){
       billingDetails: billingDetails,
       shippingDetails: shippingDetails,
       amount: 20.0,
-      currencyCode: "KWD",
-      alternativePaymentMethods:apms ,
-      transactionType: PaymentSdkTransactionType.AUTH,
-      merchantCountryCode: "ae",
+      currencyCode: "SAR",
+      alternativePaymentMethods:apms,
+      merchantCountryCode: "SA",
     );
     if (Platform.isIOS) {
       // Set up here your custom theme
@@ -109,7 +108,7 @@ PaymentSdkConfigurationDetails generateConfig(){
   }
   Future<void> applePayPressed() async {
     var configuration = PaymentSdkConfigurationDetails(
-        profileId: "*Your profile id*",
+        profileId: "*Profile id*",
         serverKey: "*server key*",
         clientKey: "*client key*",
         cartId: "12433",
