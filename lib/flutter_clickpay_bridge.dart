@@ -23,7 +23,9 @@ const String pt_merchant_name = 'pt_merchant_name';
 const String pt_merchant_id = "pt_merchant_id";
 const String pt_server_ip = "pt_server_ip";
 const String pt_transaction_class = "pt_transaction_class";
+const String pt_transaction_type = "pt_transaction_type";
 const String pt_hide_card_scanner = "pt_hide_card_scanner";
+const String pt_apms = 'pt_apms';
 const String pt_simplify_apple_pay_validation = "pt_simplify_apple_pay_validation";
 // Billing
 const String pt_billing_details = 'pt_billing_details';
@@ -83,6 +85,13 @@ class FlutterPaytabsBridge {
     arg.samsungPayToken = null;
     _createEventsSubscription(eventsCallBack);
     return await _channel.invokeMethod('startCardPayment', arg.map);
+  }
+
+ static Future<dynamic> startAlternativePaymentMethod(
+      PaymentSdkConfigurationDetails arg, void eventsCallBack(dynamic)) async {
+    arg.samsungPayToken = null;
+    _createEventsSubscription(eventsCallBack);
+    return await _channel.invokeMethod('startApmsPayment', arg.map);
   }
 
   static Future<dynamic> startSamsungPayPayment(

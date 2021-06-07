@@ -10,6 +10,8 @@ import 'package:flutter_clickpay_bridge/PaymentSdkTokenFormat.dart';
 import 'package:flutter_clickpay_bridge/PaymentSdkTokeniseType.dart';
 import 'package:flutter_clickpay_bridge/flutter_clickpay_bridge.dart';
 import 'package:flutter_clickpay_bridge/PaymentSdkTransactionClass.dart';
+import 'package:flutter_clickpay_bridge/PaymentSdkApms.dart';
+import 'package:flutter_clickpay_bridge/PaymentSdkTransactionType.dart';
 
 void main() {
   runApp(MyApp());
@@ -28,29 +30,33 @@ class _MyAppState extends State<MyApp> {
     super.initState();
   }
 
-  Future<void> payPressed() async {
+PaymentSdkConfigurationDetails generateConfig(){
     var billingDetails = new BillingDetails(
-        "Mohamed Adly",
-        "m.adly@paytabs.com",
-        "+201111111111",
+        "John Smith",
+        "email@domain.com",
+        "+97311111111",
         "st. 12",
         "ae",
         "dubai",
         "dubai",
         "12345");
     var shippingDetails = new ShippingDetails(
-        "Mohamed Adly",
-        "email@example.com",
-        "+201111111111",
+        "John Smith",
+        "email@domain.com",
+        "+97311111111",
         "st. 12",
         "ae",
         "dubai",
         "dubai",
         "12345");
+
+    List<PaymentSdkAPms> apms= new List();
+    apms.add(PaymentSdkAPms.STC_PAY);
+
     var configuration = PaymentSdkConfigurationDetails(
-      profileId: "42007",
-      serverKey: "STJNLJWLDL-JBJRGGBRBD-6NHBMHTKMM",
-      clientKey: "CKKMD9-HQVQ62-6RTT2R-GRMP2B",
+      profileId: "*Profile id*",
+      serverKey: "*server key*",
+      clientKey: "*client key*",
       cartId: "12433",
       cartDescription: "Flowers",
       merchantName: "Flowers Store",
@@ -58,15 +64,20 @@ class _MyAppState extends State<MyApp> {
       billingDetails: billingDetails,
       shippingDetails: shippingDetails,
       amount: 20.0,
-      currencyCode: "AED",
-      merchantCountryCode: "ae",
+      currencyCode: "SAR",
+      alternativePaymentMethods:apms,
+      merchantCountryCode: "SA",
     );
     if (Platform.isIOS) {
       // Set up here your custom theme
       // var theme = IOSThemeConfigurations();
       // configuration.iOSThemeConfigurations = theme;
     }
-    FlutterPaytabsBridge.startCardPayment(configuration, (event) {
+    return configuration;
+}
+  Future<void> payPressed() async {
+
+    FlutterPaytabsBridge.startCardPayment(generateConfig(), (event) {
       setState(() {
         if (event["status"] == "success") {
           // Handle transaction details here.
@@ -80,10 +91,24 @@ class _MyAppState extends State<MyApp> {
       });
     });
   }
-
+ Future<void> apmsPayPressed() async {
+    FlutterPaytabsBridge.startAlternativePaymentMethod(generateConfig(), (event) {
+      setState(() {
+        if (event["status"] == "success") {
+          // Handle transaction details here.
+          var transactionDetails = event["data"];
+          print(transactionDetails);
+        } else if (event["status"] == "error") {
+          // Handle error here.
+        } else if (event["status"] == "event") {
+          // Handle events here.
+        }
+      });
+    });
+  }
   Future<void> applePayPressed() async {
     var configuration = PaymentSdkConfigurationDetails(
-        profileId: "*Your profile id*",
+        profileId: "*Profile id*",
         serverKey: "*server key*",
         clientKey: "*client key*",
         cartId: "12433",
@@ -126,7 +151,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Clickpay Plugin Example App'),
+          title: const Text('PayTabs Plugin Example App'),
         ),
         body: Center(
             child: Column(
@@ -139,6 +164,13 @@ class _MyAppState extends State<MyApp> {
                   payPressed();
                 },
                 child: Text('Pay with Card'),
+              ),
+               SizedBox(height: 16),
+              TextButton(
+                onPressed: () {
+                  apmsPayPressed();
+                },
+                child: Text('Pay with Alternative payment methods'),
               ),
               SizedBox(height: 16),
               applePayButton()

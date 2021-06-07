@@ -96,6 +96,8 @@ public class FlutterPaymentSdkBridgePlugin implements FlutterPlugin, MethodCallH
             makeCardPayment(call);
         } else if (call.method.equals("startSamsungPayPayment")) {
             makeSamsungPayment(call);
+        } else if (call.method.equals("startApmsPayment")) {
+            makeApmsPayment(call);
         }
     }
 
@@ -116,6 +118,16 @@ public class FlutterPaymentSdkBridgePlugin implements FlutterPlugin, MethodCallH
             String samToken = paymentDetails.getString("pt_samsung_pay_token");
 
             PaymentSdkActivity.startSamsungPayment(activity, getPaymentSdkConfigurationDetails(paymentDetails), samToken, getCallback());
+        } catch (Exception e) {
+            eventSink.error("0", e.getMessage(), "{}");
+        }
+    }
+
+    private void makeApmsPayment(@NonNull MethodCall call) {
+        try {
+            HashMap<String, Object> arguments = call.arguments();
+            JSONObject paymentDetails = new JSONObject(arguments);
+            PaymentSdkActivity.startAlternativePaymentMethods(activity, getPaymentSdkConfigurationDetails(paymentDetails), getCallback());
         } catch (Exception e) {
             eventSink.error("0", e.getMessage(), "{}");
         }
@@ -173,10 +185,11 @@ public class FlutterPaymentSdkBridgePlugin implements FlutterPlugin, MethodCallH
         double amount = paymentDetails.optDouble("pt_amount");
         PaymentSdkTokenise tokeniseType = createPaymentSdkTokenise(paymentDetails.optString("pt_tokenise_type"));
         PaymentSdkTokenFormat tokenFormat = createPaymentSdkTokenFormat(paymentDetails.optString("pt_token_format"));
-
+        PaymentSdkTransactionType transaction_type = createPaymentSdkTransactionType(paymentDetails.optString("pt_transaction_type"));
+        ArrayList<PaymentSdkApms> aPmsList = getAPmsList(paymentDetails.optString("pt_apms"));
         JSONObject billingDetails = paymentDetails.optJSONObject("pt_billing_details");
         PaymentSdkBillingDetails billingData = null;
-        if(billingDetails != null) {
+        if (billingDetails != null) {
             billingData = new PaymentSdkBillingDetails(
                     billingDetails.optString("pt_city_billing"),
                     billingDetails.optString("pt_country_billing"),
@@ -207,14 +220,31 @@ public class FlutterPaymentSdkBridgePlugin implements FlutterPlugin, MethodCallH
                 .setShippingData(shippingData)
                 .setCartId(orderId)
                 .setTransactionClass(createPaymentSdkTransactionClass(paymentDetails.optString("pt_transaction_class")))
-                .setTransactionType(PaymentSdkTransactionType.SALE)
+                .setTransactionType(transaction_type)
                 .setTokenise(tokeniseType, tokenFormat)
                 .setTokenisationData(token, transRef)
+                .setAlternativePaymentMethods(aPmsList)
                 .showBillingInfo(paymentDetails.optBoolean("pt_show_billing_info"))
                 .showShippingInfo(paymentDetails.optBoolean("pt_show_shipping_info"))
                 .forceShippingInfo(paymentDetails.optBoolean("pt_force_validate_shipping"))
                 .setScreenTitle(screenTitle)
                 .build();
+    }
+
+    private ArrayList<PaymentSdkApms> getAPmsList(String pt_apms) {
+        ArrayList<PaymentSdkApms> apmsArrayList = new ArrayList<>();
+        if (pt_apms == null || pt_apms.isEmpty()) {
+            return apmsArrayList;
+        }
+        String[] splits = pt_apms.split(",");
+        for (String split : splits) {
+            if (split.length() > 0) {
+                PaymentSdkApms apms = createPaymentSdkApms(split);
+                if (apms != null)
+                    apmsArrayList.add(apms);
+            }
+        }
+        return apmsArrayList;
     }
 
     @Override

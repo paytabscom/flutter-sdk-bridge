@@ -1,9 +1,13 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_clickpay_bridge/PaymentSdkApms.dart';
 import 'package:flutter_clickpay_bridge/PaymentSdkTransactionClass.dart';
+import 'package:flutter_clickpay_bridge/PaymentSdkTransactionType.dart';
 
 import 'BaseBillingShippingInfo.dart';
 import 'IOSThemeConfiguration.dart';
 import 'PaymentSdkLocale.dart';
 import 'PaymentSdkTokenFormat.dart';
+import 'PaymentSdkApms.dart';
 import 'PaymentSdkTokeniseType.dart';
 import 'flutter_clickpay_bridge.dart';
 
@@ -33,36 +37,50 @@ class PaymentSdkConfigurationDetails {
   PaymentSdkTokenFormat? tokenFormat;
   PaymentSdkTokeniseType? tokeniseType;
   PaymentSdkTransactionClass? transactionClass;
+  PaymentSdkTransactionType? transactionType;
   IOSThemeConfigurations? iOSThemeConfigurations;
+  List<PaymentSdkAPms>? alternativePaymentMethods;
+  PaymentSdkConfigurationDetails(
+      {this.profileId,
+      this.serverKey,
+      this.clientKey,
+      this.amount,
+      this.merchantCountryCode,
+      this.merchantName,
+      this.currencyCode,
+      this.token,
+      this.transactionReference,
+      this.tokenFormat,
+      this.tokeniseType,
+      this.screentTitle,
+      this.cartId,
+      this.cartDescription,
+      this.samsungPayToken,
+      this.showBillingInfo,
+      this.showShippingInfo,
+      this.forceShippingInfo,
+      this.billingDetails,
+      this.shippingDetails,
+      this.merchantApplePayIndentifier,
+      this.simplifyApplePayValidation,
+      this.hideCardScanner,
+      this.locale,
+      this.iOSThemeConfigurations,
+      this.transactionClass,
+      this.transactionType,
+      this.alternativePaymentMethods});
 
-  PaymentSdkConfigurationDetails({
-    this.profileId,
-    this.serverKey,
-    this.clientKey,
-    this.amount,
-    this.merchantCountryCode,
-    this.merchantName,
-    this.currencyCode,
-    this.token,
-    this.transactionReference,
-    this.tokenFormat,
-    this.tokeniseType,
-    this.screentTitle,
-    this.cartId,
-    this.cartDescription,
-    this.samsungPayToken,
-    this.showBillingInfo,
-    this.showShippingInfo,
-    this.forceShippingInfo,
-    this.billingDetails,
-    this.shippingDetails,
-    this.merchantApplePayIndentifier,
-    this.simplifyApplePayValidation,
-    this.hideCardScanner,
-    this.locale,
-    this.iOSThemeConfigurations,
-    this.transactionClass,
-  });
+  String getApmsConcatenated(List<PaymentSdkAPms>? list) {
+    if (list == null || list.isEmpty) return "";
+    String apmsStr = "";
+    for (var apm in list) {
+      if (apmsStr != "") {
+        apmsStr += ",";
+      }
+      apmsStr += "${apm.name}";
+    }
+    return apmsStr;
+  }
 }
 
 extension PaymentSdkConfigurationDetailsExtension
@@ -95,6 +113,8 @@ extension PaymentSdkConfigurationDetailsExtension
       pt_simplify_apple_pay_validation: this.simplifyApplePayValidation,
       pt_hide_card_scanner: this.hideCardScanner,
       pt_transaction_class: this.transactionClass?.name,
+      pt_transaction_type: this.transactionType?.name,
+      pt_apms: getApmsConcatenated(this.alternativePaymentMethods)
     };
   }
 }

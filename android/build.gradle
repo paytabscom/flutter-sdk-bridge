@@ -47,5 +47,5 @@ android {
 
 dependencies {
 
-    implementation 'com.alinma:clickpaysdk:6.0.2-rc08'
+    implementation 'com.alinma:clickpaysdk:6.1.0'
 }
