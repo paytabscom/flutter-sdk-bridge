@@ -73,7 +73,7 @@ const String pt_ios_button_font = 'pt_ios_button_font';
 const String pt_ios_title_font = 'pt_ios_title_font';
 const String pt_ios_logo = "pt_ios_logo";
 
-class FlutterPaytabsBridge {
+class FlutterPaymentSdkBridge {
   static const MethodChannel _channel =
       const MethodChannel('flutter_payment_sdk_bridge');
   static const stream = const EventChannel('flutter_payment_sdk_bridge_stream');

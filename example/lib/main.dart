@@ -78,7 +78,7 @@ PaymentSdkConfigurationDetails generateConfig(){
 }
   Future<void> payPressed() async {
 
-    FlutterPaytabsBridge.startCardPayment(generateConfig(), (event) {
+    FlutterPaymentSdkBridge.startCardPayment(generateConfig(), (event) {
       setState(() {
         if (event["status"] == "success") {
           // Handle transaction details here.
@@ -93,7 +93,7 @@ PaymentSdkConfigurationDetails generateConfig(){
     });
   }
  Future<void> apmsPayPressed() async {
-    FlutterPaytabsBridge.startAlternativePaymentMethod(generateConfig(), (event) {
+    FlutterPaymentSdkBridge.startAlternativePaymentMethod(generateConfig(), (event) {
       setState(() {
         if (event["status"] == "success") {
           // Handle transaction details here.
@@ -120,7 +120,7 @@ PaymentSdkConfigurationDetails generateConfig(){
         merchantCountryCode: "ae",
         merchantApplePayIndentifier: "merchant.com.bunldeId",
         simplifyApplePayValidation: true);
-    FlutterPaytabsBridge.startApplePayPayment(configuration, (event) {
+    FlutterPaymentSdkBridge.startApplePayPayment(configuration, (event) {
       setState(() {
         if (event["status"] == "success") {
           // Handle transaction details here.

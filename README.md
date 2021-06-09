@@ -12,19 +12,13 @@ Plugin Support:
 
 ```
 dependencies:
-   flutter_clickpay_bridge: ^2.0.4-beta`
+   flutter_clickpay_bridge: ^2.1.0`
 ```
 
 ## Usage
 
 ```dart
-import 'package:flutter_clickpay_bridge/BaseBillingShippingInfo.dart';
-import 'package:flutter_clickpay_bridge/PaymentSdkConfigurationDetails.dart';
-import 'package:flutter_clickpay_bridge/PaymentSdkLocale.dart';
-import 'package:flutter_clickpay_bridge/PaymentSdkTokenFormat.dart';
-import 'package:flutter_clickpay_bridge/PaymentSdkTokeniseType.dart';
-import 'package:flutter_clickpay_bridge/flutter_clickpay_bridge.dart';
-import 'package:flutter_clickpay_bridge/PaymentSdkTransactionClass.dart';
+import 'package:flutter_clickpay_bridge/*.dart';
 ```
 
 ### Pay with Card
@@ -83,7 +77,7 @@ Options to show billing and shipping info
 
 ```dart
 
-FlutterPaytabsBridge.startCardPayment(configuration, (event) {
+FlutterPaymentSdkBridge.startCardPayment(configuration, (event) {
       setState(() {
         if (event["status"] == "success") {
           // Handle transaction details here.
@@ -134,7 +128,7 @@ configuration.simplifyApplePayValidation = true;
 4. Call `startApplePayPayment` to start payment
 
 ```dart
-FlutterPaytabsBridge.startApplePayPayment(configuration, (event) {
+FlutterPaymentSdkBridge.startApplePayPayment(configuration, (event) {
       setState(() {
         setState(() {
         if (event["status"] == "success") {
@@ -159,6 +153,36 @@ Pass Samsung Pay token to the configuration and call `startSamsungPayPayment`
 configuration.samsungToken = "{Json token returned from the samsung pay payment}"
 ```
 
+### Pay with Alternative Payment Methods
+
+It becomes easy to integrate with other payment methods in your region like STCPay, OmanNet, KNet, Valu, Fawry, UnionPay, and Meeza, to serve a large sector of customers.
+
+Do the steps 1 and 2 from Pay with Card.
+
+Choose one or more of the payment methods you want to support.
+```dart
+List<PaymentSdkAPms> apms= new List();
+apms.add(PaymentSdkAPms.KNET_DEBIT);
+configuration.alternativePaymentMethods = apms
+```
+Start payment by calling ```dart startAlternativePaymentMethod``` method and handle the transaction details
+```dart
+FlutterPaymentSdkBridge.startAlternativePaymentMethod(generateConfig(), (event) {
+ setState(() {
+        if (event["status"] == "success") {
+          // Handle transaction details here.
+          var transactionDetails = event["data"];
+          print(transactionDetails);
+        } else if (event["status"] == "error") {
+          // Handle error here.
+        } else if (event["status"] == "event") {
+          // Handle events here.
+        }
+      });
+    });
+}
+
+```
 ## Theme
 Use the following guide to cusomize the colors, font, and logo by configuring the theme and pass it to the payment configuration.
 
