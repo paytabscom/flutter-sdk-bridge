@@ -32,18 +32,18 @@ class _MyAppState extends State<MyApp> {
 
 PaymentSdkConfigurationDetails generateConfig(){
     var billingDetails = new BillingDetails(
-        "John Smith",
-        "email@domain.com",
-        "+97311111111",
+        "Mohamed Adly",
+        "m.adly@paytabs.com",
+        "+201111111111",
         "st. 12",
         "ae",
         "dubai",
         "dubai",
         "12345");
     var shippingDetails = new ShippingDetails(
-        "John Smith",
-        "email@domain.com",
-        "+97311111111",
+        "Mohamed Adly",
+        "email@example.com",
+        "+201111111111",
         "st. 12",
         "ae",
         "dubai",
@@ -51,12 +51,12 @@ PaymentSdkConfigurationDetails generateConfig(){
         "12345");
 
     List<PaymentSdkAPms> apms= new List();
-    apms.add(PaymentSdkAPms.STC_PAY);
-
+    apms.add(PaymentSdkAPms.KNET_DEBIT);
+    apms.add(PaymentSdkAPms.KNET_CREDIT);
     var configuration = PaymentSdkConfigurationDetails(
-      profileId: "*Profile id*",
-      serverKey: "*server key*",
-      clientKey: "*client key*",
+      profileId: "42007",
+      serverKey: "STJNLJWLDL-JBJRGGBRBD-6NHBMHTKMM",
+      clientKey: "CKKMD9-HQVQ62-6RTT2R-GRMP2B",
       cartId: "12433",
       cartDescription: "Flowers",
       merchantName: "Flowers Store",
@@ -65,7 +65,8 @@ PaymentSdkConfigurationDetails generateConfig(){
       shippingDetails: shippingDetails,
       amount: 20.0,
       currencyCode: "SAR",
-      alternativePaymentMethods:apms,
+      alternativePaymentMethods:apms ,
+      transactionType: PaymentSdkTransactionType.AUTH,
       merchantCountryCode: "SA",
     );
     if (Platform.isIOS) {
@@ -108,7 +109,7 @@ PaymentSdkConfigurationDetails generateConfig(){
   }
   Future<void> applePayPressed() async {
     var configuration = PaymentSdkConfigurationDetails(
-        profileId: "*Profile id*",
+        profileId: "*Your profile id*",
         serverKey: "*server key*",
         clientKey: "*client key*",
         cartId: "12433",
