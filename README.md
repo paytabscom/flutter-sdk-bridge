@@ -24,6 +24,7 @@ import 'package:flutter_paytabs_bridge/PaymentSdkLocale.dart';
 import 'package:flutter_paytabs_bridge/PaymentSdkTokenFormat.dart';
 import 'package:flutter_paytabs_bridge/PaymentSdkTokeniseType.dart';
 import 'package:flutter_paytabs_bridge/flutter_paytabs_bridge.dart';
+import 'package:flutter_paytabs_bridge/IOSThemeConfiguration.dart';
 import 'package:flutter_paytabs_bridge/PaymentSdkTransactionClass.dart';
 ```
 
@@ -90,7 +91,7 @@ flutter:
 ```
 
  - be sure you pass the image path like this:- 
- 
+
 ```dart
 var configuration = PaymentSdkConfigurationDetails();
 var theme = IOSThemeConfigurations();
