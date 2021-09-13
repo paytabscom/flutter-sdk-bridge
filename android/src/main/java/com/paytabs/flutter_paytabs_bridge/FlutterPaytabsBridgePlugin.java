@@ -24,7 +24,10 @@ import com.payment.paymentsdk.sharedclasses.interfaces.CallbackPaymentInterface;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Document;
 
+import java.io.File;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -45,6 +48,8 @@ import static com.payment.paymentsdk.integrationmodels.PaymentSdkTokenFormatKt.c
 import static com.payment.paymentsdk.integrationmodels.PaymentSdkTokeniseKt.createPaymentSdkTokenise;
 import static com.payment.paymentsdk.integrationmodels.PaymentSdkTransactionClassKt.createPaymentSdkTransactionClass;
 import static com.payment.paymentsdk.integrationmodels.PaymentSdkTransactionTypeKt.createPaymentSdkTransactionType;
+
+import javax.xml.parsers.DocumentBuilder;
 
 /**
  * FlutterPaytabsBridgePlugin
@@ -199,6 +204,8 @@ public class FlutterPaytabsBridgePlugin implements FlutterPlugin, MethodCallHand
         PaymentSdkTransactionType transaction_type = createPaymentSdkTransactionType(paymentDetails.optString("pt_transaction_type"));
         ArrayList<PaymentSdkApms> aPmsList = getAPmsList(paymentDetails.optString("pt_apms"));
         JSONObject billingDetails = paymentDetails.optJSONObject("pt_billing_details");
+        String iconUri = paymentDetails.optJSONObject("pt_ios_theme").optString("pt_ios_logo");
+
         PaymentSdkBillingDetails billingData = null;
         if (billingDetails != null) {
             billingData = new PaymentSdkBillingDetails(
@@ -238,6 +245,7 @@ public class FlutterPaytabsBridgePlugin implements FlutterPlugin, MethodCallHand
                 .showBillingInfo(paymentDetails.optBoolean("pt_show_billing_info"))
                 .showShippingInfo(paymentDetails.optBoolean("pt_show_shipping_info"))
                 .forceShippingInfo(paymentDetails.optBoolean("pt_force_validate_shipping"))
+                .setMerchantIcon("file://" + iconUri)
                 .setScreenTitle(screenTitle)
                 .build();
     }

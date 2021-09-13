@@ -3,6 +3,11 @@ import 'dart:io';
 
 import 'package:flutter/services.dart';
 import 'PaymentSdkConfigurationDetails.dart';
+import 'dart:async';
+import 'dart:io';
+import 'dart:typed_data';
+import 'package:flutter/services.dart' show rootBundle;
+import 'package:path_provider/path_provider.dart';
 
 // Constants
 const String pt_profile_id = 'pt_profile_id';
@@ -26,7 +31,8 @@ const String pt_transaction_class = "pt_transaction_class";
 const String pt_transaction_type = "pt_transaction_type";
 const String pt_hide_card_scanner = "pt_hide_card_scanner";
 const String pt_apms = 'pt_apms';
-const String pt_simplify_apple_pay_validation = "pt_simplify_apple_pay_validation";
+const String pt_simplify_apple_pay_validation =
+    "pt_simplify_apple_pay_validation";
 // Billing
 const String pt_billing_details = 'pt_billing_details';
 const String pt_address_billing = 'pt_address_billing';
@@ -84,10 +90,30 @@ class FlutterPaytabsBridge {
       PaymentSdkConfigurationDetails arg, void eventsCallBack(dynamic)) async {
     arg.samsungPayToken = null;
     _createEventsSubscription(eventsCallBack);
+
+    var logoImage = arg.iOSThemeConfigurations?.logoImage ?? "";
+    if (logoImage != "") {
+      arg.iOSThemeConfigurations?.logoImage = await handleImagePath(logoImage);
+    }
     return await _channel.invokeMethod('startCardPayment', arg.map);
   }
 
- static Future<dynamic> startAlternativePaymentMethod(
+  static Future<String> handleImagePath(String path) async {
+    var bytes = await rootBundle.load(path);
+    String dir = (await getApplicationDocumentsDirectory()).path;
+    var imageName = path.split("/").last;
+    String logoPath = '$dir/$imageName';
+    var _ = await writeToFile(bytes, logoPath);
+    return "file://" + logoPath;
+  }
+
+  static Future<void> writeToFile(ByteData data, String path) {
+    final buffer = data.buffer;
+    return new File(path).writeAsBytes(
+        buffer.asUint8List(data.offsetInBytes, data.lengthInBytes));
+  }
+
+  static Future<dynamic> startAlternativePaymentMethod(
       PaymentSdkConfigurationDetails arg, void eventsCallBack(dynamic)) async {
     arg.samsungPayToken = null;
     _createEventsSubscription(eventsCallBack);
@@ -101,7 +127,7 @@ class FlutterPaytabsBridge {
   }
 
   static Future<dynamic> startApplePayPayment(
-    PaymentSdkConfigurationDetails arg, void eventsCallBack(dynamic)) async {
+      PaymentSdkConfigurationDetails arg, void eventsCallBack(dynamic)) async {
     if (!Platform.isIOS) {
       return null;
     }

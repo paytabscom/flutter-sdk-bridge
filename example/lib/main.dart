@@ -6,12 +6,7 @@ import 'package:flutter_paytabs_bridge/BaseBillingShippingInfo.dart';
 import 'package:flutter_paytabs_bridge/IOSThemeConfiguration.dart';
 import 'package:flutter_paytabs_bridge/PaymentSdkApms.dart';
 import 'package:flutter_paytabs_bridge/PaymentSdkConfigurationDetails.dart';
-import 'package:flutter_paytabs_bridge/PaymentSdkLocale.dart';
-import 'package:flutter_paytabs_bridge/PaymentSdkTokenFormat.dart';
-import 'package:flutter_paytabs_bridge/PaymentSdkTokeniseType.dart';
-import 'package:flutter_paytabs_bridge/PaymentSdkTransactionType.dart';
 import 'package:flutter_paytabs_bridge/flutter_paytabs_bridge.dart';
-import 'package:flutter_paytabs_bridge/PaymentSdkTransactionClass.dart';
 
 void main() {
   runApp(MyApp());
@@ -30,29 +25,15 @@ class _MyAppState extends State<MyApp> {
     super.initState();
   }
 
-PaymentSdkConfigurationDetails generateConfig(){
-    var billingDetails = new BillingDetails(
-        "John Smith",
-        "email@domain.com",
-        "+97311111111",
-        "st. 12",
-        "ae",
-        "dubai",
-        "dubai",
-        "12345");
-    var shippingDetails = new ShippingDetails(
-        "John Smith",
-        "email@domain.com",
-        "+97311111111",
-        "st. 12",
-        "ae",
-        "dubai",
-        "dubai",
-        "12345");
+  Future<PaymentSdkConfigurationDetails> generateConfig() async {
+    var billingDetails = new BillingDetails("John Smith", "email@domain.com",
+        "+97311111111", "st. 12", "ae", "dubai", "dubai", "12345");
+    var shippingDetails = new ShippingDetails("John Smith", "email@domain.com",
+        "+97311111111", "st. 12", "ae", "dubai", "dubai", "12345");
 
-    List<PaymentSdkAPms> apms= new List();
+    List<PaymentSdkAPms> apms = new List();
     apms.add(PaymentSdkAPms.STC_PAY);
-    
+
     var configuration = PaymentSdkConfigurationDetails(
       profileId: "*Profile id*",
       serverKey: "*server key*",
@@ -65,19 +46,18 @@ PaymentSdkConfigurationDetails generateConfig(){
       shippingDetails: shippingDetails,
       amount: 20.0,
       currencyCode: "SAR",
-      alternativePaymentMethods:apms,
-      merchantCountryCode: "SA",
+      alternativePaymentMethods: apms,
+      merchantCountryCode: "AE",
     );
-    if (Platform.isIOS) {
-      // Set up here your custom theme
-      // var theme = IOSThemeConfigurations();
-      // configuration.iOSThemeConfigurations = theme;
-    }
-    return configuration;
-}
-  Future<void> payPressed() async {
 
-    FlutterPaytabsBridge.startCardPayment(generateConfig(), (event) {
+    var theme = IOSThemeConfigurations();
+    theme.logoImage = "assets/logo.png";
+    configuration.iOSThemeConfigurations = theme;
+    return configuration;
+  }
+
+  Future<void> payPressed() async {
+    FlutterPaytabsBridge.startCardPayment(await generateConfig(), (event) {
       setState(() {
         if (event["status"] == "success") {
           // Handle transaction details here.
@@ -91,8 +71,10 @@ PaymentSdkConfigurationDetails generateConfig(){
       });
     });
   }
- Future<void> apmsPayPressed() async {
-    FlutterPaytabsBridge.startAlternativePaymentMethod(generateConfig(), (event) {
+
+  Future<void> apmsPayPressed() async {
+    FlutterPaytabsBridge.startAlternativePaymentMethod(await generateConfig(),
+        (event) {
       setState(() {
         if (event["status"] == "success") {
           // Handle transaction details here.
@@ -106,6 +88,7 @@ PaymentSdkConfigurationDetails generateConfig(){
       });
     });
   }
+
   Future<void> applePayPressed() async {
     var configuration = PaymentSdkConfigurationDetails(
         profileId: "*Profile id*",
@@ -165,7 +148,7 @@ PaymentSdkConfigurationDetails generateConfig(){
                 },
                 child: Text('Pay with Card'),
               ),
-               SizedBox(height: 16),
+              SizedBox(height: 16),
               TextButton(
                 onPressed: () {
                   apmsPayPressed();

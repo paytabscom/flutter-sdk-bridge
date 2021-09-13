@@ -10,3 +10,5 @@
 * Added alternative payment methods
 ## 2.1.1
 * apply some fixes
+## 2.1.2
+* integrate iraq end-points
