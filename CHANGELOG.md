@@ -12,3 +12,5 @@
 * apply some fixes
 ## 2.1.2
 * integrate iraq end-points
+## 2.1.3
+* fix handle merchant logo image

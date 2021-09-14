@@ -1,5 +1,5 @@
 # Flutter PayTabs Bridge
-![Version](https://img.shields.io/badge/flutter%20paytabs%20bridge-v2.1.2-green)
+![Version](https://img.shields.io/badge/flutter%20paytabs%20bridge-v2.1.3-green)
 
 Flutter paytabs plugin is a wrapper for the native PayTabs Android and iOS SDKs, It helps you integrate with PayTabs payment gateway.
 
@@ -12,7 +12,7 @@ Plugin Support:
 
 ```
 dependencies:
-   flutter_paytabs_bridge: ^2.1.2`
+   flutter_paytabs_bridge: ^2.1.3`
 ```
 
 ## Usage
@@ -80,9 +80,12 @@ Options to show billing and shipping info
 	configuration.showShippingInfo = true;
 ```
 
-3. Set Merchant Logo from the project assets: 
+3. Set merchant logo from the project assets: 
   - create 'assets' directory and put the image inside it.
-  - under flutter section in the pubspec.yaml declare your logo
+  - be sure you add in the Runner iOS Project in the infor.plist the image usage description.
+  	<key>NSPhotoLibraryUsageDescription</key>
+	  <string>Get Logo From Assets</string>
+  - under flutter section in the pubspec.yaml declare your logo.
 
 ```
 flutter:

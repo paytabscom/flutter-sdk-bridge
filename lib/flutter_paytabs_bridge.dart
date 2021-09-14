@@ -102,9 +102,9 @@ class FlutterPaytabsBridge {
     var bytes = await rootBundle.load(path);
     String dir = (await getApplicationDocumentsDirectory()).path;
     var imageName = path.split("/").last;
-    String logoPath = '$dir/$imageName';
+    String logoPath = '$dir$imageName';
     var _ = await writeToFile(bytes, logoPath);
-    return "file://" + logoPath;
+    return logoPath;
   }
 
   static Future<void> writeToFile(ByteData data, String path) {
