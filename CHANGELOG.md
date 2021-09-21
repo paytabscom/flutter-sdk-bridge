@@ -14,3 +14,5 @@
 * integrate iraq end-points
 ## 2.1.3
 * fix handle merchant logo image
+## 2.1.4
+* add mada network

@@ -26,33 +26,27 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<PaymentSdkConfigurationDetails> generateConfig() async {
-    var billingDetails = new BillingDetails("John Smith", "email@domain.com",
-        "+97311111111", "st. 12", "ae", "dubai", "dubai", "12345");
-    var shippingDetails = new ShippingDetails("John Smith", "email@domain.com",
-        "+97311111111", "st. 12", "ae", "dubai", "dubai", "12345");
-
-    List<PaymentSdkAPms> apms = new List();
-    apms.add(PaymentSdkAPms.STC_PAY);
-
     var configuration = PaymentSdkConfigurationDetails(
-      profileId: "*Profile id*",
-      serverKey: "*server key*",
-      clientKey: "*client key*",
-      cartId: "12433",
-      cartDescription: "Flowers",
-      merchantName: "Flowers Store",
-      screentTitle: "Pay with Card",
-      billingDetails: billingDetails,
-      shippingDetails: shippingDetails,
-      amount: 20.0,
-      currencyCode: "SAR",
-      alternativePaymentMethods: apms,
-      merchantCountryCode: "AE",
-    );
+        profileId: "53263",
+        serverKey: "SZJNML2NHW-J2GTM9WTGJ-6WKH9W9MW2",
+        clientKey: "CVKMTM-PB6P6M-T7NPV7-G6RV9B",
+        cartId: "12433",
+        cartDescription: "Flowers",
+        merchantName: "Flowers Store",
+        screentTitle: "Pay with Card",
+        amount: 20.0,
+        showBillingInfo: true,
+        showShippingInfo: false,
+        forceShippingInfo: false,
+        currencyCode: "SAR",
+        merchantCountryCode: "SA");
 
     var theme = IOSThemeConfigurations();
+
     theme.logoImage = "assets/logo.png";
+
     configuration.iOSThemeConfigurations = theme;
+
     return configuration;
   }
 
