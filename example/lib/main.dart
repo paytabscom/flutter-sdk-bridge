@@ -26,20 +26,28 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<PaymentSdkConfigurationDetails> generateConfig() async {
+    var billingDetails = BillingDetails("John Smith", "email@domain.com",
+        "+97311111111", "st. 12", "ae", "dubai", "dubai", "12345");
+    var shippingDetails = ShippingDetails("John Smith", "email@domain.com",
+        "+97311111111", "st. 12", "ae", "dubai", "dubai", "12345");
+    List<PaymentSdkAPms> apms = [];
+    apms.add(PaymentSdkAPms.STC_PAY);
     var configuration = PaymentSdkConfigurationDetails(
-        profileId: "53263",
-        serverKey: "SZJNML2NHW-J2GTM9WTGJ-6WKH9W9MW2",
-        clientKey: "CVKMTM-PB6P6M-T7NPV7-G6RV9B",
+        profileId: "*profile id*",
+        serverKey: "*server key*",
+        clientKey: "*client key*",
         cartId: "12433",
         cartDescription: "Flowers",
         merchantName: "Flowers Store",
         screentTitle: "Pay with Card",
         amount: 20.0,
         showBillingInfo: true,
-        showShippingInfo: false,
         forceShippingInfo: false,
         currencyCode: "SAR",
-        merchantCountryCode: "SA");
+        merchantCountryCode: "SA",
+        billingDetails: billingDetails,
+        shippingDetails: shippingDetails,
+        alternativePaymentMethods: apms);
 
     var theme = IOSThemeConfigurations();
 

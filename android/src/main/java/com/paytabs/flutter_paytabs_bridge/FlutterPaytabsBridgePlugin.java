@@ -204,7 +204,11 @@ public class FlutterPaytabsBridgePlugin implements FlutterPlugin, MethodCallHand
         PaymentSdkTransactionType transaction_type = createPaymentSdkTransactionType(paymentDetails.optString("pt_transaction_type"));
         ArrayList<PaymentSdkApms> aPmsList = getAPmsList(paymentDetails.optString("pt_apms"));
         JSONObject billingDetails = paymentDetails.optJSONObject("pt_billing_details");
-        String iconUri = paymentDetails.optJSONObject("pt_ios_theme").optString("pt_ios_logo");
+
+        String iconUri = null;
+        if  (!paymentDetails.isNull("pt_ios_theme")) {
+            iconUri = "file://" + optString(paymentDetails.optJSONObject("pt_ios_theme"), "pt_ios_logo");
+        }
 
         PaymentSdkBillingDetails billingData = null;
         if (billingDetails != null) {
@@ -245,9 +249,16 @@ public class FlutterPaytabsBridgePlugin implements FlutterPlugin, MethodCallHand
                 .showBillingInfo(paymentDetails.optBoolean("pt_show_billing_info"))
                 .showShippingInfo(paymentDetails.optBoolean("pt_show_shipping_info"))
                 .forceShippingInfo(paymentDetails.optBoolean("pt_force_validate_shipping"))
-                .setMerchantIcon("file://" + iconUri)
+                .setMerchantIcon(iconUri)
                 .setScreenTitle(screenTitle)
                 .build();
+    }
+    
+    public static String optString(JSONObject json, String key) {
+       if (json.isNull(key))
+        return "";
+       else
+        return json.optString(key, null);
     }
 
     private ArrayList<PaymentSdkApms> getAPmsList(String pt_apms) {
