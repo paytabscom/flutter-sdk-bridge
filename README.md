@@ -92,7 +92,19 @@ FlutterPaymentSdkBridge.startCardPayment(configuration, (event) {
     });
      
 ```
+### Tokenization
+To enable tokenisation please follow the below instructions.
+```dart
+ // to request token and transaction reference pass tokeniseType and Format
+ tokeniseType: PaymentSdkTokeniseType.MERCHANT_MANDATORY,
+ tokenFormat: PaymentSdkTokenFormat.AlphaNum20Format,
 
+ // you will receive token and reference after the first transaction       
+ // to pass the token and transaction reference returned from sdk 
+ token: "token returned from the last trx",
+ transactionReference: "last trx reference returned",
+
+```
 ### Pay with Apple Pay
 
 1. Follow the guide [Steps to configure Apple Pay][applepayguide] to learn how to configure ApplePay with PayTabs.

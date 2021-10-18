@@ -116,6 +116,7 @@ PaymentSdkConfigurationDetails generateConfig(){
         cartDescription: "Flowers",
         merchantName: "Flowers Store",
         amount: 20.0,
+   
         currencyCode: "AED",
         merchantCountryCode: "ae",
         merchantApplePayIndentifier: "merchant.com.bunldeId",
