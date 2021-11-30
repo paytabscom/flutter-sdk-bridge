@@ -198,13 +198,53 @@ configuration.samsungToken = "{Json token returned from the samsung pay payment}
 It becomes easy to integrate with other payment methods in your region like STCPay, OmanNet, KNet, Valu, Fawry, UnionPay, and Meeza, to serve a large sector of customers.
 
 1. Do the steps 1 and 2 from **Pay with Card**
-2. Choose one or more of the payment methods you want to support
+2. Choose one or more of the payment methods you want to support, check the available APMs in the **enum** section.
 
 ```dart
-.alternativePaymentMethods(list Of PaymentSdkApms) // add the Payment Methods you want to the list
+ List<PaymentSdkAPms> apms = [];
+ apms.add(PaymentSdkAPms.STC_PAY);
+ 
+ var configuration = PaymentSdkConfigurationDetails(
+     * Your configuration *
+     alternativePaymentMethods: apms); // add the Payment Methods here
 ```
+3. Call `startAlternativePaymentMethod` to start payment
 
-## Theme IOS
+```dart
+
+FlutterPaytabsBridge.startAlternativePaymentMethod(await generateConfig(),
+
+        (event) {
+
+      setState(() {
+
+        if (event["status"] == "success") {
+
+          // Handle transaction details here.
+
+          var transactionDetails = event["data"];
+
+          print(transactionDetails);
+
+        } else if (event["status"] == "error") {
+
+          // Handle error here.
+
+        } else if (event["status"] == "event") {
+
+          // Handle events here.
+
+        }
+
+      });
+
+    });
+    
+```
+## Customize the Theme:
+![UI guide](https://user-images.githubusercontent.com/13621658/109432213-d7981380-7a12-11eb-9224-c8fc12b0024d.jpg)
+
+### iOS Theme
 Use the following guide to cusomize the colors, font, and logo by configuring the theme and pass it to the payment configuration.
 
 ```dart
@@ -213,17 +253,12 @@ Use the following guide to cusomize the colors, font, and logo by configuring th
 	configuration.iOSThemeConfigurations = theme;
 ```
 
-![UI guide](https://user-images.githubusercontent.com/13621658/109432213-d7981380-7a12-11eb-9224-c8fc12b0024d.jpg)
-
-## Theme Android
+### Android Theme
 Use the following guide to customize the colors, font, and logo by configuring the theme and pass it to the payment configuration.
-
-![UI guide](https://github.com/paytabscom/paytabs-android-library-sample/tree/master/res/UIguide.jpg)
 
 -- Override strings
 To override string you can find the keys with the default values here
-![english]( https://github.com/paytabscom/paytabs-android-library-sample/blob/master/res/strings.xml)
-![arabic](https://github.com/paytabscom/paytabs-android-library-sample/blob/master/res/strings-ar.xml)
+[English][english], [Arabic][arabic].
 
 ````xml
 <resourse>
@@ -300,9 +335,25 @@ enum PaymentSdkTransactionType {
 }
 ```
 
-```javascript
+```dart
 configuration.tokenFormat = PaymentSdkTokenFormat.Hex32Format
 ```
+
+* Alternative Payment Methods
+
+```dart
+enum PaymentSdkAPms {
+  UNION_PAY,
+  STC_PAY,
+  VALU,
+  MEEZA_QR,
+  OMAN_NET, 
+  KNET_CREDIT, 
+  FAWRY, 
+  KNET_DEBIT
+}
+```
+
 ## Demo application
 
 Check our complete example here <https://github.com/paytabscom/flutter-sdk-bridge/tree/master/example>.
@@ -322,3 +373,5 @@ See [LICENSE][license].
  [3]: https://www.paytabs.com/en/privacy-policy/
  [license]: https://github.com/paytabscom/flutter-sdk-bridge/blob/pt2/LICENSE
  [applepayguide]: https://github.com/paytabscom/flutter-sdk-bridge/blob/pt2/ApplePayConfiguration.md
+ [english]: https://github.com/paytabscom/paytabs-android-library-sample/blob/master/res/strings.xml
+ [arabic]: https://github.com/paytabscom/paytabs-android-library-sample/blob/master/res/strings-ar.xml
