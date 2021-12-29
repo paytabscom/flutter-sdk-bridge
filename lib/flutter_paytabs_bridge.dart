@@ -80,7 +80,6 @@ const String pt_ios_title_font = 'pt_ios_title_font';
 const String pt_ios_logo = "pt_ios_logo";
 
 class FlutterPaytabsBridge {
-
   static Future<dynamic> startCardPayment(
       PaymentSdkConfigurationDetails arg, void eventsCallBack(dynamic)) async {
     arg.samsungPayToken = null;
@@ -99,7 +98,7 @@ class FlutterPaytabsBridge {
     var bytes = await rootBundle.load(path);
     String dir = (await getApplicationDocumentsDirectory()).path;
     var imageName = path.split("/").last;
-    String logoPath = '$dir$imageName';
+    String logoPath = '$dir/$imageName';
     var _ = await writeToFile(bytes, logoPath);
     return logoPath;
   }
