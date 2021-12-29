@@ -80,12 +80,6 @@ const String pt_ios_title_font = 'pt_ios_title_font';
 const String pt_ios_logo = "pt_ios_logo";
 
 class FlutterPaytabsBridge {
-  // static const MethodChannel _channel =
-  //     const MethodChannel('flutter_paytabs_bridge');
-  // static const stream = const EventChannel('flutter_paytabs_bridge_stream');
-  //
-  // // ignore: cancel_subscriptions
-  // static StreamSubscription? _eventsubscription;
 
   static Future<dynamic> startCardPayment(
       PaymentSdkConfigurationDetails arg, void eventsCallBack(dynamic)) async {
@@ -93,8 +87,7 @@ class FlutterPaytabsBridge {
     MethodChannel localChannel = MethodChannel('flutter_paytabs_bridge');
     EventChannel localStream =
         const EventChannel('flutter_paytabs_bridge_stream');
-    StreamSubscription? _eventsubscription =
-        localStream.receiveBroadcastStream().listen(eventsCallBack);
+    localStream.receiveBroadcastStream().listen(eventsCallBack);
     var logoImage = arg.iOSThemeConfigurations?.logoImage ?? "";
     if (logoImage != "") {
       arg.iOSThemeConfigurations?.logoImage = await handleImagePath(logoImage);
