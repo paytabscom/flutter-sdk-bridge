@@ -12,7 +12,7 @@ Plugin Support:
 
 ```
 dependencies:
-   flutter_paytabs_bridge: ^2.1.6`
+   flutter_paytabs_bridge: ^2.1.7`
 ```
 
 ## Usage
@@ -241,6 +241,10 @@ FlutterPaytabsBridge.startAlternativePaymentMethod(await generateConfig(),
     });
     
 ```
+### Handling Transaction response
+if the transaction is not successful you should check for the corresponding failure code you will receive the code in 
+```responseCode ``` .. all codes can be found in  [Payment Response Codes][responseCodes]
+
 ## Customize the Theme:
 ![UI guide](https://user-images.githubusercontent.com/13621658/109432213-d7981380-7a12-11eb-9224-c8fc12b0024d.jpg)
 
@@ -375,3 +379,4 @@ See [LICENSE][license].
  [applepayguide]: https://github.com/paytabscom/flutter-sdk-bridge/blob/pt2/ApplePayConfiguration.md
  [english]: https://github.com/paytabscom/paytabs-android-library-sample/blob/master/res/strings.xml
  [arabic]: https://github.com/paytabscom/paytabs-android-library-sample/blob/master/res/strings-ar.xml
+ [responseCodes]: https://site.paytabs.com/en/pt2-documentation/testing/payment-response-codes/
