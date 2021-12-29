@@ -19,8 +19,6 @@ rootProject.allprojects {
         google()
         jcenter()
         maven { url 'https://jitpack.io' }
-        maven { url "http://pay.cards/maven" }
-
     }
 }
 
@@ -43,6 +41,5 @@ android {
 }
 
 dependencies {
-
     implementation 'com.paytabs:payment-sdk:6.2.1'
 }
