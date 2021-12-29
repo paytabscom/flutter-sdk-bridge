@@ -16,3 +16,6 @@
 * fix handle merchant logo image
 ## 2.1.4
 * add mada network
+## 2.1.7
+* fixed multiple payments in one session issue
+* fixed logo directory issue
