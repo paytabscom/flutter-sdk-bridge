@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/flutter-sdk-bridge.iml" filepath="$PROJECT_DIR$/.idea/flutter-sdk-bridge.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/flutter-sdk-bridge.iml" filepath="$PROJECT_DIR$/.idea/modules/flutter-sdk-bridge.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/android/flutter-sdk-bridge.flutter_paytabs_bridge_emulator.iml" filepath="$PROJECT_DIR$/.idea/modules/android/flutter-sdk-bridge.flutter_paytabs_bridge_emulator.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/android/paytabs_sdk/flutter-sdk-bridge.paytabs_sdk.iml" filepath="$PROJECT_DIR$/.idea/modules/android/paytabs_sdk/flutter-sdk-bridge.paytabs_sdk.iml" />
     </modules>
   </component>
 </project>

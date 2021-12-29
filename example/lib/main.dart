@@ -25,7 +25,7 @@ class _MyAppState extends State<MyApp> {
     super.initState();
   }
 
-  Future<PaymentSdkConfigurationDetails> generateConfig() async {
+  PaymentSdkConfigurationDetails generateConfig() {
     var billingDetails = BillingDetails("John Smith", "email@domain.com",
         "+97311111111", "st. 12", "ae", "dubai", "dubai", "12345");
     var shippingDetails = ShippingDetails("John Smith", "email@domain.com",
@@ -59,7 +59,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> payPressed() async {
-    FlutterPaytabsBridge.startCardPayment(await generateConfig(), (event) {
+    FlutterPaytabsBridge.startCardPayment(generateConfig(), (event) {
       setState(() {
         if (event["status"] == "success") {
           // Handle transaction details here.
