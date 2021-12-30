@@ -1,2 +1,1 @@
-include ':paytabs_sdk'
 rootProject.name = 'flutter_paytabs_bridge_emulator'

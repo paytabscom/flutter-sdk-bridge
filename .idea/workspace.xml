@@ -4,16 +4,17 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d474f472-bdc4-4fd4-81c8-06d5780cc40b" name="Default Changelist" comment="adding IOSThemeConfiguration.dart">
-      <change afterPath="$PROJECT_DIR$/settings.gradle" afterDir="false" />
+    <list default="true" id="e065d9f2-283b-46ff-b4d2-5e5bbfee9351" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CHANGELOG.md" beforeDir="false" afterPath="$PROJECT_DIR$/CHANGELOG.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/android/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/android/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/paytabs_sdk/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/android/paytabs_sdk/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/settings.gradle" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/android/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/example/android/settings.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/paytabs_sdk/build.gradle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/paytabs_sdk/paytabs_sdk.aar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/android/settings.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/example/lib/main.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/example/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/example/pubspec.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/example/pubspec.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/flutter_paytabs_bridge_emulator.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/flutter_paytabs_bridge_emulator.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
     </list>
@@ -22,10 +23,28 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[C:\Users\Lenovo\.android\avd\Pixel_4_API_30.avd]" />
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <projects_view>
+          <tree_state>
+            <expand />
+            <select />
+          </tree_state>
+        </projects_view>
+      </state>
+    </system>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="clickpay" />
+        <entry key="$PROJECT_DIR$" value="master" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -43,16 +62,19 @@
     <property name="dart.analysis.tool.window.visible" value="false" />
     <property name="io.flutter.reload.alreadyRun" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/android" />
+    <property name="project.structure.last.edited" value="Project" />
+    <property name="project.structure.proportion" value="0.17" />
+    <property name="project.structure.side.proportion" value="0.0" />
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
     <property name="show.migrate.to.gradle.popup" value="false" />
   </component>
-  <component name="SpellCheckerSettings" BundledDictionaries="0" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" Dictionaries="0" CorrectionsLimit="5" DefaultDictionary="application-level" UseSingleDictionary="true" />
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="d474f472-bdc4-4fd4-81c8-06d5780cc40b" name="Default Changelist" comment="" />
+      <changelist id="e065d9f2-283b-46ff-b4d2-5e5bbfee9351" name="Default Changelist" comment="" />
       <created>1609754429852</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
@@ -91,27 +113,5 @@
     <MESSAGE value="adding force shipping parameter" />
     <MESSAGE value="aar[5.0.7] progurading http package" />
     <option name="LAST_COMMIT_MESSAGE" value="aar[5.0.7] progurading http package" />
-  </component>
-  <component name="WindowStateProjectService">
-    <state x="421" y="95" key="FileChooserDialogImpl" timestamp="1617928404083">
-      <screen x="0" y="0" width="1280" height="680" />
-    </state>
-    <state x="421" y="95" key="FileChooserDialogImpl/0.0.1280.680@0.0.1280.680" timestamp="1617928404083" />
-    <state width="1236" height="323" key="GridCell.Tab.0.bottom" timestamp="1617929720435">
-      <screen x="0" y="0" width="1280" height="680" />
-    </state>
-    <state width="1236" height="323" key="GridCell.Tab.0.bottom/0.0.1280.680@0.0.1280.680" timestamp="1617929720435" />
-    <state width="1236" height="323" key="GridCell.Tab.0.center" timestamp="1617929720435">
-      <screen x="0" y="0" width="1280" height="680" />
-    </state>
-    <state width="1236" height="323" key="GridCell.Tab.0.center/0.0.1280.680@0.0.1280.680" timestamp="1617929720435" />
-    <state width="1236" height="323" key="GridCell.Tab.0.left" timestamp="1617929720435">
-      <screen x="0" y="0" width="1280" height="680" />
-    </state>
-    <state width="1236" height="323" key="GridCell.Tab.0.left/0.0.1280.680@0.0.1280.680" timestamp="1617929720435" />
-    <state width="1236" height="323" key="GridCell.Tab.0.right" timestamp="1617929720435">
-      <screen x="0" y="0" width="1280" height="680" />
-    </state>
-    <state width="1236" height="323" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1617929720435" />
   </component>
 </project>
