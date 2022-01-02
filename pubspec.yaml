@@ -1,7 +1,7 @@
 name: flutter_paytabs_bridge_emulator
-description: PayTabs plugin.
-version: 1.0.11
-homepage: http://wwww.paytabs.com
+description: PayTabs plugin, Flutter paytabs plugin is a wrapper for the native PayTabs Android and iOS SDKs, It helps you integrate with PayTabs payment gateway.
+version: 1.0.14
+homepage: http://www.paytabs.com
 
 environment:
   sdk: ">=2.13.0 <3.0.0"

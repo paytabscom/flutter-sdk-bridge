@@ -4,19 +4,17 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e065d9f2-283b-46ff-b4d2-5e5bbfee9351" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" afterDir="false" />
+    <list default="true" id="e065d9f2-283b-46ff-b4d2-5e5bbfee9351" name="Default Changelist" comment="Apply second payment issue fix&#10;- Replace local android sdk with maven on&#10;- Upgrade min sdk to 2.13.0">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/android/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/paytabs_sdk/build.gradle" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/paytabs_sdk/paytabs_sdk.aar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/android/settings.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/example/lib/main.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/android/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/src/main/java/com/paytabs/flutter_paytabs_bridge_emulator/FlutterPaytabsBridge.java" beforeDir="false" afterPath="$PROJECT_DIR$/android/src/main/java/com/paytabs/flutter_paytabs_bridge_emulator/FlutterPaytabsBridge.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/Runner/Assets.xcassets/AppIcon.appiconset/Contents.json" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/Runner/Assets.xcassets/AppIcon.appiconset/Contents.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/Runner/Assets.xcassets/LaunchImage.imageset/Contents.json" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/Runner/Assets.xcassets/LaunchImage.imageset/Contents.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/Runner/Assets.xcassets/LaunchImage.imageset/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/Runner/Assets.xcassets/LaunchImage.imageset/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/example/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/example/pubspec.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/example/pubspec.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/flutter_paytabs_bridge_emulator.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/flutter_paytabs_bridge_emulator.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/flutter_paytabs_bridge_emulator_test.dart" beforeDir="false" afterPath="$PROJECT_DIR$/test/flutter_paytabs_bridge_emulator_test.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -94,7 +92,14 @@
       <option name="project" value="LOCAL" />
       <updated>1615896723178</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Apply second payment issue fix&#10;- Replace local android sdk with maven on&#10;- Upgrade min sdk to 2.13.0">
+      <created>1640866396600</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1640866396601</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -112,6 +117,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="adding force shipping parameter" />
     <MESSAGE value="aar[5.0.7] progurading http package" />
-    <option name="LAST_COMMIT_MESSAGE" value="aar[5.0.7] progurading http package" />
+    <MESSAGE value="Apply second payment issue fix&#10;- Replace local android sdk with maven on&#10;- Upgrade min sdk to 2.13.0" />
+    <option name="LAST_COMMIT_MESSAGE" value="Apply second payment issue fix&#10;- Replace local android sdk with maven on&#10;- Upgrade min sdk to 2.13.0" />
   </component>
 </project>

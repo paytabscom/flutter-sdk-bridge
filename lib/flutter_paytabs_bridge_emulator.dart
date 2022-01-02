@@ -1,7 +1,7 @@
 import 'dart:async';
+import 'dart:io' show Platform;
 
 import 'package:flutter/services.dart';
-import 'dart:io' show Platform;
 
 // Constants
 const String pt_merchant_email = 'pt_merchant_email';
@@ -36,12 +36,11 @@ const String pt_force_validate_shipping = 'pt_force_validate_shipping';
 // --------
 
 class FlutterPaytabsSdk {
-
   static Future<dynamic> startPayment(
       Map args, void eventsCallBack(dynamic)) async {
     MethodChannel _channel = MethodChannel('flutter_paytabs_bridge_emulator');
     EventChannel stream =
-    EventChannel('flutter_paytabs_bridge_emulator_stream');
+        EventChannel('flutter_paytabs_bridge_emulator_stream');
     stream.receiveBroadcastStream().listen(eventsCallBack);
     return await _channel.invokeMethod('startPayment', args);
   }
@@ -53,9 +52,8 @@ class FlutterPaytabsSdk {
     }
     MethodChannel _channel = MethodChannel('flutter_paytabs_bridge_emulator');
     EventChannel stream =
-    EventChannel('flutter_paytabs_bridge_emulator_stream');
+        EventChannel('flutter_paytabs_bridge_emulator_stream');
     stream.receiveBroadcastStream().listen(eventsCallBack);
     return await _channel.invokeMethod('startApplePayPayment', args);
   }
-
 }

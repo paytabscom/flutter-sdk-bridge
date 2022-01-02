@@ -1,3 +1,5 @@
+## 1.0.14
+fix second payment
 ## 1.0.11
 local aar dependency
 ## 1.0.8

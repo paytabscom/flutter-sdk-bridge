@@ -1,3 +1,1 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="com.paytabs.flutter_paytabs_bridge_emulator">
-</manifest>
+<manifest package="com.paytabs.flutter_paytabs_bridge_emulator"></manifest>

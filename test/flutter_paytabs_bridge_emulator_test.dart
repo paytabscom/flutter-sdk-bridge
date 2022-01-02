@@ -2,7 +2,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  const MethodChannel channel = MethodChannel('flutter_paytabs_bridge_emulator');
+  const MethodChannel channel =
+      MethodChannel('flutter_paytabs_bridge_emulator');
 
   TestWidgetsFlutterBinding.ensureInitialized();
 
@@ -15,5 +16,4 @@ void main() {
   tearDown(() {
     channel.setMockMethodCallHandler(null);
   });
-
 }
