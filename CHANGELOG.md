@@ -19,3 +19,5 @@
 ## 2.1.7
 * fixed multiple payments in one session issue
 * fixed logo directory issue
+## 2.1.8
+* fixed apm cancel callback
