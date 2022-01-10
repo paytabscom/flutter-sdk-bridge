@@ -2,11 +2,11 @@ import 'dart:async';
 import 'dart:io' show Platform;
 
 import 'package:flutter/material.dart';
-import 'package:flutter_paytabs_bridge/BaseBillingShippingInfo.dart';
-import 'package:flutter_paytabs_bridge/IOSThemeConfiguration.dart';
-import 'package:flutter_paytabs_bridge/PaymentSdkApms.dart';
-import 'package:flutter_paytabs_bridge/PaymentSdkConfigurationDetails.dart';
-import 'package:flutter_paytabs_bridge/flutter_paytabs_bridge.dart';
+import 'package:flutter_paymentsdk_bridge/BaseBillingShippingInfo.dart';
+import 'package:flutter_paymentsdk_bridge/IOSThemeConfiguration.dart';
+import 'package:flutter_paymentsdk_bridge/PaymentSdkApms.dart';
+import 'package:flutter_paymentsdk_bridge/PaymentSdkConfigurationDetails.dart';
+import 'package:flutter_paymentsdk_bridge/flutter_paytabs_bridge.dart';
 
 void main() {
   runApp(MyApp());

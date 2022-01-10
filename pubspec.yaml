@@ -1,4 +1,4 @@
-name: flutter_paytabs_bridge
+name: flutter_paymentsdk_bridge
 description: Flutter plugin for Paytabs.
 version: 2.1.7
 homepage: "https://github.com/paytabscom/flutter-sdk-bridge"
@@ -25,7 +25,7 @@ flutter:
   plugin:
     platforms:
       android:
-        package: com.paytabs.flutter_paytabs_bridge
+        package: com.paymentsdk.flutter_paymentsdk_bridge
         pluginClass: FlutterPaytabsBridgePlugin
       ios:
         pluginClass: FlutterPaytabsBridgePlugin
