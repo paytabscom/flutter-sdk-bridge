@@ -1,4 +1,4 @@
-#import "FlutterPaytabsBridgePlugin.h"
+#import "FlutterPaymentSDKBridgePlugin.h"
 #if __has_include(<flutter_paytabs_bridge/flutter_paytabs_bridge-Swift.h>)
 #import <flutter_paytabs_bridge/flutter_paytabs_bridge-Swift.h>
 #else
@@ -8,8 +8,8 @@
 #import "flutter_paytabs_bridge-Swift.h"
 #endif
 
-@implementation FlutterPaytabsBridgePlugin
+@implementation FlutterPaymentSDKBridgePlugin
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
-  [SwiftFlutterPaytabsBridgePlugin registerWithRegistrar:registrar];
+  [SwiftFlutterPaymentSDKBridgePlugin registerWithRegistrar:registrar];
 }
 @end
