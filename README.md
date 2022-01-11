@@ -1,5 +1,5 @@
 # Flutter Clickpay Bridge
-![Version](https://img.shields.io/badge/flutter%20clickpay%20bridge-v2.0.3_beta-green)
+![Version](https://img.shields.io/badge/flutter%20clickpay%20bridge-v2.1.1-green)
 
 Flutter ClickPay plugin is a wrapper for the native ClickPay Android and iOS SDKs, It helps you integrate with ClickPay payment gateway.
 
@@ -12,7 +12,7 @@ Plugin Support:
 
 ```
 dependencies:
-   flutter_clickpay_bridge: ^2.1.1`
+   flutter_clickpay_bridge: ^2.1.1
 ```
 
 ## Usage
