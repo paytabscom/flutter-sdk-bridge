@@ -76,13 +76,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_paytabs_bridge:
+  flutter_clickpay_bridge:
     dependency: "direct main"
     description:
       path: ".."
       relative: true
     source: path
-    version: "2.1.7"
+    version: "2.1.1"
   flutter_test:
     dependency: "direct dev"
     description: flutter

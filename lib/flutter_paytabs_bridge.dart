@@ -79,7 +79,7 @@ const String pt_ios_button_font = 'pt_ios_button_font';
 const String pt_ios_title_font = 'pt_ios_title_font';
 const String pt_ios_logo = "pt_ios_logo";
 
-class FlutterPaytabsBridge {
+class FlutterClickPayBridge {
   static Future<dynamic> startCardPayment(
       PaymentSdkConfigurationDetails arg, void eventsCallBack(dynamic)) async {
     arg.samsungPayToken = null;

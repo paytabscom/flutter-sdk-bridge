@@ -2,11 +2,11 @@ import 'dart:async';
 import 'dart:io' show Platform;
 
 import 'package:flutter/material.dart';
-import 'package:flutter_paytabs_bridge/BaseBillingShippingInfo.dart';
-import 'package:flutter_paytabs_bridge/IOSThemeConfiguration.dart';
-import 'package:flutter_paytabs_bridge/PaymentSdkApms.dart';
-import 'package:flutter_paytabs_bridge/PaymentSdkConfigurationDetails.dart';
-import 'package:flutter_paytabs_bridge/flutter_paytabs_bridge.dart';
+import 'package:flutter_clickpay_bridge/BaseBillingShippingInfo.dart';
+import 'package:flutter_clickpay_bridge/IOSThemeConfiguration.dart';
+import 'package:flutter_clickpay_bridge/PaymentSdkApms.dart';
+import 'package:flutter_clickpay_bridge/PaymentSdkConfigurationDetails.dart';
+import 'package:flutter_clickpay_bridge/flutter_paytabs_bridge.dart';
 
 void main() {
   runApp(MyApp());
@@ -18,7 +18,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  String _instructions = 'Tap on "Pay" Button to try PayTabs plugin';
+  String _instructions = 'Tap on "Pay" Button to try the plugin';
 
   @override
   void initState() {
@@ -33,9 +33,9 @@ class _MyAppState extends State<MyApp> {
     List<PaymentSdkAPms> apms = [];
     apms.add(PaymentSdkAPms.STC_PAY);
     var configuration = PaymentSdkConfigurationDetails(
-        profileId: "*profile id*",
-        serverKey: "*server key*",
-        clientKey: "*client key*",
+        profileId: "42007",
+        serverKey: "STJNLJWLDL-JBJRGGBRBD-6NHBMHTKMM",
+        clientKey: "CKKMD9-HQVQ62-6RTT2R-GRMP2B",
         cartId: "12433",
         cartDescription: "Flowers",
         merchantName: "Flowers Store",
@@ -59,7 +59,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> payPressed() async {
-    FlutterPaytabsBridge.startCardPayment(generateConfig(), (event) {
+    FlutterClickPayBridge.startCardPayment(generateConfig(), (event) {
       setState(() {
         if (event["status"] == "success") {
           // Handle transaction details here.
@@ -75,7 +75,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> apmsPayPressed() async {
-    FlutterPaytabsBridge.startAlternativePaymentMethod(await generateConfig(),
+    FlutterClickPayBridge.startAlternativePaymentMethod(await generateConfig(),
         (event) {
       setState(() {
         if (event["status"] == "success") {
@@ -104,7 +104,7 @@ class _MyAppState extends State<MyApp> {
         merchantCountryCode: "ae",
         merchantApplePayIndentifier: "merchant.com.bunldeId",
         simplifyApplePayValidation: true);
-    FlutterPaytabsBridge.startApplePayPayment(configuration, (event) {
+    FlutterClickPayBridge.startApplePayPayment(configuration, (event) {
       setState(() {
         if (event["status"] == "success") {
           // Handle transaction details here.
