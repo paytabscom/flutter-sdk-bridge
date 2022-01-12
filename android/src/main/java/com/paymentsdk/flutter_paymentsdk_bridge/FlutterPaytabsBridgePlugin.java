@@ -1,4 +1,4 @@
-package com.paytabs.flutter_paytabs_bridge;
+package com.paymentsdk.flutter_paymentsdk_bridge;
 
 import android.app.Activity;
 import android.content.Context;
