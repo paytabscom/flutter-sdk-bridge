@@ -3,3 +3,6 @@
 
 ## 2.1.0
 * TODO: add APMS.
+
+## 2.1.1
+* Fixed iOS podspec issue

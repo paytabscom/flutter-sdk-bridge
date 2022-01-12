@@ -28,7 +28,7 @@ flutter:
         package: com.paymentsdk.flutter_paymentsdk_bridge
         pluginClass: FlutterPaymentSdkBridgePlugin
       ios:
-        pluginClass: FlutterPaymentSdkBridgePlugin
+        pluginClass: FlutterPaymentSDKBridgePlugin
 
   # To add assets to your plugin package, add an assets section, like this:
   # assets:
