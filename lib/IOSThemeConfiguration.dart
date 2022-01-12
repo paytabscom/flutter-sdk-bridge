@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_paytabs_bridge/flutter_paytabs_bridge.dart';
+import 'flutter_paytabs_bridge.dart';
 
 class IOSThemeConfigurations {
   String? logoImage;

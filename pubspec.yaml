@@ -25,10 +25,10 @@ flutter:
   plugin:
     platforms:
       android:
-        package: com.paytabs.flutter_paytabs_bridge
+        package: com.paymentsdk.flutter_paymentsdk_bridge
         pluginClass: FlutterPaytabsBridgePlugin
       ios:
-        pluginClass: FlutterPaytabsBridgePlugin
+        pluginClass: FlutterPaymentSDKBridgePlugin
 
   # To add assets to your plugin package, add an assets section, like this:
   # assets:
