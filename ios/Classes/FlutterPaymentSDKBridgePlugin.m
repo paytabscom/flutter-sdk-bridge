@@ -10,6 +10,6 @@
 
 @implementation FlutterPaymentSDKBridgePlugin
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
-  [SwiftFlutterPaytabsBridgePlugin registerWithRegistrar:registrar];
+  [SwiftFlutterPaymentSDKBridgePlugin registerWithRegistrar:registrar];
 }
 @end

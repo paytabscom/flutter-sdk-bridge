@@ -1,0 +1,29 @@
+PODS:
+  - ClickPay (6.1.1)
+  - Flutter (1.0.0)
+  - flutter_clickpay_bridge (2.1.1):
+    - ClickPay (= 6.1.1)
+    - Flutter
+
+DEPENDENCIES:
+  - Flutter (from `Flutter`)
+  - flutter_clickpay_bridge (from `.symlinks/plugins/flutter_clickpay_bridge/ios`)
+
+SPEC REPOS:
+  trunk:
+    - ClickPay
+
+EXTERNAL SOURCES:
+  Flutter:
+    :path: Flutter
+  flutter_clickpay_bridge:
+    :path: ".symlinks/plugins/flutter_clickpay_bridge/ios"
+
+SPEC CHECKSUMS:
+  ClickPay: 61afbd7e0e6f04208a017232448f1c00fd6f158d
+  Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
+  flutter_clickpay_bridge: d9b156862b59f3040f394fa74f44f8db449e626a
+
+PODFILE CHECKSUM: aafe91acc616949ddb318b77800a7f51bffa2a4c
+
+COCOAPODS: 1.11.2
