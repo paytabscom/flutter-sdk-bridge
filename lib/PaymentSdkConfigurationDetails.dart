@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_clickpay_bridge/PaymentSdkApms.dart';
-import 'package:flutter_clickpay_bridge/PaymentSdkTransactionClass.dart';
-import 'package:flutter_clickpay_bridge/PaymentSdkTransactionType.dart';
+import 'PaymentSdkApms.dart';
+import 'PaymentSdkTransactionClass.dart';
+import 'PaymentSdkTransactionType.dart';
 
 import 'BaseBillingShippingInfo.dart';
 import 'IOSThemeConfiguration.dart';

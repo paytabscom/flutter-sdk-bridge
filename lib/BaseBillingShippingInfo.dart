@@ -1,4 +1,4 @@
-import 'package:flutter_clickpay_bridge/flutter_clickpay_bridge.dart';
+import 'flutter_clickpay_bridge.dart';
 
 class BillingDetails {
   String name, email, phone, addressLine, country, city, state, zipCode;

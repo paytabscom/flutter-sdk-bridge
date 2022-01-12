@@ -1,5 +1,5 @@
 
-group 'com.paytabs.flutter_payment_sdk_bridge'
+group 'com.paymentsdk.flutter_paymentsdk_bridge'
 version '1.0'
 
 
@@ -18,10 +18,6 @@ rootProject.allprojects {
     repositories {
         google()
         jcenter()
-        maven { url 'https://jitpack.io' }
-
-        maven { url "http://pay.cards/maven" }
-
     }
 }
 
@@ -45,5 +41,5 @@ android {
 
 dependencies {
 
-    implementation 'sa.com.clickpay:payment-sdk:6.1.0'
+    implementation 'sa.com.clickpay:payment-sdk:6.1.7'
 }

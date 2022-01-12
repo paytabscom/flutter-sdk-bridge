@@ -1,4 +1,4 @@
 #import <Flutter/Flutter.h>
 
-@interface FlutterPaytabsBridgePlugin : NSObject<FlutterPlugin>
+@interface FlutterPaymentSDKBridgePlugin : NSObject<FlutterPlugin>
 @end

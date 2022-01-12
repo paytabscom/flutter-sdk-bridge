@@ -5,7 +5,7 @@ import PaymentSDK
 let channelName = "flutter_payment_sdk_bridge"
 let streamChannelName = "flutter_payment_sdk_bridge_stream"
 
-public class SwiftFlutterPaytabsBridgePlugin: NSObject, FlutterPlugin {
+public class SwiftFlutterPaymentSDKBridgePlugin: NSObject, FlutterPlugin {
     var flutterEventSink: FlutterEventSink?
     var flutterListening = false
     var flutterResult: FlutterResult?
@@ -17,7 +17,7 @@ public class SwiftFlutterPaytabsBridgePlugin: NSObject, FlutterPlugin {
     }
     public static func register(with registrar: FlutterPluginRegistrar) {
         let channel = FlutterMethodChannel(name: channelName, binaryMessenger: registrar.messenger())
-        let instance = SwiftFlutterPaytabsBridgePlugin()
+        let instance = SwiftFlutterPaymentSDKBridgePlugin()
         registrar.addMethodCallDelegate(instance, channel: channel)
         let stream = FlutterEventChannel(name: streamChannelName, binaryMessenger: registrar.messenger())
         stream.setStreamHandler(instance)
@@ -223,7 +223,7 @@ public class SwiftFlutterPaytabsBridgePlugin: NSObject, FlutterPlugin {
 }
 
 
-extension SwiftFlutterPaytabsBridgePlugin: FlutterStreamHandler {
+extension SwiftFlutterPaymentSDKBridgePlugin: FlutterStreamHandler {
     public func onListen(withArguments arguments: Any?, eventSink events: @escaping FlutterEventSink) -> FlutterError? {
         flutterEventSink = events
         flutterListening = true
@@ -238,7 +238,7 @@ extension SwiftFlutterPaytabsBridgePlugin: FlutterStreamHandler {
 }
 
 
-extension SwiftFlutterPaytabsBridgePlugin: PaymentManagerDelegate {
+extension SwiftFlutterPaymentSDKBridgePlugin: PaymentManagerDelegate {
     public func paymentManager(didFinishTransaction transactionDetails: PaymentSDKTransactionDetails?, error: Error?) {
         if flutterListening {
             if let error = error {
