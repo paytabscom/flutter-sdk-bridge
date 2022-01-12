@@ -1,4 +1,4 @@
-package com.payment_sdk.flutter_payment_sdk_bridge;
+package com.paymentsdk.flutter_paymentsdk_bridge;
 
 import static com.payment.paymentsdk.integrationmodels.PaymentSdkApmsKt.createPaymentSdkApms;
 import static com.payment.paymentsdk.integrationmodels.PaymentSdkLanguageCodeKt.createPaymentSdkLanguageCode;
