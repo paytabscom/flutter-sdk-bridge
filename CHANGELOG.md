@@ -21,3 +21,5 @@
 * fixed logo directory issue
 ## 2.1.8
 * fixed apm cancel callback
+## 2.1.9
+* fixed localization issue on payment screen
