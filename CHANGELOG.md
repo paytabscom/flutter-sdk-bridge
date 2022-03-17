@@ -23,3 +23,5 @@
 * fixed apm cancel callback
 ## 2.1.9
 * fixed localization issue on payment screen
+## 2.2.0
+* fix meeza and add billingLinking option
