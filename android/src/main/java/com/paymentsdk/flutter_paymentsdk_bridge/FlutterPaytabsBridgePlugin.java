@@ -251,6 +251,7 @@ public class FlutterPaytabsBridgePlugin implements FlutterPlugin, MethodCallHand
                 .forceShippingInfo(paymentDetails.optBoolean("pt_force_validate_shipping"))
                 .setMerchantIcon(iconUri)
                 .setScreenTitle(screenTitle)
+                .linkBillingNameWithCard(paymentDetails.optBoolean("pt_link_billing_name"))
                 .build();
     }
     

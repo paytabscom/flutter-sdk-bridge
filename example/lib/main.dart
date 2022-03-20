@@ -47,7 +47,8 @@ class _MyAppState extends State<MyApp> {
         merchantCountryCode: "SA",
         billingDetails: billingDetails,
         shippingDetails: shippingDetails,
-        alternativePaymentMethods: apms);
+        alternativePaymentMethods: apms,
+        linkBillingNameWithCardHolderName: true);
 
     var theme = IOSThemeConfigurations();
 

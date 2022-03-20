@@ -116,7 +116,8 @@ extension PaymentSdkConfigurationDetailsExtension
       pt_hide_card_scanner: this.hideCardScanner,
       pt_transaction_class: this.transactionClass?.name,
       pt_transaction_type: this.transactionType?.name,
-      pt_apms: getApmsConcatenated(this.alternativePaymentMethods)
+      pt_apms: getApmsConcatenated(this.alternativePaymentMethods),
+      pt_link_billing_name: this.linkBillingNameWithCardHolderName
     };
   }
 }
