@@ -1,5 +1,5 @@
 # Flutter PayTabs Bridge
-![Version](https://img.shields.io/badge/flutter%20paytabs%20bridge-v2.2.0-green)
+![Version](https://img.shields.io/badge/flutter%20paytabs%20bridge-v2.2.1-green)
 
 Flutter paytabs plugin is a wrapper for the native PayTabs Android and iOS SDKs, It helps you integrate with PayTabs payment gateway.
 
@@ -12,7 +12,7 @@ Plugin Support:
 
 ```
 dependencies:
-   flutter_paytabs_bridge: ^2.2.0
+   flutter_paytabs_bridge: ^2.2.1
 ```
 
 ## Usage
@@ -155,6 +155,7 @@ To enable tokenisation please follow the below instructions.
         currencyCode: "Currency code",
         merchantCountryCode: "2 chars iso country code",
         merchantApplePayIndentifier: "merchant.com.bundleID",
+        linkBillingNameWithCardHolderName: true
         );
 ```
 
@@ -245,6 +246,17 @@ FlutterPaytabsBridge.startAlternativePaymentMethod(await generateConfig(),
 if the transaction is not successful you should check for the corresponding failure code you will receive the code in 
 ```responseCode ``` .. all codes can be found in  [Payment Response Codes][responseCodes]
 
+
+## Link billing name with card holder name
+By default, the billing name is linked with card holder name, if you set its flag to `false` the billing name and the card holder name will be seperated
+```
+ var configuration = PaymentSdkConfigurationDetails(
+        ...
+        ...
+        linkBillingNameWithCardHolderName: true
+        );
+
+```
 ## Customize the Theme:
 ![UI guide](https://user-images.githubusercontent.com/13621658/109432213-d7981380-7a12-11eb-9224-c8fc12b0024d.jpg)
 

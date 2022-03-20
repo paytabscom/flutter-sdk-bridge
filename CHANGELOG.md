@@ -25,3 +25,5 @@
 * fixed localization issue on payment screen
 ## 2.2.0
 * fix meeza and add billingLinking option
+## 2.2.1
+* fix meeza and add billingLinking option on ios and android
