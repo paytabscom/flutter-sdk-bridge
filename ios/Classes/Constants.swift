@@ -26,6 +26,7 @@ let pt_merchant_id = "pt_merchant_id"
 let pt_server_ip = "pt_server_ip"
 let pt_hide_card_scanner = "pt_hide_card_scanner"
 let pt_simplify_apple_pay_validation = "pt_simplify_apple_pay_validation"
+let pt_link_billing_name = "pt_link_billing_name"
 
 // Billing
 let pt_billing_details = "pt_billing_details"

@@ -30,6 +30,7 @@ class PaymentSdkConfigurationDetails {
   bool? showBillingInfo = false;
   bool? showShippingInfo = false;
   bool? forceShippingInfo = false;
+  bool? linkBillingNameWithCardHolderName = true;
   String? merchantApplePayIndentifier;
   bool? simplifyApplePayValidation;
   bool? hideCardScanner = false;
@@ -68,7 +69,8 @@ class PaymentSdkConfigurationDetails {
       this.iOSThemeConfigurations,
       this.transactionClass,
       this.transactionType,
-      this.alternativePaymentMethods});
+      this.alternativePaymentMethods,
+      this.linkBillingNameWithCardHolderName});
 
   String getApmsConcatenated(List<PaymentSdkAPms>? list) {
     if (list == null || list.isEmpty) return "";
@@ -114,7 +116,8 @@ extension PaymentSdkConfigurationDetailsExtension
       pt_hide_card_scanner: this.hideCardScanner,
       pt_transaction_class: this.transactionClass?.name,
       pt_transaction_type: this.transactionType?.name,
-      pt_apms: getApmsConcatenated(this.alternativePaymentMethods)
+      pt_apms: getApmsConcatenated(this.alternativePaymentMethods),
+      pt_link_billing_name: this.linkBillingNameWithCardHolderName
     };
   }
 }

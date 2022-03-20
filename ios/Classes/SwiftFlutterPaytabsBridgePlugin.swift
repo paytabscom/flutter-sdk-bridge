@@ -93,6 +93,7 @@ public class SwiftFlutterPaymentSDKBridgePlugin: NSObject, FlutterPlugin {
         configuration.transactionReference = dictionary[pt_transaction_reference] as? String
         configuration.hideCardScanner = dictionary[pt_hide_card_scanner] as? Bool ?? false
         configuration.serverIP = dictionary[pt_server_ip] as? String
+        configuration.linkBillingNameWithCard = dictionary[pt_link_billing_name] as? Bool ?? true
 
         if let apmsString = dictionary[pt_apms] as? String {
             let alternativePaymentMethods = apmsString.components(separatedBy: ",")

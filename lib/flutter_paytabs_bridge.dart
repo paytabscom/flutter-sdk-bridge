@@ -59,6 +59,7 @@ const String pt_color = 'pt_color';
 const String pt_theme_light = 'pt_theme_light';
 const String pt_language = 'pt_language';
 const String pt_show_billing_info = 'pt_show_billing_info';
+const String pt_link_billing_name = 'pt_link_billing_name';
 const String pt_show_shipping_info = 'pt_show_shipping_info';
 const String pt_force_validate_shipping = 'pt_force_validate_shipping';
 const String pt_ios_primary_color = 'pt_ios_primary_color';
