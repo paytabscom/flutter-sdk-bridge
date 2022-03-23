@@ -27,3 +27,5 @@
 * fix meeza and add billingLinking option
 ## 2.2.1
 * fix meeza and add billingLinking option on ios and android
+## 2.2.2
+* change name validation, expiry date is now 2 digits max
