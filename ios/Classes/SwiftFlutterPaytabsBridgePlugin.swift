@@ -1,15 +1,12 @@
 import Flutter
 import UIKit
 import PaymentSDK
-
 let channelName = "flutter_paytabs_bridge"
 let streamChannelName = "flutter_paytabs_bridge_stream"
-
 public class SwiftFlutterPaymentSDKBridgePlugin: NSObject, FlutterPlugin {
     var flutterEventSink: FlutterEventSink?
     var flutterListening = false
     var flutterResult: FlutterResult?
-    
     enum CallMethods: String {
         case startCardPayment
         case startApplePayPayment
@@ -22,7 +19,6 @@ public class SwiftFlutterPaymentSDKBridgePlugin: NSObject, FlutterPlugin {
         let stream = FlutterEventChannel(name: streamChannelName, binaryMessenger: registrar.messenger())
         stream.setStreamHandler(instance)
     }
-    
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
         let arguments: [String : Any] = call.arguments as? [String : Any] ?? [String : Any]()
         switch call.method {
@@ -36,7 +32,6 @@ public class SwiftFlutterPaymentSDKBridgePlugin: NSObject, FlutterPlugin {
             break
         }
     }
-    
     private func generateAlternativePaymentMethods(apmsArray: [String]) -> [AlternativePaymentMethod] {
         var apms = [AlternativePaymentMethod]()
         for apmValue in apmsArray {
@@ -46,7 +41,6 @@ public class SwiftFlutterPaymentSDKBridgePlugin: NSObject, FlutterPlugin {
         }
         return apms
     }
-
     private func startCarPayment(arguments: [String : Any]) {
         let configuration = generateConfiguration(dictionary: arguments)
         if let rootViewController = getRootController() {
@@ -70,7 +64,6 @@ public class SwiftFlutterPaymentSDKBridgePlugin: NSObject, FlutterPlugin {
             let topController = keyWindow?.rootViewController
             return topController
         }
-    
     private func generateConfiguration(dictionary: [String: Any]) -> PaymentSDKConfiguration {
         let configuration = PaymentSDKConfiguration()
         configuration.profileID = dictionary[pt_profile_id] as? String ?? ""
@@ -94,13 +87,12 @@ public class SwiftFlutterPaymentSDKBridgePlugin: NSObject, FlutterPlugin {
         configuration.hideCardScanner = dictionary[pt_hide_card_scanner] as? Bool ?? false
         configuration.serverIP = dictionary[pt_server_ip] as? String
         configuration.linkBillingNameWithCard = dictionary[pt_link_billing_name] as? Bool ?? true
-
         if let apmsString = dictionary[pt_apms] as? String {
             let alternativePaymentMethods = apmsString.components(separatedBy: ",")
             configuration.alternativePaymentMethods = generateAlternativePaymentMethods(apmsArray: alternativePaymentMethods)
 }
-        if let tokeniseType = dictionary[pt_tokenise_type] as? Int,
-           let type = TokeniseType.getType(type: tokeniseType) {
+        if let tokeniseType = dictionary[pt_tokenise_type] as? String,
+           let type = mapTokeniseType(tokeniseType: tokeniseType) {
             configuration.tokeniseType = type
         }
         if let tokenFormat = dictionary[pt_token_format] as? String,
@@ -111,7 +103,6 @@ public class SwiftFlutterPaymentSDKBridgePlugin: NSObject, FlutterPlugin {
          configuration.transactionType = TransactionType.init(rawValue: transactionType) ?? .sale
          }
 //        public var paymentNetworks: [PKPaymentNetwork]?
-
         if let themeDictionary = dictionary[pt_ios_theme] as? [String: Any],
            let theme = generateTheme(dictionary: themeDictionary) {
             configuration.theme = theme
@@ -126,8 +117,20 @@ public class SwiftFlutterPaymentSDKBridgePlugin: NSObject, FlutterPlugin {
         }
         return configuration
     }
-    
-    
+    private func mapTokeniseType(tokeniseType: String) -> TokeniseType? {
+           var type = 0
+           switch tokeniseType {
+           case "userOptional":
+               type = 3
+           case "userMandatory":
+               type = 2
+           case "merchantMandatory":
+               type = 1
+           default:
+               break
+           }
+           return TokeniseType.getType(type: type)
+       }
     private func generateBillingDetails(dictionary: [String: Any]) -> PaymentSDKBillingDetails? {
         let billingDetails = PaymentSDKBillingDetails()
         billingDetails.name = dictionary[pt_name_billing] as? String ?? ""
@@ -152,9 +155,7 @@ public class SwiftFlutterPaymentSDKBridgePlugin: NSObject, FlutterPlugin {
         shippingDetails.zip = dictionary[pt_zip_shipping] as? String ?? ""
         return shippingDetails
     }
-    
     private func generateTheme(dictionary: [String: Any]) -> PaymentSDKTheme? {
-        
         let theme = PaymentSDKTheme.default
         if let imageName = dictionary[pt_ios_logo] as? String {
             theme.logoImage = UIImage(named: imageName)
@@ -209,7 +210,6 @@ public class SwiftFlutterPaymentSDKBridgePlugin: NSObject, FlutterPlugin {
         }
         return theme
     }
-    
     private func eventSink(code: Int, message: String, status: String, transactionDetails: [String: Any]? = nil) {
         var response = [String: Any]()
         response["code"] = code
@@ -223,23 +223,17 @@ public class SwiftFlutterPaymentSDKBridgePlugin: NSObject, FlutterPlugin {
         }
     }
 }
-
-
 extension SwiftFlutterPaymentSDKBridgePlugin: FlutterStreamHandler {
     public func onListen(withArguments arguments: Any?, eventSink events: @escaping FlutterEventSink) -> FlutterError? {
         flutterEventSink = events
         flutterListening = true
         return nil
     }
-    
     public func onCancel(withArguments arguments: Any?) -> FlutterError? {
         flutterListening = false;
         return nil
     }
-
 }
-
-
 extension SwiftFlutterPaymentSDKBridgePlugin: PaymentManagerDelegate {
     public func paymentManager(didFinishTransaction transactionDetails: PaymentSDKTransactionDetails?, error: Error?) {
         if flutterListening {
@@ -264,7 +258,6 @@ extension SwiftFlutterPaymentSDKBridgePlugin: PaymentManagerDelegate {
             }
         }
     }
-    
     public func paymentManager(didCancelPayment error: Error?) {
         eventSink(code: 0, message: "Cancelled", status: "event")
     }
