@@ -1,5 +1,5 @@
 # Flutter Clickpay Bridge
-![Version](https://img.shields.io/badge/flutter%20clickpay%20bridge-v2.1.1-green)
+![Version](https://img.shields.io/badge/flutter%20clickpay%20bridge-v2.1.2-green)
 
 Flutter ClickPay plugin is a wrapper for the native ClickPay Android and iOS SDKs, It helps you integrate with ClickPay payment gateway.
 
@@ -12,7 +12,7 @@ Plugin Support:
 
 ```
 dependencies:
-   flutter_clickpay_bridge: ^2.1.1`
+   flutter_clickpay_bridge: ^2.1.2`
 ```
 
 ## Usage
@@ -250,7 +250,7 @@ configuration.tokenFormat = PaymentSdkTokenFormat.Hex32Format
 
 Check our complete example here <https://github.com/paytabscom/flutter-sdk-bridge/tree/master/example>.
 
-<img src="https://user-images.githubusercontent.com/13621658/109432386-905e5280-7a13-11eb-847c-63f2c554e2d1.png" width="370">
+<img src="https://user-images.githubusercontent.com/95287975/160391259-97aaff10-cb9f-4103-bc3e-a938a1111128.png" width="370">
 
 ## License
 

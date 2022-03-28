@@ -1,6 +1,6 @@
 name: flutter_clickpay_bridge
 description: Flutter plugin for ClickPay.
-version: 2.1.1
+version: 2.1.2
 homepage: "https://github.com/paytabscom/flutter-sdk-bridge"
 environment:
   sdk: ">=2.12.0 <3.0.0"

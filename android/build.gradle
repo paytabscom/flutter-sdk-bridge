@@ -40,6 +40,5 @@ android {
 }
 
 dependencies {
-
-    implementation 'sa.com.clickpay:payment-sdk:6.1.7'
+    implementation 'sa.com.clickpay:payment-sdk:6.1.9'
 }
