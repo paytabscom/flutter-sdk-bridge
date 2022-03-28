@@ -31,3 +31,5 @@
 * change name validation, expiry date is now 2 digits max
 ## 2.2.3
 * change name validation
+## 2.2.4
+* fix tokenization type
