@@ -33,3 +33,5 @@
 * change name validation
 ## 2.2.4
 * fix tokenization type
+## 2.2.5
+* minor fix
