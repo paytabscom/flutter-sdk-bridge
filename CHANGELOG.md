@@ -35,3 +35,5 @@
 * fix tokenization type
 ## 2.2.5
 * minor fix
+## 2.2.6
+* minor fix
