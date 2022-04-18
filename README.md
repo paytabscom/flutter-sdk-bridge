@@ -243,6 +243,8 @@ FlutterPaytabsBridge.startAlternativePaymentMethod(await generateConfig(),
     
 ```
 ### Handling Transaction response
+you can use event["data"]["isSuccess"] to ensure a successful transaction ..
+
 if the transaction is not successful you should check for the corresponding failure code you will receive the code in 
 ```responseCode ``` .. all codes can be found in  [Payment Response Codes][responseCodes]
 

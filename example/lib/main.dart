@@ -66,6 +66,13 @@ class _MyAppState extends State<MyApp> {
           // Handle transaction details here.
           var transactionDetails = event["data"];
           print(transactionDetails);
+          if (transactionDetails["isSuccess"]) {
+            print("successful transaction");
+          } else {
+            print("failed transaction");
+          }
+
+          // print(transactionDetails["isSuccess"]);
         } else if (event["status"] == "error") {
           // Handle error here.
         } else if (event["status"] == "event") {
