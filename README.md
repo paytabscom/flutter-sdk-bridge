@@ -112,6 +112,12 @@ FlutterPaytabsBridge.startCardPayment(configuration, (event) {
           // Handle transaction details here.
           var transactionDetails = event["data"];
           print(transactionDetails);
+          
+          if (transactionDetails["isSuccess"]) {
+            print("successful transaction");
+          } else {
+            print("failed transaction");
+          }
         } else if (event["status"] == "error") {
           // Handle error here.
         } else if (event["status"] == "event") {
