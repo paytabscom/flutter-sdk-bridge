@@ -12,7 +12,7 @@ Plugin Support:
 
 ```
 dependencies:
-   flutter_paytabs_bridge: ^2.2.6
+   flutter_paytabs_bridge: ^2.2.7
 ```
 
 ## Usage
