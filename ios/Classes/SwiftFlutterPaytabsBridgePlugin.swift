@@ -245,7 +245,13 @@ extension SwiftFlutterPaymentSDKBridgePlugin: PaymentManagerDelegate {
                 do {
                     let encoder = JSONEncoder()
                     let data = try encoder.encode(transactionDetails)
-                    let dictionary = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any]
+                    var dictionary = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any]
+                    dictionary?["isSuccess"] = transactionDetails?.isSuccess()
+                    dictionary?["isPending"] = transactionDetails?.isPending()
+                    dictionary?["isOnHold"] = transactionDetails?.isOnHold()
+                    dictionary?["isAuthorized"] = transactionDetails?.isAuthorized()
+                    dictionary?["isProcessed"] = transactionDetails?.isProcessed()
+
                     eventSink(code: 200,
                               message: "",
                               status: "success",
