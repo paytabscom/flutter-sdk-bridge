@@ -395,8 +395,8 @@ See [LICENSE][license].
  [1]: https://www.paytabs.com/en/support/
  [2]: https://www.paytabs.com/en/terms-of-use/
  [3]: https://www.paytabs.com/en/privacy-policy/
- [license]: https://github.com/paytabscom/flutter-sdk-bridge/blob/pt2/LICENSE
- [applepayguide]: https://github.com/paytabscom/flutter-sdk-bridge/blob/pt2/ApplePayConfiguration.md
+ [license]: https://github.com/paytabscom/flutter-sdk-bridge/blob/master/LICENSE
+ [applepayguide]: https://github.com/paytabscom/flutter-sdk-bridge/blob/master/ApplePayConfiguration.md
  [english]: https://github.com/paytabscom/paytabs-android-library-sample/blob/master/res/strings.xml
  [arabic]: https://github.com/paytabscom/paytabs-android-library-sample/blob/master/res/strings-ar.xml
  [responseCodes]: https://site.paytabs.com/en/pt2-documentation/testing/payment-response-codes/
