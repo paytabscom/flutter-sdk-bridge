@@ -1,6 +1,6 @@
 enum PaymentSdkAPms {
   UNION_PAY, STC_PAY, VALU, MEEZA_QR,
-    OMAN_NET, KNET_CREDIT, FAWRY, KNET_DEBIT
+    OMAN_NET, KNET_CREDIT, FAWRY, KNET_DEBIT, URPAY, AMAN
 }
 
 extension PaymentSdkTokenFormatExtension on PaymentSdkAPms {
@@ -22,6 +22,10 @@ extension PaymentSdkTokenFormatExtension on PaymentSdkAPms {
         return 'fawry';
       case PaymentSdkAPms.KNET_DEBIT:
         return 'knetdebit';
+      case PaymentSdkAPms.URPAY:
+        return 'urpay';
+      case PaymentSdkAPms.AMAN:
+        return 'aman';
       default:
         return null;
     }

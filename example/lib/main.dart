@@ -31,7 +31,7 @@ class _MyAppState extends State<MyApp> {
     var shippingDetails = ShippingDetails("John Smith", "email@domain.com",
         "+97311111111", "st. 12", "ae", "dubai", "dubai", "12345");
     List<PaymentSdkAPms> apms = [];
-    apms.add(PaymentSdkAPms.STC_PAY);
+    apms.add(PaymentSdkAPms.AMAN);
     var configuration = PaymentSdkConfigurationDetails(
         profileId: "*profile id*",
         serverKey: "*server key*",
@@ -68,6 +68,9 @@ class _MyAppState extends State<MyApp> {
           print(transactionDetails);
           if (transactionDetails["isSuccess"]) {
             print("successful transaction");
+            if(transactionDetails["isPending"]){
+              print("transaction pending");
+            }
           } else {
             print("failed transaction");
           }

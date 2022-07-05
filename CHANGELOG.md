@@ -39,3 +39,5 @@
 * minor fix
 ## 2.2.7
 * added transaction states to transaction details
+## 2.2.8
+* add amman and urpay to apms, fix minor issues
