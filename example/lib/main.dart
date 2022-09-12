@@ -27,15 +27,15 @@ class _MyAppState extends State<MyApp> {
 
   PaymentSdkConfigurationDetails generateConfig() {
     var billingDetails = BillingDetails("John Smith", "email@domain.com",
-        "+97311111111", "st. 12", "ae", "dubai", "dubai", "12345");
+        "+97311111111", "st. 12", "eg", "dubai", "dubai", "12345");
     var shippingDetails = ShippingDetails("John Smith", "email@domain.com",
-        "+97311111111", "st. 12", "ae", "dubai", "dubai", "12345");
+        "+97311111111", "st. 12", "eg", "dubai", "dubai", "12345");
     List<PaymentSdkAPms> apms = [];
     apms.add(PaymentSdkAPms.AMAN);
     var configuration = PaymentSdkConfigurationDetails(
-        profileId: "*profile id*",
-        serverKey: "*server key*",
-        clientKey: "*client key*",
+        profileId: "63904",
+        serverKey: "STJNNNTDKB-JBKWMD9Z9R-LKLNZBJLG2",
+        clientKey: "CHKMMD-6MQ962-KVNDP9-NVRM92",
         cartId: "12433",
         cartDescription: "Flowers",
         merchantName: "Flowers Store",
@@ -43,8 +43,8 @@ class _MyAppState extends State<MyApp> {
         amount: 20.0,
         showBillingInfo: true,
         forceShippingInfo: false,
-        currencyCode: "SAR",
-        merchantCountryCode: "SA",
+        currencyCode: "EGP",
+        merchantCountryCode: "EG",
         billingDetails: billingDetails,
         shippingDetails: shippingDetails,
         alternativePaymentMethods: apms,
@@ -68,7 +68,34 @@ class _MyAppState extends State<MyApp> {
           print(transactionDetails);
           if (transactionDetails["isSuccess"]) {
             print("successful transaction");
-            if(transactionDetails["isPending"]){
+            if (transactionDetails["isPending"]) {
+              print("transaction pending");
+            }
+          } else {
+            print("failed transaction");
+          }
+
+          // print(transactionDetails["isSuccess"]);
+        } else if (event["status"] == "error") {
+          // Handle error here.
+        } else if (event["status"] == "event") {
+          // Handle events here.
+        }
+      });
+    });
+  }
+
+  Future<void> payWithTokenPressed() async {
+    FlutterPaytabsBridge.startTokenizedCardPayment(generateConfig(),
+        "2C4652BF67A3EA33C6B590FE658078BD", "TST2224201325593", (event) {
+      setState(() {
+        if (event["status"] == "success") {
+          // Handle transaction details here.
+          var transactionDetails = event["data"];
+          print(transactionDetails);
+          if (transactionDetails["isSuccess"]) {
+            print("successful transaction");
+            if (transactionDetails["isPending"]) {
               print("transaction pending");
             }
           } else {
@@ -160,6 +187,12 @@ class _MyAppState extends State<MyApp> {
                   payPressed();
                 },
                 child: Text('Pay with Card'),
+              ),
+              TextButton(
+                onPressed: () {
+                  payWithTokenPressed();
+                },
+                child: Text('Pay with Token'),
               ),
               SizedBox(height: 16),
               TextButton(
