@@ -9,6 +9,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.payment.paymentsdk.PaymentSdkActivity;
 import com.payment.paymentsdk.PaymentSdkConfigBuilder;
+import com.payment.paymentsdk.save_cards.entities.PaymentSDKSavedCardInfo;
 import com.payment.paymentsdk.integrationmodels.PaymentSdkApms;
 import com.payment.paymentsdk.integrationmodels.PaymentSdkBillingDetails;
 import com.payment.paymentsdk.integrationmodels.PaymentSdkConfigurationDetails;
@@ -148,7 +149,7 @@ public class FlutterPaytabsBridgePlugin implements FlutterPlugin, MethodCallHand
         try {
             HashMap<String, Object> arguments = call.arguments();
             JSONObject paymentDetails = new JSONObject(arguments);
-            PaymentSdkActivity.startTokenizedCardPayment(activity,
+            PaymentSdkActivity.start3DSecureTokenizedCardPayment(activity,
                     getPaymentSdkConfigurationDetails(paymentDetails),
                     getSavedCardInfo(paymentDetails),
                     getToken(paymentDetails),
@@ -241,7 +242,7 @@ public class FlutterPaytabsBridgePlugin implements FlutterPlugin, MethodCallHand
 
     @NotNull
     private Boolean getIsSupport3DS(JSONObject paymentDetails) throws JSONException {
-        Boolean support3DS = paymentDetails.optString("support3DS");
+        Boolean support3DS = paymentDetails.optBoolean("support3DS");
         return support3DS;
     }
 
