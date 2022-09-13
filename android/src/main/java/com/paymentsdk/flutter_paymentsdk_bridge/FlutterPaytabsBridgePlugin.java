@@ -109,9 +109,9 @@ public class FlutterPaytabsBridgePlugin implements FlutterPlugin, MethodCallHand
         } else if (call.method.equals("startTokenizedCardPayment")) {
             makeTokenizedCardPayment(call);
         }
-//        else if (call.method.equals("start3DSecureTokenizedCardPayment")) {
-//            make3DSecureTokenizedCardPayment(call);
-//        }
+       else if (call.method.equals("start3DSecureTokenizedCardPayment")) {
+           make3DSecureTokenizedCardPayment(call);
+       }
         else if (call.method.equals("startPaymentWithSavedCards")) {
             makePaymentWithSavedCards(call);
         } else if (call.method.equals("startSamsungPayPayment")) {

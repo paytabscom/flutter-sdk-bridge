@@ -4,8 +4,10 @@ import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 import 'package:flutter_paytabs_bridge/BaseBillingShippingInfo.dart';
 import 'package:flutter_paytabs_bridge/IOSThemeConfiguration.dart';
+import 'package:flutter_paytabs_bridge/PaymentSDKSavedCardInfo.dart';
 import 'package:flutter_paytabs_bridge/PaymentSdkApms.dart';
 import 'package:flutter_paytabs_bridge/PaymentSdkConfigurationDetails.dart';
+import 'package:flutter_paytabs_bridge/PaymentSdkTokeniseType.dart';
 import 'package:flutter_paytabs_bridge/flutter_paytabs_bridge.dart';
 
 void main() {
@@ -55,7 +57,7 @@ class _MyAppState extends State<MyApp> {
     theme.logoImage = "assets/logo.png";
 
     configuration.iOSThemeConfigurations = theme;
-
+    configuration.tokeniseType = PaymentSdkTokeniseType.MERCHANT_MANDATORY;
     return configuration;
   }
 
@@ -88,6 +90,61 @@ class _MyAppState extends State<MyApp> {
   Future<void> payWithTokenPressed() async {
     FlutterPaytabsBridge.startTokenizedCardPayment(generateConfig(),
         "2C4652BF67A3EA33C6B590FE658078BD", "TST2224201325593", (event) {
+      setState(() {
+        if (event["status"] == "success") {
+          // Handle transaction details here.
+          var transactionDetails = event["data"];
+          print(transactionDetails);
+          if (transactionDetails["isSuccess"]) {
+            print("successful transaction");
+            if (transactionDetails["isPending"]) {
+              print("transaction pending");
+            }
+          } else {
+            print("failed transaction");
+          }
+
+          // print(transactionDetails["isSuccess"]);
+        } else if (event["status"] == "error") {
+          // Handle error here.
+        } else if (event["status"] == "event") {
+          // Handle events here.
+        }
+      });
+    });
+  }
+
+  Future<void> payWith3ds() async {
+    FlutterPaytabsBridge.start3DSecureTokenizedCardPayment(generateConfig(),
+      PaymentSDKSavedCardInfo("4111 11## #### 1111", "visa"),
+        "2C4652BF67A3EA33C6B590FE658078BD", (event) {
+      setState(() {
+        if (event["status"] == "success") {
+          // Handle transaction details here.
+          var transactionDetails = event["data"];
+          print(transactionDetails);
+          if (transactionDetails["isSuccess"]) {
+            print("successful transaction");
+            if (transactionDetails["isPending"]) {
+              print("transaction pending");
+            }
+          } else {
+            print("failed transaction");
+          }
+
+          // print(transactionDetails["isSuccess"]);
+        } else if (event["status"] == "error") {
+          // Handle error here.
+        } else if (event["status"] == "event") {
+          // Handle events here.
+        }
+      });
+    });
+  }
+
+  Future<void> payWithSavedCards() async {
+    FlutterPaytabsBridge.startPaymentWithSavedCards(generateConfig(), false,
+        (event) {
       setState(() {
         if (event["status"] == "success") {
           // Handle transaction details here.
@@ -193,6 +250,18 @@ class _MyAppState extends State<MyApp> {
                   payWithTokenPressed();
                 },
                 child: Text('Pay with Token'),
+              ),
+              TextButton(
+                onPressed: () {
+                  payWith3ds();
+                },
+                child: Text('Pay with 3ds'),
+              ),
+              TextButton(
+                onPressed: () {
+                  payWithSavedCards();
+                },
+                child: Text('Pay with saved cards'),
               ),
               SizedBox(height: 16),
               TextButton(

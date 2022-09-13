@@ -11,6 +11,9 @@ public class SwiftFlutterPaymentSDKBridgePlugin: NSObject, FlutterPlugin {
         case startCardPayment
         case startApplePayPayment
         case startApmsPayment
+        case startTokenizedCardPayment
+        case start3DSecureTokenizedCardPayment
+        case startPaymentWithSavedCards
     }
     public static func register(with registrar: FlutterPluginRegistrar) {
         let channel = FlutterMethodChannel(name: channelName, binaryMessenger: registrar.messenger())
@@ -28,6 +31,13 @@ public class SwiftFlutterPaymentSDKBridgePlugin: NSObject, FlutterPlugin {
             startApplePayPayment(arguments: arguments)
         case CallMethods.startApmsPayment.rawValue:
             startAlternativePaymentMethod(arguments: arguments)
+        case CallMethods.startTokenizedCardPayment.rawValue:
+            startTokenizedCardPayment(arguments: arguments)
+            case CallMethods.startPaymentWithSavedCards.rawValue:
+            startPaymentWithSavedCards(arguments: arguments)
+            case CallMethods.start3DSecureTokenizedCardPayment.rawValue:
+            start3DSecureTokenizedCardPayment(arguments: arguments)
+
         default:
             break
         }
@@ -47,6 +57,43 @@ public class SwiftFlutterPaymentSDKBridgePlugin: NSObject, FlutterPlugin {
             PaymentManager.startCardPayment(on: rootViewController, configuration: configuration, delegate: self)
         }
     }
+
+    private func startTokenizedCardPayment(arguments: [String : Any]) {
+        let configuration = generateConfiguration(dictionary: arguments)
+       guard let token = arguments["token"] as? String,
+        let transactionReference = arguments["transactionRef"] as? String else { return }
+        if let rootViewController = getRootController() {
+            PaymentManager.startTokenizedCardPayment(on: rootViewController, configuration: configuration, token: token, transactionRef: transactionReference, delegate: self)
+        }
+    }
+
+    private func startPaymentWithSavedCards(arguments: [String : Any]) {
+        let configuration = generateConfiguration(dictionary: arguments)
+        let support3DS = arguments["support3DS"] as? Bool ?? false
+        if let rootViewController = getRootController() {
+            PaymentManager.startPaymentWithSavedCards(on: rootViewController, configuration:configuration, support3DS: support3DS, delegate: self)
+        }
+    }
+
+     private func start3DSecureTokenizedCardPayment(arguments: [String : Any]) {
+        let configuration = generateConfiguration(dictionary: arguments)
+        guard  let token = arguments["token"] as? String,
+              let cardInfoDic = arguments["paymentSDKSavedCardInfo"] as? [String: Any],
+            let cardType = cardInfoDic["pt_card_type"] as? String,
+             let maskedCard = cardInfoDic["pt_masked_card"] as? String else { return }
+
+        let savedCardInfo = PaymentSDKSavedCardInfo(maskedCard: maskedCard, cardType: token)
+
+            if let rootViewController = getRootController() {
+            PaymentManager.start3DSecureTokenizedCardPayment(on: rootViewController,
+                                                                 configuration: configuration,
+                                                                 savedCardInfo: savedCardInfo,
+                                                                 token: token,
+                                                                 delegate: self)
+        }
+    }
+
+
     private func startAlternativePaymentMethod(arguments: [String : Any]) {
         let configuration = generateConfiguration(dictionary: arguments)
         if let rootViewController = getRootController() {
