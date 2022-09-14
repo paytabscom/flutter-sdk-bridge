@@ -108,11 +108,9 @@ public class FlutterPaytabsBridgePlugin implements FlutterPlugin, MethodCallHand
             makeCardPayment(call);
         } else if (call.method.equals("startTokenizedCardPayment")) {
             makeTokenizedCardPayment(call);
-        }
-       else if (call.method.equals("start3DSecureTokenizedCardPayment")) {
-           make3DSecureTokenizedCardPayment(call);
-       }
-        else if (call.method.equals("startPaymentWithSavedCards")) {
+        } else if (call.method.equals("start3DSecureTokenizedCardPayment")) {
+            make3DSecureTokenizedCardPayment(call);
+        } else if (call.method.equals("startPaymentWithSavedCards")) {
             makePaymentWithSavedCards(call);
         } else if (call.method.equals("startSamsungPayPayment")) {
             makeSamsungPayment(call);
@@ -151,7 +149,7 @@ public class FlutterPaytabsBridgePlugin implements FlutterPlugin, MethodCallHand
             JSONObject paymentDetails = new JSONObject(arguments);
             PaymentSdkActivity.start3DSecureTokenizedCardPayment(activity,
                     getPaymentSdkConfigurationDetails(paymentDetails),
-                    getSavedCardInfo(paymentDetails),
+                    getSavedCardInfo(paymentDetails.optJSONObject("paymentSDKSavedCardInfo")),
                     getToken(paymentDetails),
                     getCallback());
         } catch (Exception e) {

@@ -35,9 +35,9 @@ class _MyAppState extends State<MyApp> {
     List<PaymentSdkAPms> apms = [];
     apms.add(PaymentSdkAPms.AMAN);
     var configuration = PaymentSdkConfigurationDetails(
-        profileId: "63904",
-        serverKey: "STJNNNTDKB-JBKWMD9Z9R-LKLNZBJLG2",
-        clientKey: "CHKMMD-6MQ962-KVNDP9-NVRM92",
+        profileId: "*profile id*",
+        serverKey: "*server key*",
+        clientKey: "*client key*",
         cartId: "12433",
         cartDescription: "Flowers",
         merchantName: "Flowers Store",

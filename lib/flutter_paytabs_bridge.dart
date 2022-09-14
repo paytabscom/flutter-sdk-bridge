@@ -115,7 +115,8 @@ class FlutterPaytabsBridge {
     var argsMap = arg.map;
     argsMap["token"] = token;
     argsMap["transactionRef"] = transactionRef;
-    return await localChannel.invokeMethod('startTokenizedCardPayment', argsMap);
+    return await localChannel.invokeMethod(
+        'startTokenizedCardPayment', argsMap);
   }
 
   static Future<dynamic> start3DSecureTokenizedCardPayment(
@@ -135,11 +136,14 @@ class FlutterPaytabsBridge {
     var argsMap = arg.map;
     argsMap["token"] = token;
     argsMap["paymentSDKSavedCardInfo"] = paymentSDKSavedCardInfo.map;
-    return await localChannel.invokeMethod('start3DSecureTokenizedCardPayment', argsMap);
+    return await localChannel.invokeMethod(
+        'start3DSecureTokenizedCardPayment', argsMap);
   }
 
   static Future<dynamic> startPaymentWithSavedCards(
-      PaymentSdkConfigurationDetails arg, bool support3DS, void eventsCallBack(dynamic)) async {
+      PaymentSdkConfigurationDetails arg,
+      bool support3DS,
+      void eventsCallBack(dynamic)) async {
     arg.samsungPayToken = null;
     MethodChannel localChannel = MethodChannel('flutter_paytabs_bridge');
     EventChannel localStream =
@@ -151,7 +155,8 @@ class FlutterPaytabsBridge {
     }
     var argsMap = arg.map;
     argsMap["support3DS"] = support3DS;
-    return await localChannel.invokeMethod('startPaymentWithSavedCards', arg.map);
+    return await localChannel.invokeMethod(
+        'startPaymentWithSavedCards', argsMap);
   }
 
   static Future<String> handleImagePath(String path) async {
