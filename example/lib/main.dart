@@ -89,7 +89,7 @@ class _MyAppState extends State<MyApp> {
 
   Future<void> payWithTokenPressed() async {
     FlutterPaytabsBridge.startTokenizedCardPayment(generateConfig(),
-        "2C4652BF67A3EA33C6B590FE658078BD", "TST2224201325593", (event) {
+        "*Token*", "*TransactionReference*", (event) {
       setState(() {
         if (event["status"] == "success") {
           // Handle transaction details here.
@@ -117,7 +117,7 @@ class _MyAppState extends State<MyApp> {
   Future<void> payWith3ds() async {
     FlutterPaytabsBridge.start3DSecureTokenizedCardPayment(generateConfig(),
       PaymentSDKSavedCardInfo("4111 11## #### 1111", "visa"),
-        "2C4652BF67A3EA33C6B590FE658078BD", (event) {
+        "*Token*", (event) {
       setState(() {
         if (event["status"] == "success") {
           // Handle transaction details here.
