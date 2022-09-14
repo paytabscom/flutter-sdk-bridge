@@ -1,13 +1,13 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/services.dart';
-import 'PaymentSdkConfigurationDetails.dart';
-import 'dart:async';
-import 'dart:io';
-import 'dart:typed_data';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:path_provider/path_provider.dart';
+
+import 'PaymentSDKSavedCardInfo.dart';
+import 'PaymentSdkConfigurationDetails.dart';
 
 // Constants
 const String pt_profile_id = 'pt_profile_id';
@@ -79,6 +79,9 @@ const String pt_ios_inputs_corner_radius = 'pt_ios_inputs_corner_radius';
 const String pt_ios_button_font = 'pt_ios_button_font';
 const String pt_ios_title_font = 'pt_ios_title_font';
 const String pt_ios_logo = "pt_ios_logo";
+//PaymentSDKSavedCardInfo
+const String pt_masked_card = "pt_masked_card";
+const String pt_card_type = "pt_card_type";
 
 class FlutterPaytabsBridge {
   static Future<dynamic> startCardPayment(
@@ -93,6 +96,67 @@ class FlutterPaytabsBridge {
       arg.iOSThemeConfigurations?.logoImage = await handleImagePath(logoImage);
     }
     return await localChannel.invokeMethod('startCardPayment', arg.map);
+  }
+
+  static Future<dynamic> startTokenizedCardPayment(
+      PaymentSdkConfigurationDetails arg,
+      String token,
+      String transactionRef,
+      void eventsCallBack(dynamic)) async {
+    arg.samsungPayToken = null;
+    MethodChannel localChannel = MethodChannel('flutter_paytabs_bridge');
+    EventChannel localStream =
+        const EventChannel('flutter_paytabs_bridge_stream');
+    localStream.receiveBroadcastStream().listen(eventsCallBack);
+    var logoImage = arg.iOSThemeConfigurations?.logoImage ?? "";
+    if (logoImage != "") {
+      arg.iOSThemeConfigurations?.logoImage = await handleImagePath(logoImage);
+    }
+    var argsMap = arg.map;
+    argsMap["token"] = token;
+    argsMap["transactionRef"] = transactionRef;
+    return await localChannel.invokeMethod(
+        'startTokenizedCardPayment', argsMap);
+  }
+
+  static Future<dynamic> start3DSecureTokenizedCardPayment(
+      PaymentSdkConfigurationDetails arg,
+      PaymentSDKSavedCardInfo paymentSDKSavedCardInfo,
+      String token,
+      void eventsCallBack(dynamic)) async {
+    arg.samsungPayToken = null;
+    MethodChannel localChannel = MethodChannel('flutter_paytabs_bridge');
+    EventChannel localStream =
+        const EventChannel('flutter_paytabs_bridge_stream');
+    localStream.receiveBroadcastStream().listen(eventsCallBack);
+    var logoImage = arg.iOSThemeConfigurations?.logoImage ?? "";
+    if (logoImage != "") {
+      arg.iOSThemeConfigurations?.logoImage = await handleImagePath(logoImage);
+    }
+    var argsMap = arg.map;
+    argsMap["token"] = token;
+    argsMap["paymentSDKSavedCardInfo"] = paymentSDKSavedCardInfo.map;
+    return await localChannel.invokeMethod(
+        'start3DSecureTokenizedCardPayment', argsMap);
+  }
+
+  static Future<dynamic> startPaymentWithSavedCards(
+      PaymentSdkConfigurationDetails arg,
+      bool support3DS,
+      void eventsCallBack(dynamic)) async {
+    arg.samsungPayToken = null;
+    MethodChannel localChannel = MethodChannel('flutter_paytabs_bridge');
+    EventChannel localStream =
+        const EventChannel('flutter_paytabs_bridge_stream');
+    localStream.receiveBroadcastStream().listen(eventsCallBack);
+    var logoImage = arg.iOSThemeConfigurations?.logoImage ?? "";
+    if (logoImage != "") {
+      arg.iOSThemeConfigurations?.logoImage = await handleImagePath(logoImage);
+    }
+    var argsMap = arg.map;
+    argsMap["support3DS"] = support3DS;
+    return await localChannel.invokeMethod(
+        'startPaymentWithSavedCards', argsMap);
   }
 
   static Future<String> handleImagePath(String path) async {

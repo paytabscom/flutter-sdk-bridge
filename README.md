@@ -1,5 +1,5 @@
 # Flutter PayTabs Bridge
-![Version](https://img.shields.io/badge/flutter%20paytabs%20bridge-v2.2.8-green)
+![Version](https://img.shields.io/badge/flutter%20paytabs%20bridge-v2.3.0-green)
 
 Flutter paytabs plugin is a wrapper for the native PayTabs Android and iOS SDKs, It helps you integrate with PayTabs payment gateway.
 
@@ -12,7 +12,7 @@ Plugin Support:
 
 ```
 dependencies:
-   flutter_paytabs_bridge: ^2.2.8
+   flutter_paytabs_bridge: ^2.3.0
 ```
 
 ## Usage
@@ -25,6 +25,7 @@ import 'package:flutter_paytabs_bridge/PaymentSdkTokenFormat.dart';
 import 'package:flutter_paytabs_bridge/PaymentSdkTokeniseType.dart';
 import 'package:flutter_paytabs_bridge/flutter_paytabs_bridge.dart';
 import 'package:flutter_paytabs_bridge/IOSThemeConfiguration.dart';
+import 'package:flutter_paytabs_bridge/PaymentSDKSavedCardInfo.dart';
 import 'package:flutter_paytabs_bridge/PaymentSdkTransactionClass.dart';
 ```
 
@@ -101,8 +102,8 @@ var theme = IOSThemeConfigurations();
 theme.logoImage = "assets/logo.png";
 configuration.iOSThemeConfigurations = theme;
 ```
-
-4. Start payment by calling `startCardPayment` method and handle the transaction details 
+# 1-Pay with Card
+Start payment by calling `startCardPayment` method and handle the transaction details 
 
 ```dart
 
@@ -127,8 +128,9 @@ FlutterPaytabsBridge.startCardPayment(configuration, (event) {
     });
      
 ```
-### Tokenization
-To enable tokenisation please follow the below instructions.
+
+# 2-Pay with Token
+To enable tokenization please follow the below instructions.
 ```dart
  // to request token and transaction reference pass tokeniseType and Format
  tokeniseType: PaymentSdkTokeniseType.MERCHANT_MANDATORY,
@@ -140,6 +142,86 @@ To enable tokenisation please follow the below instructions.
  transactionReference: "last trx reference returned",
 
 ```
+Then payment by calling `startTokenizedCardPayment` method and handle the transaction details
+
+```dart
+
+FlutterPaytabsBridge.startTokenizedCardPayment(configuration, "Token", "TransactionReference", (event) {
+      setState(() {
+        if (event["status"] == "success") {
+          // Handle transaction details here.
+          var transactionDetails = event["data"];
+          print(transactionDetails);
+          
+          if (transactionDetails["isSuccess"]) {
+            print("successful transaction");
+          } else {
+            print("failed transaction");
+          }
+        } else if (event["status"] == "error") {
+          // Handle error here.
+        } else if (event["status"] == "event") {
+          // Handle events here.
+        }
+      });
+    });
+     
+```
+
+# 3-Pay with 3ds secure Token
+Start payment by calling `start3DSecureTokenizedCardPayment` method and handle the transaction details
+
+```dart
+var savedCardInfo = PaymentSDKSavedCardInfo("Card Mask", "card type");
+FlutterPaytabsBridge.start3DSecureTokenizedCardPayment(configuration, savedCardInfo, "Token", (event) {
+      setState(() {
+        if (event["status"] == "success") {
+          // Handle transaction details here.
+          var transactionDetails = event["data"];
+          print(transactionDetails);
+          
+          if (transactionDetails["isSuccess"]) {
+            print("successful transaction");
+          } else {
+            print("failed transaction");
+          }
+        } else if (event["status"] == "error") {
+          // Handle error here.
+        } else if (event["status"] == "event") {
+          // Handle events here.
+        }
+      });
+    });
+     
+```
+
+# 4-Pay with Saved Card
+Start payment by calling `startPaymentWithSavedCards` method and handle the transaction details
+
+```dart
+
+FlutterPaytabsBridge.startPaymentWithSavedCards(configuration, support3DsBoolean, (event) {
+      setState(() {
+        if (event["status"] == "success") {
+          // Handle transaction details here.
+          var transactionDetails = event["data"];
+          print(transactionDetails);
+          
+          if (transactionDetails["isSuccess"]) {
+            print("successful transaction");
+          } else {
+            print("failed transaction");
+          }
+        } else if (event["status"] == "error") {
+          // Handle error here.
+        } else if (event["status"] == "event") {
+          // Handle events here.
+        }
+      });
+    });
+     
+```
+
 ### Pay with Apple Pay
 
 1. Follow the guide [Steps to configure Apple Pay][applepayguide] to learn how to configure ApplePay with PayTabs.
