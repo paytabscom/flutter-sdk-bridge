@@ -128,6 +128,8 @@ FlutterPaytabsBridge.startCardPayment(configuration, (event) {
     });
      
 ```
+<img width="191" alt="card" src="https://user-images.githubusercontent.com/17829232/188835902-c50f41d1-5e3d-4d4c-a49a-e75b81480b75.png">
+
 
 # 2-Pay with Token
 To enable tokenization please follow the below instructions.
@@ -194,6 +196,7 @@ FlutterPaytabsBridge.start3DSecureTokenizedCardPayment(configuration, savedCardI
     });
      
 ```
+<img width="197" alt="rec 3ds" src="https://user-images.githubusercontent.com/17829232/188836295-d8d48978-a80f-40d3-bda3-439423fcdec0.png">
 
 # 4-Pay with Saved Card
 Start payment by calling `startPaymentWithSavedCards` method and handle the transaction details
@@ -221,6 +224,7 @@ FlutterPaytabsBridge.startPaymentWithSavedCards(configuration, support3DsBoolean
     });
      
 ```
+<img width="197" alt="rec 3ds" src="https://user-images.githubusercontent.com/17829232/205496703-b823e57b-348c-4109-9429-ab261e5a5b50.png">
 
 ### Pay with Apple Pay
 
