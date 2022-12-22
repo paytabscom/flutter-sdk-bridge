@@ -319,7 +319,10 @@ class _MyAppState extends State<MyApp> {
 
   PaymentSDKQueryConfiguration generateQueryConfig() {
     return new PaymentSDKQueryConfiguration(
-        "STJNNNTDKB-JBKWMD9Z9R-LKLNZBJLG2", "CHKMMD-6MQ962-KVNDP9-NVRM92", "eg",
-        "63904", "TST2235601416385");
+        "ServerKey",
+        "ClientKey",
+        "Country Iso 2",
+        "Profile Id",
+        "Transaction Reference");
   }
 }

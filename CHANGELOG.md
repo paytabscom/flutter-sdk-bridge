@@ -44,3 +44,5 @@
 ## 2.3.0
 * Add support for 3ds
 * Add tokenization methods
+## 2.3.1
+* Add Query function
