@@ -338,8 +338,9 @@ FlutterPaytabsBridge.startAlternativePaymentMethod(await generateConfig(),
 
 ## Query transaction
 
-You can check the status of a transaction 1- first create PaymentSDKQueryConfiguration
+You can check the status of a transaction 
 
+1- first create PaymentSDKQueryConfiguration
 ```dart
 var queryConfig = PaymentSDKQueryConfiguration(
     "ServerKey",
@@ -351,7 +352,6 @@ var queryConfig = PaymentSDKQueryConfiguration(
 ```
 
 2- Call QuerySdkActivity.queryTransaction and pass the needed arguments
-
 ```dart
 FlutterPaytabsBridge.queryTransaction(
     generateConfig(), queryConfig,
