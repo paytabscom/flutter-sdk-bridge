@@ -20,7 +20,9 @@ import com.payment.paymentsdk.integrationmodels.PaymentSdkTokenFormat;
 import com.payment.paymentsdk.integrationmodels.PaymentSdkTokenise;
 import com.payment.paymentsdk.integrationmodels.PaymentSdkTransactionDetails;
 import com.payment.paymentsdk.integrationmodels.PaymentSdkTransactionType;
+import com.payment.paymentsdk.integrationmodels.PaymentSDKQueryConfiguration;
 import com.payment.paymentsdk.sharedclasses.interfaces.CallbackPaymentInterface;
+import com.payment.paymentsdk.sharedclasses.model.response.TransactionResponseBody;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
@@ -49,7 +51,9 @@ import static com.payment.paymentsdk.integrationmodels.PaymentSdkTokenFormatKt.c
 import static com.payment.paymentsdk.integrationmodels.PaymentSdkTokeniseKt.createPaymentSdkTokenise;
 import static com.payment.paymentsdk.integrationmodels.PaymentSdkTransactionClassKt.createPaymentSdkTransactionClass;
 import static com.payment.paymentsdk.integrationmodels.PaymentSdkTransactionTypeKt.createPaymentSdkTransactionType;
+
 import com.payment.paymentsdk.QuerySdkActivity;
+import com.payment.paymentsdk.sharedclasses.interfaces.CallbackQueryInterface;
 
 import javax.xml.parsers.DocumentBuilder;
 
@@ -165,7 +169,6 @@ public class FlutterPaytabsBridgePlugin implements FlutterPlugin, MethodCallHand
             HashMap<String, Object> arguments = call.arguments();
             JSONObject paymentDetails = new JSONObject(arguments);
             QuerySdkActivity.queryTransaction(activity,
-                    getPaymentSdkConfigurationDetails(paymentDetails),
                     getQueryConfigurations(paymentDetails.optJSONObject("paymentSDKQueryConfiguration")),
                     getQueryCallback());
         } catch (Exception e) {
