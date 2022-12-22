@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:path_provider/path_provider.dart';
 
+import 'PaymentSDKQueryConfiguration.dart';
 import 'PaymentSDKSavedCardInfo.dart';
 import 'PaymentSdkConfigurationDetails.dart';
 
@@ -157,6 +158,25 @@ class FlutterPaytabsBridge {
     argsMap["support3DS"] = support3DS;
     return await localChannel.invokeMethod(
         'startPaymentWithSavedCards', argsMap);
+  }
+
+  static Future<dynamic> queryTransaction(
+      PaymentSdkConfigurationDetails arg,
+      PaymentSDKQueryConfiguration paymentSDKQueryConfiguration,
+      void eventsCallBack(dynamic)) async {
+    arg.samsungPayToken = null;
+    MethodChannel localChannel = MethodChannel('flutter_paytabs_bridge');
+    EventChannel localStream =
+    const EventChannel('flutter_paytabs_bridge_stream');
+    localStream.receiveBroadcastStream().listen(eventsCallBack);
+    var logoImage = arg.iOSThemeConfigurations?.logoImage ?? "";
+    if (logoImage != "") {
+      arg.iOSThemeConfigurations?.logoImage = await handleImagePath(logoImage);
+    }
+    var argsMap = arg.map;
+    argsMap["paymentSDKQueryConfiguration"] = paymentSDKQueryConfiguration.map;
+    return await localChannel.invokeMethod(
+        'queryTransaction', argsMap);
   }
 
   static Future<String> handleImagePath(String path) async {

@@ -1,5 +1,5 @@
 # Flutter PayTabs Bridge
-![Version](https://img.shields.io/badge/flutter%20paytabs%20bridge-v2.3.0-green)
+![Version](https://img.shields.io/badge/flutter%20paytabs%20bridge-v2.3.1-green)
 
 Flutter paytabs plugin is a wrapper for the native PayTabs Android and iOS SDKs, It helps you integrate with PayTabs payment gateway.
 
@@ -12,7 +12,7 @@ Plugin Support:
 
 ```
 dependencies:
-   flutter_paytabs_bridge: ^2.3.0
+   flutter_paytabs_bridge: ^2.3.1
 ```
 
 ## Usage
@@ -27,6 +27,7 @@ import 'package:flutter_paytabs_bridge/flutter_paytabs_bridge.dart';
 import 'package:flutter_paytabs_bridge/IOSThemeConfiguration.dart';
 import 'package:flutter_paytabs_bridge/PaymentSDKSavedCardInfo.dart';
 import 'package:flutter_paytabs_bridge/PaymentSdkTransactionClass.dart';
+import 'package:flutter_paytabs_bridge/PaymentSDKQueryConfiguration.dart';
 ```
 
 ### Pay with Card
@@ -334,6 +335,42 @@ FlutterPaytabsBridge.startAlternativePaymentMethod(await generateConfig(),
     });
     
 ```
+
+## Query transaction
+
+You can check the status of a transaction 1- first create PaymentSDKQueryConfiguration
+
+```dart
+var queryConfig = PaymentSDKQueryConfiguration(
+    "ServerKey",
+    "ClientKey",
+    "Country Iso 2",
+    "Profile Id",
+    "Transaction Reference"
+);
+```
+
+2- Call QuerySdkActivity.queryTransaction and pass the needed arguments
+
+```dart
+FlutterPaytabsBridge.queryTransaction(
+    generateConfig(), queryConfig,
+    (event) {
+        setState(() {
+            if (event["status"] == "success") {
+                // Handle transaction details here.
+                var transactionDetails = event["data"];
+                print(transactionDetails);
+            } else if (event["status"] == "error") {
+                // Handle error here.
+            } else if (event["status"] == "event") {
+                // Handle events here.
+            }
+        });
+    });
+```
+
+
 ### Handling Transaction response
 you can use event["data"]["isSuccess"] to ensure a successful transaction ..
 

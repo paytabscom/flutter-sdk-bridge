@@ -20,7 +20,9 @@ import com.payment.paymentsdk.integrationmodels.PaymentSdkTokenFormat;
 import com.payment.paymentsdk.integrationmodels.PaymentSdkTokenise;
 import com.payment.paymentsdk.integrationmodels.PaymentSdkTransactionDetails;
 import com.payment.paymentsdk.integrationmodels.PaymentSdkTransactionType;
+import com.payment.paymentsdk.integrationmodels.PaymentSDKQueryConfiguration;
 import com.payment.paymentsdk.sharedclasses.interfaces.CallbackPaymentInterface;
+import com.payment.paymentsdk.sharedclasses.model.response.TransactionResponseBody;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
@@ -49,6 +51,9 @@ import static com.payment.paymentsdk.integrationmodels.PaymentSdkTokenFormatKt.c
 import static com.payment.paymentsdk.integrationmodels.PaymentSdkTokeniseKt.createPaymentSdkTokenise;
 import static com.payment.paymentsdk.integrationmodels.PaymentSdkTransactionClassKt.createPaymentSdkTransactionClass;
 import static com.payment.paymentsdk.integrationmodels.PaymentSdkTransactionTypeKt.createPaymentSdkTransactionType;
+
+import com.payment.paymentsdk.QuerySdkActivity;
+import com.payment.paymentsdk.sharedclasses.interfaces.CallbackQueryInterface;
 
 import javax.xml.parsers.DocumentBuilder;
 
@@ -110,6 +115,8 @@ public class FlutterPaytabsBridgePlugin implements FlutterPlugin, MethodCallHand
             makeTokenizedCardPayment(call);
         } else if (call.method.equals("start3DSecureTokenizedCardPayment")) {
             make3DSecureTokenizedCardPayment(call);
+        } else if (call.method.equals("queryTransaction")) {
+            queryTransaction(call);
         } else if (call.method.equals("startPaymentWithSavedCards")) {
             makePaymentWithSavedCards(call);
         } else if (call.method.equals("startSamsungPayPayment")) {
@@ -152,6 +159,18 @@ public class FlutterPaytabsBridgePlugin implements FlutterPlugin, MethodCallHand
                     getSavedCardInfo(paymentDetails.optJSONObject("paymentSDKSavedCardInfo")),
                     getToken(paymentDetails),
                     getCallback());
+        } catch (Exception e) {
+            eventSink.error("0", e.getMessage(), "{}");
+        }
+    }
+
+    private void queryTransaction(@NonNull MethodCall call) {
+        try {
+            HashMap<String, Object> arguments = call.arguments();
+            JSONObject paymentDetails = new JSONObject(arguments);
+            QuerySdkActivity.queryTransaction(activity,
+                    getQueryConfigurations(paymentDetails.optJSONObject("paymentSDKQueryConfiguration")),
+                    getQueryCallback());
         } catch (Exception e) {
             eventSink.error("0", e.getMessage(), "{}");
         }
@@ -216,7 +235,48 @@ public class FlutterPaytabsBridgePlugin implements FlutterPlugin, MethodCallHand
         };
     }
 
+    @NotNull
+    private CallbackQueryInterface getQueryCallback() {
+        return new CallbackQueryInterface() {
+            @Override
+            public void onError(@NotNull PaymentSdkError err) {
+                if (err.getCode() != null)
+                    returnResponseToFlutter(err.getCode(), err.getMsg(), "error", null);
+                else
+                    returnResponseToFlutter(0, err.getMsg(), "error", null);
+
+            }
+
+            @Override
+            public void onResult(@NotNull TransactionResponseBody paymentSdkTransactionDetails) {
+                returnQueryResultToFlutter(200, "success", "success", paymentSdkTransactionDetails);
+            }
+
+            @Override
+            public void onCancel() {
+                returnResponseToFlutter(0, "Cancelled", "event", null);
+            }
+        };
+    }
+
     private void returnResponseToFlutter(int code, String msg, String status, PaymentSdkTransactionDetails data) {
+        HashMap<String, Object> map = new HashMap<String, Object>();
+        if (data != null) {
+            String detailsString = new Gson().toJson(data);
+            Map<String, Object> detailsMap = new Gson().fromJson(
+                    detailsString, new TypeToken<HashMap<String, Object>>() {
+                    }.getType()
+            );
+            map.put("data", detailsMap);
+        }
+        map.put("code", code);
+        map.put("message", msg);
+        map.put("status", status);
+        eventSink.success(map);
+    }
+
+
+    private void returnQueryResultToFlutter(int code, String msg, String status, TransactionResponseBody data) {
         HashMap<String, Object> map = new HashMap<String, Object>();
         if (data != null) {
             String detailsString = new Gson().toJson(data);
@@ -255,6 +315,18 @@ public class FlutterPaytabsBridgePlugin implements FlutterPlugin, MethodCallHand
         String maskedCard = paymentDetails.optString("pt_masked_card");
         String cardType = paymentDetails.optString("pt_card_type");
         PaymentSDKSavedCardInfo info = new PaymentSDKSavedCardInfo(maskedCard, cardType);
+        return info;
+    }
+
+    @NotNull
+    private PaymentSDKQueryConfiguration getQueryConfigurations(JSONObject paymentDetails) throws JSONException {
+        String clientKey = paymentDetails.optString("pt_client_key");
+        String serverKey = paymentDetails.optString("pt_server_key");
+        String merchantCountryCode = paymentDetails.optString("pt_merchant_country_code");
+        String profileId = paymentDetails.optString("pt_profile_id");
+        String transactionReference = paymentDetails.optString("pt_transaction_reference");
+        PaymentSDKQueryConfiguration info = new PaymentSDKQueryConfiguration(
+                serverKey, clientKey, merchantCountryCode, profileId, transactionReference);
         return info;
     }
 

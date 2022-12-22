@@ -43,5 +43,7 @@
 	<false/>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Get Logo From Assets</string>
+	<key>CADisableMinimumFrameDurationOnPhone</key>
+	<true/>
 </dict>
 </plist>
