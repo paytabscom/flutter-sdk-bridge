@@ -46,3 +46,5 @@
 * Add tokenization methods
 ## 2.3.1
 * Add Query function
+## 2.3.2
+* Fix hide card scan icon issue
