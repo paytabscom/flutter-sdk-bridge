@@ -399,6 +399,7 @@ public class FlutterPaytabsBridgePlugin implements FlutterPlugin, MethodCallHand
                 .setMerchantIcon(iconUri)
                 .setScreenTitle(screenTitle)
                 .linkBillingNameWithCard(paymentDetails.optBoolean("pt_link_billing_name"))
+                .hideCardScanner(paymentDetails.optBoolean("pt_hide_card_scanner"))
                 .build();
     }
 
