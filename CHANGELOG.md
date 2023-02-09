@@ -48,3 +48,5 @@
 * Add Query function
 ## 2.3.2
 * Fix hide card scan icon issue
+## 2.3.3
+* sending timeout errors 
