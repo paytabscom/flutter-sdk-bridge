@@ -1,5 +1,5 @@
 # Flutter PayTabs Bridge
-![Version](https://img.shields.io/badge/flutter%20paytabs%20bridge-v2.3.3-green)
+![Version](https://img.shields.io/badge/flutter%20paytabs%20bridge-v2.3.4-green)
 
 Flutter paytabs plugin is a wrapper for the native PayTabs Android and iOS SDKs, It helps you integrate with PayTabs payment gateway.
 
@@ -12,7 +12,7 @@ Plugin Support:
 
 ```
 dependencies:
-   flutter_paytabs_bridge: ^2.3.3
+   flutter_paytabs_bridge: ^2.3.4
 ```
 
 ## Usage
@@ -123,7 +123,7 @@ FlutterPaytabsBridge.startCardPayment(configuration, (event) {
         } else if (event["status"] == "error") {
           // Handle error here.
         } else if (event["status"] == "event") {
-          // Handle events here.
+          // Handle cancel events here.
         }
       });
     });
@@ -164,7 +164,7 @@ FlutterPaytabsBridge.startTokenizedCardPayment(configuration, "Token", "Transact
         } else if (event["status"] == "error") {
           // Handle error here.
         } else if (event["status"] == "event") {
-          // Handle events here.
+          // Handle cancel events here.
         }
       });
     });
@@ -191,7 +191,7 @@ FlutterPaytabsBridge.start3DSecureTokenizedCardPayment(configuration, savedCardI
         } else if (event["status"] == "error") {
           // Handle error here.
         } else if (event["status"] == "event") {
-          // Handle events here.
+          // Handle cancel events here.
         }
       });
     });
@@ -219,7 +219,7 @@ FlutterPaytabsBridge.startPaymentWithSavedCards(configuration, support3DsBoolean
         } else if (event["status"] == "error") {
           // Handle error here.
         } else if (event["status"] == "event") {
-          // Handle events here.
+          // Handle cancel events here.
         }
       });
     });
@@ -273,7 +273,7 @@ FlutterPaytabsBridge.startApplePayPayment(configuration, (event) {
         } else if (event["status"] == "error") {
           // Handle error here.
         } else if (event["status"] == "event") {
-          // Handle events here.
+          // Handle cancel events here.
         }
       });
       });
@@ -326,7 +326,7 @@ FlutterPaytabsBridge.startAlternativePaymentMethod(await generateConfig(),
 
         } else if (event["status"] == "event") {
 
-          // Handle events here.
+          // Handle cancel events here.
 
         }
 
@@ -364,7 +364,7 @@ FlutterPaytabsBridge.queryTransaction(
             } else if (event["status"] == "error") {
                 // Handle error here.
             } else if (event["status"] == "event") {
-                // Handle events here.
+                // Handle cancel events here.
             }
         });
     });
