@@ -50,3 +50,7 @@
 * Fix hide card scan icon issue
 ## 2.3.3
 * sending timeout errors 
+## 2.3.4
+* Fix duplicate transaction error
+* Fix some ui issues
+* Implement latest native sdk

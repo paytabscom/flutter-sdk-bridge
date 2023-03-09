@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'PaymentSdkApms.dart';
 import 'PaymentSdkTransactionClass.dart';
 import 'PaymentSdkTransactionType.dart';
@@ -7,7 +6,6 @@ import 'BaseBillingShippingInfo.dart';
 import 'IOSThemeConfiguration.dart';
 import 'PaymentSdkLocale.dart';
 import 'PaymentSdkTokenFormat.dart';
-import 'PaymentSdkApms.dart';
 import 'PaymentSdkTokeniseType.dart';
 import 'flutter_paytabs_bridge.dart';
 

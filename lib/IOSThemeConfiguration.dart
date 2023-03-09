@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'flutter_paytabs_bridge.dart';
 
 class IOSThemeConfigurations {
