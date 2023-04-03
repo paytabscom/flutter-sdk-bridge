@@ -54,3 +54,5 @@
 * Fix duplicate transaction error
 * Fix some ui issues
 * Implement latest native sdk
+## 2.3.5
+* Fix card scanner issue
