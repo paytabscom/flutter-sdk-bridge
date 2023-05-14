@@ -56,3 +56,5 @@
 * Implement latest native sdk
 ## 2.3.5
 * Fix card scanner issue
+## 2.3.6
+* Update native libs
