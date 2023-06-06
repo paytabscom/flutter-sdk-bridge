@@ -59,3 +59,7 @@
 ## 2.3.6
 * add double check to query 
 * add validation to billing to 3ds payment
+## 2.4.0
+* Add digital product
+* Add trace to error
+* Minor fixes
