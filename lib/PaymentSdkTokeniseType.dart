@@ -2,7 +2,8 @@ enum PaymentSdkTokeniseType {
   NONE,
   USER_OPTIONAL,
   USER_MANDATORY,
-  MERCHANT_MANDATORY
+  MERCHANT_MANDATORY,
+  USER_OPTIONAL_DEFAULT_ON
 }
 
 extension PaymentSdkTokeniseTypeExtension on PaymentSdkTokeniseType {
@@ -16,6 +17,8 @@ extension PaymentSdkTokeniseTypeExtension on PaymentSdkTokeniseType {
         return "userMandatory";
       case PaymentSdkTokeniseType.MERCHANT_MANDATORY:
         return "merchantMandatory";
+      case PaymentSdkTokeniseType.USER_OPTIONAL_DEFAULT_ON:
+        return "userOptionalDefaultOn";
       default:
         return "none";
     }

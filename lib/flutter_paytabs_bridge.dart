@@ -83,6 +83,9 @@ const String pt_ios_logo = "pt_ios_logo";
 //PaymentSDKSavedCardInfo
 const String pt_masked_card = "pt_masked_card";
 const String pt_card_type = "pt_card_type";
+// Billing new logic
+const String pt_enable_zero_contacts = "pt_enable_zero_contacts";
+const String pt_is_digital_product = "pt_is_digital_product";
 
 class FlutterPaytabsBridge {
   static Future<dynamic> startCardPayment(

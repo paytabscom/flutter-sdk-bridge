@@ -39,6 +39,8 @@ class PaymentSdkConfigurationDetails {
   PaymentSdkTransactionType? transactionType;
   IOSThemeConfigurations? iOSThemeConfigurations;
   List<PaymentSdkAPms>? alternativePaymentMethods;
+  bool? isDigitalProduct = false;
+  bool? enableZeroContacts = false;
   PaymentSdkConfigurationDetails(
       {this.profileId,
       this.serverKey,
@@ -68,7 +70,9 @@ class PaymentSdkConfigurationDetails {
       this.transactionClass,
       this.transactionType,
       this.alternativePaymentMethods,
-      this.linkBillingNameWithCardHolderName});
+      this.linkBillingNameWithCardHolderName,
+      this.enableZeroContacts,
+      this.isDigitalProduct});
 
   String getApmsConcatenated(List<PaymentSdkAPms>? list) {
     if (list == null || list.isEmpty) return "";
@@ -115,7 +119,9 @@ extension PaymentSdkConfigurationDetailsExtension
       pt_transaction_class: this.transactionClass?.name,
       pt_transaction_type: this.transactionType?.name,
       pt_apms: getApmsConcatenated(this.alternativePaymentMethods),
-      pt_link_billing_name: this.linkBillingNameWithCardHolderName
+      pt_link_billing_name: this.linkBillingNameWithCardHolderName,
+      pt_enable_zero_contacts: this.enableZeroContacts,
+      pt_is_digital_product: this.isDigitalProduct
     };
   }
 }
