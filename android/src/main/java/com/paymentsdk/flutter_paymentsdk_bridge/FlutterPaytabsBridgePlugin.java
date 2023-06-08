@@ -217,20 +217,20 @@ public class FlutterPaytabsBridgePlugin implements FlutterPlugin, MethodCallHand
             @Override
             public void onError(@NotNull PaymentSdkError err) {
                 if (err.getCode() != null)
-                    returnResponseToFlutter(err.getCode(), err.getMsg(), "error", null);
+                    returnResponseToFlutter(err.getCode(), err.getMsg(), "error", err.getTrace(),null);
                 else
-                    returnResponseToFlutter(0, err.getMsg(), "error", null);
+                    returnResponseToFlutter(0, err.getMsg(), "error", err.getTrace(),null);
 
             }
 
             @Override
             public void onPaymentFinish(@NotNull PaymentSdkTransactionDetails paymentSdkTransactionDetails) {
-                returnResponseToFlutter(200, "success", "success", paymentSdkTransactionDetails);
+                returnResponseToFlutter(200, "success", "success", null, paymentSdkTransactionDetails);
             }
 
             @Override
             public void onPaymentCancel() {
-                returnResponseToFlutter(0, "Cancelled", "event", null);
+                returnResponseToFlutter(0, "Cancelled", "event", null,null);
             }
         };
     }
@@ -241,9 +241,9 @@ public class FlutterPaytabsBridgePlugin implements FlutterPlugin, MethodCallHand
             @Override
             public void onError(@NotNull PaymentSdkError err) {
                 if (err.getCode() != null)
-                    returnResponseToFlutter(err.getCode(), err.getMsg(), "error", null);
+                    returnResponseToFlutter(err.getCode(), err.getMsg(), "error",  err.getTrace(),null);
                 else
-                    returnResponseToFlutter(0, err.getMsg(), "error", null);
+                    returnResponseToFlutter(0, err.getMsg(), "error",  err.getTrace(),null);
 
             }
 
@@ -254,12 +254,12 @@ public class FlutterPaytabsBridgePlugin implements FlutterPlugin, MethodCallHand
 
             @Override
             public void onCancel() {
-                returnResponseToFlutter(0, "Cancelled", "event", null);
+                returnResponseToFlutter(0, "Cancelled", "event", null, null);
             }
         };
     }
 
-    private void returnResponseToFlutter(int code, String msg, String status, PaymentSdkTransactionDetails data) {
+    private void returnResponseToFlutter(int code, String msg, String status, String trace, PaymentSdkTransactionDetails data) {
         HashMap<String, Object> map = new HashMap<String, Object>();
         if (data != null) {
             String detailsString = new Gson().toJson(data);
@@ -272,6 +272,7 @@ public class FlutterPaytabsBridgePlugin implements FlutterPlugin, MethodCallHand
         map.put("code", code);
         map.put("message", msg);
         map.put("status", status);
+        map.put("trace", trace);
         eventSink.success(map);
     }
 
@@ -400,6 +401,11 @@ public class FlutterPaytabsBridgePlugin implements FlutterPlugin, MethodCallHand
                 .setScreenTitle(screenTitle)
                 .linkBillingNameWithCard(paymentDetails.optBoolean("pt_link_billing_name"))
                 .hideCardScanner(paymentDetails.optBoolean("pt_hide_card_scanner"))
+                //New stuff
+                .enableZeroContacts(paymentDetails.optBoolean("pt_enable_zero_contacts"))
+                .isDigitalProduct(paymentDetails.optBoolean("pt_is_digital_product"))
+
+
                 .build();
     }
 
