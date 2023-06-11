@@ -27,7 +27,8 @@ let pt_server_ip = "pt_server_ip"
 let pt_hide_card_scanner = "pt_hide_card_scanner"
 let pt_simplify_apple_pay_validation = "pt_simplify_apple_pay_validation"
 let pt_link_billing_name = "pt_link_billing_name"
-
+let pt_enable_zero_contacts = "pt_enable_zero_contacts"
+let pt_is_digital_product = "pt_is_digital_product"
 // Billing
 let pt_billing_details = "pt_billing_details"
 let pt_address_billing = "pt_address_billing"

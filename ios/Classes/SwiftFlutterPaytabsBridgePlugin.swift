@@ -175,6 +175,9 @@ public class SwiftFlutterPaymentSDKBridgePlugin: NSObject, FlutterPlugin {
         configuration.hideCardScanner = dictionary[pt_hide_card_scanner] as? Bool ?? false
         configuration.serverIP = dictionary[pt_server_ip] as? String
         configuration.linkBillingNameWithCard = dictionary[pt_link_billing_name] as? Bool ?? true
+        configuration.isDigitalProduct = dictionary[pt_is_digital_product] as? Bool ?? true
+                configuration.enableZeroContacts = dictionary[pt_enable_zero_contacts] as? Bool ?? true
+
         if let apmsString = dictionary[pt_apms] as? String {
             let alternativePaymentMethods = apmsString.components(separatedBy: ",")
             configuration.alternativePaymentMethods = generateAlternativePaymentMethods(apmsArray: alternativePaymentMethods)
@@ -308,11 +311,14 @@ public class SwiftFlutterPaymentSDKBridgePlugin: NSObject, FlutterPlugin {
         }
         return theme
     }
-    private func eventSink(code: Int, message: String, status: String, transactionDetails: [String: Any]? = nil) {
+    private func eventSink(code: Int, message: String, status: String, transactionDetails: [String: Any]? = nil, trace: String? = nil) {
         var response = [String: Any]()
         response["code"] = code
         response["message"] = message
         response["status"] = status
+        if let _trace = trace {
+        response["trace"] = trace
+        }
         if let transactionDetails = transactionDetails {
             response["data"] = transactionDetails
         }
@@ -336,9 +342,11 @@ extension SwiftFlutterPaymentSDKBridgePlugin: PaymentManagerDelegate {
     public func paymentManager(didFinishTransaction transactionDetails: PaymentSDKTransactionDetails?, error: Error?) {
         if flutterListening {
             if let error = error {
+                let trace = (error as? LocalizedError)?.failureReason
                 eventSink(code: (error as NSError).code,
                           message: error.localizedDescription,
-                          status: "error")
+                          status: "error",
+                            trace: trace)
             } else {
                 do {
                     let encoder = JSONEncoder()
