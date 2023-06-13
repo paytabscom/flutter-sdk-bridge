@@ -63,3 +63,5 @@
 * Add digital product
 * Add trace to error
 * Minor fixes
+## 2.4.1
+* Add new tokenization type to ios

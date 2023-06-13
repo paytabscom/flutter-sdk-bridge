@@ -1,5 +1,5 @@
 # Flutter PayTabs Bridge
-![Version](https://img.shields.io/badge/flutter%20paytabs%20bridge-v2.4.0-green)
+![Version](https://img.shields.io/badge/flutter%20paytabs%20bridge-v2.4.1-green)
 
 Flutter paytabs plugin is a wrapper for the native PayTabs Android and iOS SDKs, It helps you integrate with PayTabs payment gateway.
 
@@ -12,7 +12,7 @@ Plugin Support:
 
 ```
 dependencies:
-   flutter_paytabs_bridge: ^2.4.0
+   flutter_paytabs_bridge: ^2.4.1
 ```
 
 ## Usage
@@ -446,7 +446,8 @@ enum PaymentSdkTokeniseType {
   NONE,
   USER_OPTIONAL,
   USER_MANDATORY,
-  MERCHANT_MANDATORY
+  MERCHANT_MANDATORY,
+  USER_OPTIONAL_DEFAULT_ON
 }
 
 ```
