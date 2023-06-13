@@ -221,6 +221,8 @@ public class SwiftFlutterPaymentSDKBridgePlugin: NSObject, FlutterPlugin {
     private func mapTokeniseType(tokeniseType: String) -> TokeniseType? {
            var type = 0
            switch tokeniseType {
+           case "userOptinoalDefaultOn":
+               type = 3
            case "userOptional":
                type = 3
            case "userMandatory":
