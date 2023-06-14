@@ -65,3 +65,5 @@
 * Minor fixes
 ## 2.4.1
 * Add new tokenization type to ios
+## 2.4.2
+* Minor fixes

@@ -80,8 +80,10 @@ class _MyAppState extends State<MyApp> {
 
           // print(transactionDetails["isSuccess"]);
         } else if (event["status"] == "error") {
+          print("error");
           // Handle error here.
         } else if (event["status"] == "event") {
+          print("event");
           // Handle events here.
         }
       });

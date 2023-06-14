@@ -373,16 +373,6 @@ extension SwiftFlutterPaymentSDKBridgePlugin: PaymentManagerDelegate {
         }
     }
 
-    public func paymentManager(didRecieveValidation error: Error?) {
-        if flutterListening {
-            if let error = error {
-                eventSink(code: (error as NSError).code,
-                          message: error.localizedDescription,
-                          status: "error")
-            }
-        }
-    }
-
     public func paymentManager(didCancelPayment error: Error?) {
         eventSink(code: 0, message: "Cancelled", status: "event")
     }
