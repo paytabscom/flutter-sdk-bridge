@@ -67,3 +67,5 @@
 * Add new tokenization type to ios
 ## 2.4.2
 * Minor fixes
+## 2.4.3
+* Add GooglePay, SamsungPay
