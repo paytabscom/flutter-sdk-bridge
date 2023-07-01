@@ -69,3 +69,8 @@
 * Minor fixes
 ## 2.4.3
 * Add GooglePay, SamsungPay
+## 2.4.3
+* Add GooglePay, SamsungPay
+## 2.4.4
+* Remove GooglePay
+* revert proguard

@@ -9,7 +9,6 @@ enum PaymentSdkAPms {
   KNET_DEBIT,
   URPAY,
   AMAN,
-  GOOGLE_PAY,
   SAMSUNG_PAY,
   APPLE_PAY
 }
@@ -39,8 +38,6 @@ extension PaymentSdkTokenFormatExtension on PaymentSdkAPms {
         return 'aman';
       case PaymentSdkAPms.SAMSUNG_PAY:
         return 'samsungpay';
-      case PaymentSdkAPms.GOOGLE_PAY:
-        return 'googlepay';
       case PaymentSdkAPms.APPLE_PAY:
         return 'applePay';
       default:
