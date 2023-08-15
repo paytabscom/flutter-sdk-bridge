@@ -341,6 +341,9 @@ public class FlutterPaytabsBridgePlugin implements FlutterPlugin, MethodCallHand
         String screenTitle = paymentDetails.optString("pt_screen_title");
         String orderId = paymentDetails.optString("pt_cart_id");
         String cartDesc = paymentDetails.optString("pt_cart_description");
+        if (cartDesc.equals("null")){
+            cartDesc = null;
+        }
         String currency = paymentDetails.optString("pt_currency_code");
         String token = paymentDetails.optString("pt_token");
         token = (token == "null" || token == null) ? "" : token;

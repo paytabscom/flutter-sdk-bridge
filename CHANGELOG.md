@@ -74,3 +74,5 @@
 ## 2.4.4
 * Remove GooglePay
 * revert proguard
+## 2.4.5
+* Fix cart description validation
