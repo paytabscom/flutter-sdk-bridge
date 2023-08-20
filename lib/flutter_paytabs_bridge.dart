@@ -163,6 +163,12 @@ class FlutterPaytabsBridge {
         'startPaymentWithSavedCards', argsMap);
   }
 
+  static Future<dynamic> clearSavedCards() async {
+    MethodChannel localChannel = MethodChannel('flutter_paytabs_bridge');
+    return localChannel.invokeMethod(
+        'clearSavedCards');
+  }
+
   static Future<dynamic> queryTransaction(
       PaymentSdkConfigurationDetails arg,
       PaymentSDKQueryConfiguration paymentSDKQueryConfiguration,

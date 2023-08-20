@@ -36,7 +36,7 @@ class _MyAppState extends State<MyApp> {
     List<PaymentSdkAPms> apms = [];
     apms.add(PaymentSdkAPms.AMAN);
     var configuration = PaymentSdkConfigurationDetails(
-        profileId: "*profile id*",
+        profileId: "*Profile id*",
         serverKey: "*server key*",
         clientKey: "*client key*",
         cartId: "12433",
@@ -47,6 +47,7 @@ class _MyAppState extends State<MyApp> {
         showBillingInfo: true,
         forceShippingInfo: false,
         currencyCode: "EGP",
+        tokeniseType: PaymentSdkTokeniseType.NONE,
         merchantCountryCode: "EG",
         billingDetails: billingDetails,
         shippingDetails: shippingDetails,
@@ -146,32 +147,38 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
+
   Future<void> payWithSavedCards() async {
     FlutterPaytabsBridge.startPaymentWithSavedCards(generateConfig(), false,
-        (event) {
-      setState(() {
-        if (event["status"] == "success") {
-          // Handle transaction details here.
-          var transactionDetails = event["data"];
-          print(transactionDetails);
-          if (transactionDetails["isSuccess"]) {
-            print("successful transaction");
-            if (transactionDetails["isPending"]) {
-              print("transaction pending");
-            }
-          } else {
-            print("failed transaction");
-          }
+            (event) {
+          setState(() {
+            if (event["status"] == "success") {
+              // Handle transaction details here.
+              var transactionDetails = event["data"];
+              print(transactionDetails);
+              if (transactionDetails["isSuccess"]) {
+                print("successful transaction");
+                if (transactionDetails["isPending"]) {
+                  print("transaction pending");
+                }
+              } else {
+                print("failed transaction");
+              }
 
-          // print(transactionDetails["isSuccess"]);
-        } else if (event["status"] == "error") {
-          // Handle error here.
-        } else if (event["status"] == "event") {
-          // Handle events here.
-        }
-      });
-    });
+              // print(transactionDetails["isSuccess"]);
+            } else if (event["status"] == "error") {
+              // Handle error here.
+            } else if (event["status"] == "event") {
+              // Handle events here.
+            }
+          });
+        });
   }
+
+  Future<void> clearSavedCards() async {
+    FlutterPaytabsBridge.clearSavedCards();
+  }
+
 
   Future<void> apmsPayPressed() async {
     FlutterPaytabsBridge.startAlternativePaymentMethod(await generateConfig(),
@@ -283,6 +290,12 @@ class _MyAppState extends State<MyApp> {
                   payWithSavedCards();
                 },
                 child: Text('Pay with saved cards'),
+              ),
+              TextButton(
+                onPressed: () {
+                  clearSavedCards();
+                },
+                child: Text('clear saved cards'),
               ),
               SizedBox(height: 16),
               TextButton(

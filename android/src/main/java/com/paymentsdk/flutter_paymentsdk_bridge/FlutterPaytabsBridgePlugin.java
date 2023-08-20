@@ -119,6 +119,8 @@ public class FlutterPaytabsBridgePlugin implements FlutterPlugin, MethodCallHand
             queryTransaction(call);
         } else if (call.method.equals("startPaymentWithSavedCards")) {
             makePaymentWithSavedCards(call);
+        } else if (call.method.equals("clearSavedCards")) {
+            clearSavedCards(call);
         } else if (call.method.equals("startSamsungPayPayment")) {
             makeSamsungPayment(call);
         } else if (call.method.equals("startApmsPayment")) {
@@ -184,6 +186,14 @@ public class FlutterPaytabsBridgePlugin implements FlutterPlugin, MethodCallHand
                     getPaymentSdkConfigurationDetails(paymentDetails),
                     getIsSupport3DS(paymentDetails),
                     getCallback());
+        } catch (Exception e) {
+            eventSink.error("0", e.getMessage(), "{}");
+        }
+    }
+
+    private void clearSavedCards(@NonNull MethodCall call) {
+        try {
+            PaymentSdkActivity.clearSavedCards(activity);
         } catch (Exception e) {
             eventSink.error("0", e.getMessage(), "{}");
         }
