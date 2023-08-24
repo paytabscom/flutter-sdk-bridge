@@ -76,3 +76,5 @@
 * revert proguard
 ## 2.4.5
 * Fix cart description validation
+## 2.4.6
+* Improve card scanner
