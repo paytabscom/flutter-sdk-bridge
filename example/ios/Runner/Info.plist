@@ -24,6 +24,8 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>to scan your cards</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Get Logo From Assets</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
@@ -47,7 +49,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>NSCameraUsageDescription</key>
-	<string>to scan your cards</string>
 </dict>
 </plist>
