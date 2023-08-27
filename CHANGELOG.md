@@ -78,3 +78,5 @@
 * Fix cart description validation
 ## 2.4.6
 * Improve card scanner
+## 2.5.0
+* Improve card scanner
