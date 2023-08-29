@@ -80,3 +80,5 @@
 * Improve card scanner
 ## 2.5.0
 * Improve card scanner
+## 2.5.1
+* Improve card scanner
