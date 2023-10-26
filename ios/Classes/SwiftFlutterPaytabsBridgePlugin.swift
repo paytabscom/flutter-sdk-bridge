@@ -16,6 +16,7 @@ public class SwiftFlutterPaymentSDKBridgePlugin: NSObject, FlutterPlugin {
         case start3DSecureTokenizedCardPayment
         case startPaymentWithSavedCards
         case queryTransaction
+        case cancelPayment
     }
     public static func register(with registrar: FlutterPluginRegistrar) {
         let channel = FlutterMethodChannel(name: channelName, binaryMessenger: registrar.messenger())
@@ -41,6 +42,8 @@ public class SwiftFlutterPaymentSDKBridgePlugin: NSObject, FlutterPlugin {
             start3DSecureTokenizedCardPayment(arguments: arguments)
         case CallMethods.queryTransaction.rawValue:
             queryTransaction(arguments: arguments)
+        case CallMethods.cancelPayment.rawValue:
+            cancelPayment()
 
         default:
             break
@@ -134,6 +137,19 @@ public class SwiftFlutterPaymentSDKBridgePlugin: NSObject, FlutterPlugin {
         }
     }
 
+    private func cancelPayment() {
+        PaymentManager.cancelPayment { [weak self ] didCancel in
+            guard let self = self else { return }
+            if self.flutterListening {
+                if didCancel ?? false {
+                    self.eventSink(code: 0, message: "Cancelled", status: "event")
+                } else {
+                    self.eventSink(code: 0, message: "Cannot Cancel", status: "event")
+                }
+            }
+        }
+    }
+
 
     private func startAlternativePaymentMethod(arguments: [String : Any]) {
         let configuration = generateConfiguration(dictionary: arguments)
@@ -176,7 +192,8 @@ public class SwiftFlutterPaymentSDKBridgePlugin: NSObject, FlutterPlugin {
         configuration.serverIP = dictionary[pt_server_ip] as? String
         configuration.linkBillingNameWithCard = dictionary[pt_link_billing_name] as? Bool ?? true
         configuration.isDigitalProduct = dictionary[pt_is_digital_product] as? Bool ?? false
-                configuration.enableZeroContacts = dictionary[pt_enable_zero_contacts] as? Bool ?? false
+        configuration.enableZeroContacts = dictionary[pt_enable_zero_contacts] as? Bool ?? false
+        configuration.expiryTime = dictionary[pt_expiry_time] as? Int ?? 0
 
         if let apmsString = dictionary[pt_apms] as? String {
             let alternativePaymentMethods = apmsString.components(separatedBy: ",")

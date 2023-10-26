@@ -10,7 +10,8 @@ enum PaymentSdkAPms {
   URPAY,
   AMAN,
   SAMSUNG_PAY,
-  APPLE_PAY
+  APPLE_PAY,
+  SOUHOOLA
 }
 
 extension PaymentSdkTokenFormatExtension on PaymentSdkAPms {
@@ -40,6 +41,8 @@ extension PaymentSdkTokenFormatExtension on PaymentSdkAPms {
         return 'samsungpay';
       case PaymentSdkAPms.APPLE_PAY:
         return 'applePay';
+      case PaymentSdkAPms.SOUHOOLA:
+        return 'souhoola';
       default:
         return null;
     }

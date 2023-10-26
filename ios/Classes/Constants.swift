@@ -29,6 +29,7 @@ let pt_simplify_apple_pay_validation = "pt_simplify_apple_pay_validation"
 let pt_link_billing_name = "pt_link_billing_name"
 let pt_enable_zero_contacts = "pt_enable_zero_contacts"
 let pt_is_digital_product = "pt_is_digital_product"
+let pt_expiry_time = "pt_expiry_time"
 // Billing
 let pt_billing_details = "pt_billing_details"
 let pt_address_billing = "pt_address_billing"

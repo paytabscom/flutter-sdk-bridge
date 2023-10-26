@@ -86,6 +86,7 @@ const String pt_card_type = "pt_card_type";
 // Billing new logic
 const String pt_enable_zero_contacts = "pt_enable_zero_contacts";
 const String pt_is_digital_product = "pt_is_digital_product";
+const String pt_expiry_time = "pt_expiry_time";
 
 class FlutterPaytabsBridge {
   static Future<dynamic> startCardPayment(
@@ -170,7 +171,7 @@ class FlutterPaytabsBridge {
     arg.samsungPayToken = null;
     MethodChannel localChannel = MethodChannel('flutter_paytabs_bridge');
     EventChannel localStream =
-    const EventChannel('flutter_paytabs_bridge_stream');
+        const EventChannel('flutter_paytabs_bridge_stream');
     localStream.receiveBroadcastStream().listen(eventsCallBack);
     var logoImage = arg.iOSThemeConfigurations?.logoImage ?? "";
     if (logoImage != "") {
@@ -178,8 +179,16 @@ class FlutterPaytabsBridge {
     }
     var argsMap = arg.map;
     argsMap["paymentSDKQueryConfiguration"] = paymentSDKQueryConfiguration.map;
-    return await localChannel.invokeMethod(
-        'queryTransaction', argsMap);
+    return await localChannel.invokeMethod('queryTransaction', argsMap);
+  }
+
+  static Future<dynamic> cancelPayment(void eventsCallBack(dynamic)) async {
+    MethodChannel localChannel = MethodChannel('flutter_paytabs_bridge');
+    EventChannel localStream =
+        const EventChannel('flutter_paytabs_bridge_stream');
+    localStream.receiveBroadcastStream().listen(eventsCallBack);
+
+    return await localChannel.invokeMethod('cancelPayment');
   }
 
   static Future<String> handleImagePath(String path) async {

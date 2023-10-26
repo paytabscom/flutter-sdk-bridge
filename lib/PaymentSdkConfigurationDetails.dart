@@ -41,6 +41,7 @@ class PaymentSdkConfigurationDetails {
   List<PaymentSdkAPms>? alternativePaymentMethods;
   bool? isDigitalProduct = false;
   bool? enableZeroContacts = false;
+  int? expiryTime;
   PaymentSdkConfigurationDetails(
       {this.profileId,
       this.serverKey,
@@ -72,7 +73,8 @@ class PaymentSdkConfigurationDetails {
       this.alternativePaymentMethods,
       this.linkBillingNameWithCardHolderName,
       this.enableZeroContacts,
-      this.isDigitalProduct});
+      this.isDigitalProduct,
+      this.expiryTime});
 
   String getApmsConcatenated(List<PaymentSdkAPms>? list) {
     if (list == null || list.isEmpty) return "";
@@ -121,7 +123,8 @@ extension PaymentSdkConfigurationDetailsExtension
       pt_apms: getApmsConcatenated(this.alternativePaymentMethods),
       pt_link_billing_name: this.linkBillingNameWithCardHolderName,
       pt_enable_zero_contacts: this.enableZeroContacts,
-      pt_is_digital_product: this.isDigitalProduct
+      pt_is_digital_product: this.isDigitalProduct,
+      pt_expiry_time: this.expiryTime
     };
   }
 }
