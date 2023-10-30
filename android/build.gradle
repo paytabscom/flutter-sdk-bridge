@@ -9,7 +9,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.2.2'
+        classpath 'com.android.tools.build:gradle:8.1.2'
     }
 }
 
@@ -37,6 +37,7 @@ android {
             exclude group: "org.jetbrains.kotlinx", module: "kotlinx-coroutines-debug"
         }
     }
+    namespace 'com.paymentsdk.flutter_paymentsdk_bridge'
 }
 
 dependencies {
