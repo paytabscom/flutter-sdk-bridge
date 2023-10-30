@@ -15,4 +15,7 @@
     <orderEntry type="library" name="Flutter Plugins" level="project" />
     <orderEntry type="library" name="Dart SDK" level="project" />
   </component>
+  <component name="SonarLintModuleSettings">
+    <option name="uniqueId" value="f548ce07-eddc-472c-8448-035d79fb2faa" />
+  </component>
 </module>

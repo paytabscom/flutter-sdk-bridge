@@ -35,7 +35,7 @@ class _MyAppState extends State<MyApp> {
         "+97311111111", "st. 12", "eg", "dubai", "dubai", "12345");
     List<PaymentSdkAPms> apms = [];
     apms.add(PaymentSdkAPms.AMAN);
-    var configuration = PaymentSdkConfigurationDetails(
+    final configuration = PaymentSdkConfigurationDetails(
         profileId: "*profile id*",
         serverKey: "*server key*",
         clientKey: "*client key*",
@@ -52,11 +52,8 @@ class _MyAppState extends State<MyApp> {
         shippingDetails: shippingDetails,
         alternativePaymentMethods: apms,
         linkBillingNameWithCardHolderName: true);
-
-    var theme = IOSThemeConfigurations();
-
+    final theme = IOSThemeConfigurations();
     theme.logoImage = "assets/logo.png";
-
     configuration.iOSThemeConfigurations = theme;
     configuration.tokeniseType = PaymentSdkTokeniseType.MERCHANT_MANDATORY;
     return configuration;
@@ -174,7 +171,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> apmsPayPressed() async {
-    FlutterPaytabsBridge.startAlternativePaymentMethod(await generateConfig(),
+    FlutterPaytabsBridge.startAlternativePaymentMethod(generateConfig(),
         (event) {
       setState(() {
         if (event["status"] == "success") {
@@ -265,6 +262,15 @@ class _MyAppState extends State<MyApp> {
                   payPressed();
                 },
                 child: Text('Pay with Card'),
+              ),
+              TextButton(
+                onPressed: () {
+                  Future.delayed(const Duration(seconds: 20)).then(
+                      (value) => FlutterPaytabsBridge.cancelPayment((dynamic) {
+                            debugPrint("cancel payment $dynamic");
+                          }));
+                },
+                child: Text('Cancel Payment After 20 sec'),
               ),
               TextButton(
                 onPressed: () {

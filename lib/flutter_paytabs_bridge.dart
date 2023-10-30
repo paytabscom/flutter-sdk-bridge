@@ -1,9 +1,7 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:flutter/services.dart';
-import 'package:flutter/services.dart' show rootBundle;
 import 'package:path_provider/path_provider.dart';
 
 import 'PaymentSDKQueryConfiguration.dart';
@@ -187,7 +185,6 @@ class FlutterPaytabsBridge {
     EventChannel localStream =
         const EventChannel('flutter_paytabs_bridge_stream');
     localStream.receiveBroadcastStream().listen(eventsCallBack);
-
     return await localChannel.invokeMethod('cancelPayment');
   }
 
