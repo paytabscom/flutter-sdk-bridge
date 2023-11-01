@@ -82,6 +82,21 @@ Options to show billing and shipping info
 	configuration.showShippingInfo = true;
 ```
 
+Options to set expiry timeout for the card payment screen
+
+```dart
+/** To establish a timeout of 2 minutes.
+ * Set to zero to deactivate the timeout feature.
+ * Note that the expiryTime cannot be set to less than 60 seconds.
+ * */
+PaymentSdkConfigurationDetails(...,expiryTime:120);
+```
+
+You have the option to close the payment screen if there are no ongoing transactions.
+```dart
+ FlutterPaytabsBridge.cancelPayment((_) {});
+```
+
 3. Set merchant logo from the project assets: 
   - create 'assets' directory and put the image inside it.
   - be sure you add in the Runner iOS Project in the infor.plist the image usage description.
