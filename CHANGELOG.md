@@ -169,3 +169,7 @@
 ## 2.6.2
 
 * Add Souhoola APM, cancel payment function and timeout for the card payment screen.
+
+## 2.6.3
+
+* Bug Fix
