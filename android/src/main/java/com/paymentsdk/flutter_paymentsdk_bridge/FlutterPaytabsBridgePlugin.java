@@ -1,6 +1,7 @@
 package com.paymentsdk.flutter_paymentsdk_bridge;
 
 import android.app.Activity;
+import android.os.Build;
 
 import androidx.annotation.NonNull;
 
@@ -82,22 +83,48 @@ public class FlutterPaytabsBridgePlugin implements FlutterPlugin, MethodCallHand
 
     @Override
     public void onMethodCall(@NonNull MethodCall call, @NonNull Result result) {
-        if (call.method.equals("startCardPayment")) {
-            makeCardPayment(call);
-        } else if (call.method.equals("startTokenizedCardPayment")) {
-            makeTokenizedCardPayment(call);
-        } else if (call.method.equals("start3DSecureTokenizedCardPayment")) {
-            make3DSecureTokenizedCardPayment(call);
-        } else if (call.method.equals("queryTransaction")) {
-            queryTransaction(call);
-        } else if (call.method.equals("startPaymentWithSavedCards")) {
-            makePaymentWithSavedCards(call);
-        } else if (call.method.equals("startSamsungPayPayment")) {
-            makeSamsungPayment(call);
-        } else if (call.method.equals("startApmsPayment")) {
-            makeApmsPayment(call);
-        } else if (call.method.equals("cancelPayment")) {
-            cancelPayment();
+        switch (call.method) {
+            case "startCardPayment":
+                makeCardPayment(call);
+                break;
+            case "startTokenizedCardPayment":
+                makeTokenizedCardPayment(call);
+                break;
+            case "start3DSecureTokenizedCardPayment":
+                make3DSecureTokenizedCardPayment(call);
+                break;
+            case "queryTransaction":
+                queryTransaction(call);
+                break;
+            case "startPaymentWithSavedCards":
+                makePaymentWithSavedCards(call);
+                break;
+            case "startSamsungPayPayment":
+                makeSamsungPayment(call);
+                break;
+            case "startApmsPayment":
+                makeApmsPayment(call);
+                break;
+            case "cancelPayment":
+                cancelPayment();
+                break;
+            case "clearSavedCards":
+                clearSavedCards(result);
+                break;
+        }
+    }
+
+
+    private void clearSavedCards(Result result) {
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                PaymentSdkActivity.clearSavedCards(activity);
+                result.success(null);
+            } else {
+                result.error("0", "Unsupported Android Version. Min supported SDK is 23", "{}");
+            }
+        } catch (Exception e) {
+            result.error("0", e.getMessage(), "{}");
         }
     }
 

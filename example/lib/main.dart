@@ -304,11 +304,22 @@ class _MyAppState extends State<MyApp> {
                 },
                 child: Text('Query transaction'),
               ),
+              TextButton(
+                onPressed: () {
+                  _clearSavedCards();
+                },
+                child: Text('Clear saved cards'),
+              ),
               SizedBox(height: 16),
               applePayButton()
             ])),
       ),
     );
+  }
+
+  Future _clearSavedCards() async {
+    final result = await FlutterPaytabsBridge.clearSavedCards();
+    debugPrint("ClearSavedCards $result");
   }
 
   PaymentSDKQueryConfiguration generateQueryConfig() {
