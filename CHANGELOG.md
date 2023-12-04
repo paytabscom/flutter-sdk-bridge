@@ -173,3 +173,7 @@
 ## 2.6.3
 
 * Bug Fix
+
+## 2.6.4
+
+* Add clearSavedCards function.
