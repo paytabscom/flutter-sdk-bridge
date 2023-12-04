@@ -17,6 +17,7 @@ public class SwiftFlutterPaymentSDKBridgePlugin: NSObject, FlutterPlugin {
         case startPaymentWithSavedCards
         case queryTransaction
         case cancelPayment
+        case clearSavedCards
     }
     public static func register(with registrar: FlutterPluginRegistrar) {
         let channel = FlutterMethodChannel(name: channelName, binaryMessenger: registrar.messenger())
@@ -44,6 +45,8 @@ public class SwiftFlutterPaymentSDKBridgePlugin: NSObject, FlutterPlugin {
             queryTransaction(arguments: arguments)
         case CallMethods.cancelPayment.rawValue:
             cancelPayment()
+        case CallMethods.clearSavedCards.rawValue:
+            clearSavedCards()
 
         default:
             break
@@ -148,6 +151,10 @@ public class SwiftFlutterPaymentSDKBridgePlugin: NSObject, FlutterPlugin {
                 }
             }
         }
+    }
+
+      private func clearSavedCards() {
+        PaymentManager.clearSavedCards()
     }
 
 

@@ -233,4 +233,12 @@ class FlutterPaytabsBridge {
     localStream.receiveBroadcastStream().listen(eventsCallBack);
     return await localChannel.invokeMethod('startApplePayPayment', arg.map);
   }
+
+  static Future<dynamic> clearSavedCards() async {
+    MethodChannel localChannel = MethodChannel('flutter_paytabs_bridge');
+    EventChannel localStream =
+        const EventChannel('flutter_paytabs_bridge_stream');
+
+    return await localChannel.invokeMethod('clearSavedCards');
+  }
 }
