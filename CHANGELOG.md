@@ -185,3 +185,7 @@
 ## 2.6.6
 
 * Add Tabby APM
+
+## 2.6.7
+
+* Bug Fix
