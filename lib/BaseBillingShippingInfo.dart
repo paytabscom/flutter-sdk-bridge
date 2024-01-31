@@ -3,6 +3,10 @@ import 'flutter_paytabs_bridge.dart';
 class BillingDetails {
   String name, email, phone, addressLine, country, city, state, zipCode;
 
+  @Deprecated("""
+  This constructor is deprecated for general usage in favor of the `create` constructor with named parameters. Please migrate to the `create` constructor for more readable and user-friendly syntax.
+  Example usage: BillingDetails.create(name: "John", email: "john@example.com", ...);
+  """)
   BillingDetails(
     this.name,
     this.email,
@@ -13,6 +17,17 @@ class BillingDetails {
     this.state,
     this.zipCode,
   );
+
+  BillingDetails.create({
+    required this.name,
+    required this.email,
+    required this.phone,
+    required this.addressLine,
+    required this.country,
+    required this.city,
+    required this.state,
+    required this.zipCode,
+  });
 }
 
 extension BillingDetailsExtension on BillingDetails {
@@ -31,13 +46,12 @@ extension BillingDetailsExtension on BillingDetails {
 }
 
 class ShippingDetails {
-  String name;
-  String email;
-  String phone;
-  String addressLine;
-  String country;
-  String city, state, zipCode;
+  String name, email, phone, addressLine, country, city, state, zipCode;
 
+  @Deprecated("""
+  This constructor is deprecated for general usage in favor of the `create` constructor with named parameters. Please migrate to the `create` constructor for more readable and user-friendly syntax.
+  Example usage: ShippingDetails.create(name: "John", email: "john@example.com", ...);
+  """)
   ShippingDetails(
     this.name,
     this.email,
@@ -48,6 +62,17 @@ class ShippingDetails {
     this.state,
     this.zipCode,
   );
+
+  ShippingDetails.create({
+    required this.name,
+    required this.email,
+    required this.phone,
+    required this.addressLine,
+    required this.country,
+    required this.city,
+    required this.state,
+    required this.zipCode,
+  });
 }
 
 extension ShippingDetailsExtension on ShippingDetails {

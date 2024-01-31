@@ -2,14 +2,7 @@ import 'dart:async';
 import 'dart:io' show Platform;
 
 import 'package:flutter/material.dart';
-import 'package:flutter_paytabs_bridge/BaseBillingShippingInfo.dart';
-import 'package:flutter_paytabs_bridge/IOSThemeConfiguration.dart';
-import 'package:flutter_paytabs_bridge/PaymentSDKQueryConfiguration.dart';
-import 'package:flutter_paytabs_bridge/PaymentSDKSavedCardInfo.dart';
-import 'package:flutter_paytabs_bridge/PaymentSdkApms.dart';
-import 'package:flutter_paytabs_bridge/PaymentSdkConfigurationDetails.dart';
-import 'package:flutter_paytabs_bridge/PaymentSdkTokeniseType.dart';
-import 'package:flutter_paytabs_bridge/flutter_paytabs_bridge.dart';
+import 'package:flutter_paytabs_bridge/paytabs_payment.dart';
 
 void main() {
   runApp(MyApp());
@@ -29,10 +22,27 @@ class _MyAppState extends State<MyApp> {
   }
 
   PaymentSdkConfigurationDetails generateConfig() {
-    var billingDetails = BillingDetails("John Smith", "email@domain.com",
-        "+97311111111", "st. 12", "eg", "dubai", "dubai", "12345");
-    var shippingDetails = ShippingDetails("John Smith", "email@domain.com",
-        "+97311111111", "st. 12", "eg", "dubai", "dubai", "12345");
+    var billingDetails = BillingDetails(
+      "John Smith",
+      "email@domain.com",
+      "+97311111111",
+      "st. 12",
+      "eg",
+      "dubai",
+      "dubai",
+      "12345",
+    );
+    var shippingDetails = ShippingDetails(
+      "John Smith",
+      "email@domain.com",
+      "+97311111111",
+      "st. 12",
+      "eg",
+      "dubai",
+      "dubai",
+      "12345",
+    );
+
     List<PaymentSdkAPms> apms = [];
     apms.add(PaymentSdkAPms.AMAN);
     final configuration = PaymentSdkConfigurationDetails(
@@ -88,8 +98,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> payWithTokenPressed() async {
-    FlutterPaytabsBridge.startTokenizedCardPayment(
-        generateConfig(), "*Token*", "*TransactionReference*", (event) {
+    FlutterPaytabsBridge.startTokenizedCardPayment(generateConfig(), "*Token*", "*TransactionReference*", (event) {
       setState(() {
         if (event["status"] == "success") {
           // Handle transaction details here.
@@ -116,9 +125,7 @@ class _MyAppState extends State<MyApp> {
 
   Future<void> payWith3ds() async {
     FlutterPaytabsBridge.start3DSecureTokenizedCardPayment(
-        generateConfig(),
-        PaymentSDKSavedCardInfo("4111 11## #### 1111", "visa"),
-        "*Token*", (event) {
+        generateConfig(), PaymentSDKSavedCardInfo("4111 11## #### 1111", "visa"), "*Token*", (event) {
       setState(() {
         if (event["status"] == "success") {
           // Handle transaction details here.
@@ -144,8 +151,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> payWithSavedCards() async {
-    FlutterPaytabsBridge.startPaymentWithSavedCards(generateConfig(), false,
-        (event) {
+    FlutterPaytabsBridge.startPaymentWithSavedCards(generateConfig(), false, (event) {
       setState(() {
         if (event["status"] == "success") {
           // Handle transaction details here.
@@ -171,8 +177,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> apmsPayPressed() async {
-    FlutterPaytabsBridge.startAlternativePaymentMethod(generateConfig(),
-        (event) {
+    FlutterPaytabsBridge.startAlternativePaymentMethod(generateConfig(), (event) {
       setState(() {
         if (event["status"] == "success") {
           // Handle transaction details here.
@@ -188,8 +193,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> queryPressed() async {
-    FlutterPaytabsBridge.queryTransaction(
-        generateConfig(), generateQueryConfig(), (event) {
+    FlutterPaytabsBridge.queryTransaction(generateConfig(), generateQueryConfig(), (event) {
       setState(() {
         if (event["status"] == "success") {
           // Handle transaction details here.
@@ -252,67 +256,64 @@ class _MyAppState extends State<MyApp> {
           title: const Text('PayTabs Plugin Example App'),
         ),
         body: Center(
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-              Text('$_instructions'),
-              SizedBox(height: 16),
-              TextButton(
-                onPressed: () {
-                  payPressed();
-                },
-                child: Text('Pay with Card'),
-              ),
-              TextButton(
-                onPressed: () {
-                  Future.delayed(const Duration(seconds: 20)).then(
-                      (value) => FlutterPaytabsBridge.cancelPayment((dynamic) {
-                            debugPrint("cancel payment $dynamic");
-                          }));
-                },
-                child: Text('Cancel Payment After 20 sec'),
-              ),
-              TextButton(
-                onPressed: () {
-                  payWithTokenPressed();
-                },
-                child: Text('Pay with Token'),
-              ),
-              TextButton(
-                onPressed: () {
-                  payWith3ds();
-                },
-                child: Text('Pay with 3ds'),
-              ),
-              TextButton(
-                onPressed: () {
-                  payWithSavedCards();
-                },
-                child: Text('Pay with saved cards'),
-              ),
-              SizedBox(height: 16),
-              TextButton(
-                onPressed: () {
-                  apmsPayPressed();
-                },
-                child: Text('Pay with Alternative payment methods'),
-              ),
-              SizedBox(height: 16),
-              TextButton(
-                onPressed: () {
-                  queryPressed();
-                },
-                child: Text('Query transaction'),
-              ),
-              TextButton(
-                onPressed: () {
-                  _clearSavedCards();
-                },
-                child: Text('Clear saved cards'),
-              ),
-              SizedBox(height: 16),
-              applePayButton()
-            ])),
+            child: Column(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+          Text('$_instructions'),
+          SizedBox(height: 16),
+          TextButton(
+            onPressed: () {
+              payPressed();
+            },
+            child: Text('Pay with Card'),
+          ),
+          TextButton(
+            onPressed: () {
+              Future.delayed(const Duration(seconds: 20)).then((value) => FlutterPaytabsBridge.cancelPayment((dynamic) {
+                    debugPrint("cancel payment $dynamic");
+                  }));
+            },
+            child: Text('Cancel Payment After 20 sec'),
+          ),
+          TextButton(
+            onPressed: () {
+              payWithTokenPressed();
+            },
+            child: Text('Pay with Token'),
+          ),
+          TextButton(
+            onPressed: () {
+              payWith3ds();
+            },
+            child: Text('Pay with 3ds'),
+          ),
+          TextButton(
+            onPressed: () {
+              payWithSavedCards();
+            },
+            child: Text('Pay with saved cards'),
+          ),
+          SizedBox(height: 16),
+          TextButton(
+            onPressed: () {
+              apmsPayPressed();
+            },
+            child: Text('Pay with Alternative payment methods'),
+          ),
+          SizedBox(height: 16),
+          TextButton(
+            onPressed: () {
+              queryPressed();
+            },
+            child: Text('Query transaction'),
+          ),
+          TextButton(
+            onPressed: () {
+              _clearSavedCards();
+            },
+            child: Text('Clear saved cards'),
+          ),
+          SizedBox(height: 16),
+          applePayButton()
+        ])),
       ),
     );
   }
@@ -323,7 +324,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   PaymentSDKQueryConfiguration generateQueryConfig() {
-    return new PaymentSDKQueryConfiguration("ServerKey", "ClientKey",
-        "Country Iso 2", "Profile Id", "Transaction Reference");
+    return new PaymentSDKQueryConfiguration(
+        "ServerKey", "ClientKey", "Country Iso 2", "Profile Id", "Transaction Reference");
   }
 }
