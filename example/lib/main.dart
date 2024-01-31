@@ -22,25 +22,26 @@ class _MyAppState extends State<MyApp> {
   }
 
   PaymentSdkConfigurationDetails generateConfig() {
-    var billingDetails = BillingDetails(
-      "John Smith",
-      "email@domain.com",
-      "+97311111111",
-      "st. 12",
-      "eg",
-      "dubai",
-      "dubai",
-      "12345",
+    var billingDetails = BillingDetails.create(
+      name: "John Smith",
+      email: "email@domain.com",
+      phone: "+97311111111",
+      addressLine: "st. 12",
+      country: "eg",
+      city: "dubai",
+      state: "dubai",
+      zipCode: "12345",
     );
-    var shippingDetails = ShippingDetails(
-      "John Smith",
-      "email@domain.com",
-      "+97311111111",
-      "st. 12",
-      "eg",
-      "dubai",
-      "dubai",
-      "12345",
+
+    var shippingDetails = ShippingDetails.create(
+      name: "John Smith",
+      email: "email@domain.com",
+      phone: "+97311111111",
+      addressLine: "st. 12",
+      country: "eg",
+      city: "dubai",
+      state: "dubai",
+      zipCode: "12345",
     );
 
     List<PaymentSdkAPms> apms = [];

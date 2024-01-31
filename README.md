@@ -18,16 +18,7 @@ dependencies:
 ## Usage
 
 ```dart
-import 'package:flutter_paytabs_bridge/BaseBillingShippingInfo.dart';
-import 'package:flutter_paytabs_bridge/PaymentSdkConfigurationDetails.dart';
-import 'package:flutter_paytabs_bridge/PaymentSdkLocale.dart';
-import 'package:flutter_paytabs_bridge/PaymentSdkTokenFormat.dart';
-import 'package:flutter_paytabs_bridge/PaymentSdkTokeniseType.dart';
-import 'package:flutter_paytabs_bridge/flutter_paytabs_bridge.dart';
-import 'package:flutter_paytabs_bridge/IOSThemeConfiguration.dart';
-import 'package:flutter_paytabs_bridge/PaymentSDKSavedCardInfo.dart';
-import 'package:flutter_paytabs_bridge/PaymentSdkTransactionClass.dart';
-import 'package:flutter_paytabs_bridge/PaymentSDKQueryConfiguration.dart';
+import 'package:flutter_paytabs_bridge/paytabs_payment.dart';
 ```
 
 ### Pay with Card
@@ -35,23 +26,27 @@ import 'package:flutter_paytabs_bridge/PaymentSDKQueryConfiguration.dart';
 1. Configure the billing & shipping info, the shipping info is optional
 
 ```dart
-  var billingDetails = new BillingDetails("billing name", 
-    "billing email", 
-    "billing phone",
-        "address line", 
-        "country", 
-        "city", 
-        "state", 
-        "zip code");
-        
-var shippingDetails = new ShippingDetails("shipping name", 
-     "shipping email", 
-     "shipping phone",
-     "address line", 
-     "country", 
-     "city", 
-     "state", 
-     "zip code");
+  var billingDetails = BillingDetails.create(
+  name: "John Smith",
+  email: "email@domain.com",
+  phone: "+97311111111",
+  addressLine: "st. 12",
+  country: "eg",
+  city: "dubai",
+  state: "dubai",
+  zipCode: "12345",
+);
+
+var shippingDetails =  ShippingDetails.create(
+  name: "John Smith",
+  email: "email@domain.com",
+  phone: "+97311111111",
+  addressLine: "st. 12",
+  country: "eg",
+  city: "dubai",
+  state: "dubai",
+  zipCode: "12345",
+);
                                               
 ```
 
