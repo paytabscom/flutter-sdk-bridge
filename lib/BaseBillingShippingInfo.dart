@@ -3,7 +3,22 @@ import 'flutter_paytabs_bridge.dart';
 class BillingDetails {
   String name, email, phone, addressLine, country, city, state, zipCode;
 
-  BillingDetails({
+  @Deprecated("""
+  This constructor is deprecated for general usage in favor of the `create` constructor with named parameters. Please migrate to the `create` constructor for more readable and user-friendly syntax.
+  Example usage: BillingDetails.create(name: "John", email: "john@example.com", ...);
+  """)
+  BillingDetails(
+    this.name,
+    this.email,
+    this.phone,
+    this.addressLine,
+    this.country,
+    this.city,
+    this.state,
+    this.zipCode,
+  );
+
+  BillingDetails.create({
     required this.name,
     required this.email,
     required this.phone,
@@ -33,7 +48,22 @@ extension BillingDetailsExtension on BillingDetails {
 class ShippingDetails {
   String name, email, phone, addressLine, country, city, state, zipCode;
 
-  ShippingDetails({
+  @Deprecated("""
+  This constructor is deprecated for general usage in favor of the `create` constructor with named parameters. Please migrate to the `create` constructor for more readable and user-friendly syntax.
+  Example usage: ShippingDetails.create(name: "John", email: "john@example.com", ...);
+  """)
+  ShippingDetails(
+    this.name,
+    this.email,
+    this.phone,
+    this.addressLine,
+    this.country,
+    this.city,
+    this.state,
+    this.zipCode,
+  );
+
+  ShippingDetails.create({
     required this.name,
     required this.email,
     required this.phone,
