@@ -3,16 +3,16 @@ import 'flutter_paytabs_bridge.dart';
 class BillingDetails {
   String name, email, phone, addressLine, country, city, state, zipCode;
 
-  BillingDetails(
-    this.name,
-    this.email,
-    this.phone,
-    this.addressLine,
-    this.country,
-    this.city,
-    this.state,
-    this.zipCode,
-  );
+  BillingDetails({
+    required this.name,
+    required this.email,
+    required this.phone,
+    required this.addressLine,
+    required this.country,
+    required this.city,
+    required this.state,
+    required this.zipCode,
+  });
 }
 
 extension BillingDetailsExtension on BillingDetails {
@@ -31,23 +31,18 @@ extension BillingDetailsExtension on BillingDetails {
 }
 
 class ShippingDetails {
-  String name;
-  String email;
-  String phone;
-  String addressLine;
-  String country;
-  String city, state, zipCode;
+  String name, email, phone, addressLine, country, city, state, zipCode;
 
-  ShippingDetails(
-    this.name,
-    this.email,
-    this.phone,
-    this.addressLine,
-    this.country,
-    this.city,
-    this.state,
-    this.zipCode,
-  );
+  ShippingDetails({
+    required this.name,
+    required this.email,
+    required this.phone,
+    required this.addressLine,
+    required this.country,
+    required this.city,
+    required this.state,
+    required this.zipCode,
+  });
 }
 
 extension ShippingDetailsExtension on ShippingDetails {

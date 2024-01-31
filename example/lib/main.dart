@@ -2,14 +2,7 @@ import 'dart:async';
 import 'dart:io' show Platform;
 
 import 'package:flutter/material.dart';
-import 'package:flutter_paytabs_bridge/BaseBillingShippingInfo.dart';
-import 'package:flutter_paytabs_bridge/IOSThemeConfiguration.dart';
-import 'package:flutter_paytabs_bridge/PaymentSDKQueryConfiguration.dart';
-import 'package:flutter_paytabs_bridge/PaymentSDKSavedCardInfo.dart';
-import 'package:flutter_paytabs_bridge/PaymentSdkApms.dart';
-import 'package:flutter_paytabs_bridge/PaymentSdkConfigurationDetails.dart';
-import 'package:flutter_paytabs_bridge/PaymentSdkTokeniseType.dart';
-import 'package:flutter_paytabs_bridge/flutter_paytabs_bridge.dart';
+import 'package:flutter_paytabs_bridge/paytabs_payment.dart';
 
 void main() {
   runApp(MyApp());
@@ -29,10 +22,27 @@ class _MyAppState extends State<MyApp> {
   }
 
   PaymentSdkConfigurationDetails generateConfig() {
-    var billingDetails = BillingDetails("John Smith", "email@domain.com",
-        "+97311111111", "st. 12", "eg", "dubai", "dubai", "12345");
-    var shippingDetails = ShippingDetails("John Smith", "email@domain.com",
-        "+97311111111", "st. 12", "eg", "dubai", "dubai", "12345");
+    var billingDetails = BillingDetails(
+      name: "John Smith",
+      email: "email@domain.com",
+      phone: "+97311111111",
+      addressLine: "st. 12",
+      country: "eg",
+      city: "dubai",
+      state: "dubai",
+      zipCode: "12345",
+    );
+    var shippingDetails = ShippingDetails(
+      name: "John Smith",
+      email: "email@domain.com",
+      phone: "+97311111111",
+      addressLine: "st. 12",
+      country: "eg",
+      city: "dubai",
+      state: "dubai",
+      zipCode: "12345",
+    );
+
     List<PaymentSdkAPms> apms = [];
     apms.add(PaymentSdkAPms.AMAN);
     final configuration = PaymentSdkConfigurationDetails(

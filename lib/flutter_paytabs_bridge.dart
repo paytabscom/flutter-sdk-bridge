@@ -236,8 +236,8 @@ class FlutterPaytabsBridge {
 
   static Future<dynamic> clearSavedCards() async {
     MethodChannel localChannel = MethodChannel('flutter_paytabs_bridge');
-    EventChannel localStream =
-        const EventChannel('flutter_paytabs_bridge_stream');
+    // EventChannel localStream =
+    //     const EventChannel('flutter_paytabs_bridge_stream');
 
     return await localChannel.invokeMethod('clearSavedCards');
   }
