@@ -32,6 +32,7 @@ const String pt_hide_card_scanner = "pt_hide_card_scanner";
 const String pt_apms = 'pt_apms';
 const String pt_simplify_apple_pay_validation =
     "pt_simplify_apple_pay_validation";
+const String pt_card_discounts = "pt_card_discounts";
 // Billing
 const String pt_billing_details = 'pt_billing_details';
 const String pt_address_billing = 'pt_address_billing';

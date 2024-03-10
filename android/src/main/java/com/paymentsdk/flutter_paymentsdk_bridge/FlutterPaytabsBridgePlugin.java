@@ -1,5 +1,12 @@
 package com.paymentsdk.flutter_paymentsdk_bridge;
 
+import static com.payment.paymentsdk.integrationmodels.PaymentSdkApmsKt.createPaymentSdkApms;
+import static com.payment.paymentsdk.integrationmodels.PaymentSdkLanguageCodeKt.createPaymentSdkLanguageCode;
+import static com.payment.paymentsdk.integrationmodels.PaymentSdkTokenFormatKt.createPaymentSdkTokenFormat;
+import static com.payment.paymentsdk.integrationmodels.PaymentSdkTokeniseKt.createPaymentSdkTokenise;
+import static com.payment.paymentsdk.integrationmodels.PaymentSdkTransactionClassKt.createPaymentSdkTransactionClass;
+import static com.payment.paymentsdk.integrationmodels.PaymentSdkTransactionTypeKt.createPaymentSdkTransactionType;
+
 import android.app.Activity;
 import android.os.Build;
 
@@ -9,9 +16,11 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.payment.paymentsdk.PaymentSdkActivity;
 import com.payment.paymentsdk.PaymentSdkConfigBuilder;
-import com.payment.paymentsdk.save_cards.entities.PaymentSDKSavedCardInfo;
+import com.payment.paymentsdk.QuerySdkActivity;
+import com.payment.paymentsdk.integrationmodels.PaymentSDKQueryConfiguration;
 import com.payment.paymentsdk.integrationmodels.PaymentSdkApms;
 import com.payment.paymentsdk.integrationmodels.PaymentSdkBillingDetails;
+import com.payment.paymentsdk.integrationmodels.PaymentSdkCardDiscount;
 import com.payment.paymentsdk.integrationmodels.PaymentSdkConfigurationDetails;
 import com.payment.paymentsdk.integrationmodels.PaymentSdkError;
 import com.payment.paymentsdk.integrationmodels.PaymentSdkLanguageCode;
@@ -20,8 +29,9 @@ import com.payment.paymentsdk.integrationmodels.PaymentSdkTokenFormat;
 import com.payment.paymentsdk.integrationmodels.PaymentSdkTokenise;
 import com.payment.paymentsdk.integrationmodels.PaymentSdkTransactionDetails;
 import com.payment.paymentsdk.integrationmodels.PaymentSdkTransactionType;
-import com.payment.paymentsdk.integrationmodels.PaymentSDKQueryConfiguration;
+import com.payment.paymentsdk.save_cards.entities.PaymentSDKSavedCardInfo;
 import com.payment.paymentsdk.sharedclasses.interfaces.CallbackPaymentInterface;
+import com.payment.paymentsdk.sharedclasses.interfaces.CallbackQueryInterface;
 import com.payment.paymentsdk.sharedclasses.model.response.TransactionResponseBody;
 
 import org.jetbrains.annotations.NotNull;
@@ -29,6 +39,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
@@ -39,16 +50,6 @@ import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
-
-import static com.payment.paymentsdk.integrationmodels.PaymentSdkApmsKt.createPaymentSdkApms;
-import static com.payment.paymentsdk.integrationmodels.PaymentSdkLanguageCodeKt.createPaymentSdkLanguageCode;
-import static com.payment.paymentsdk.integrationmodels.PaymentSdkTokenFormatKt.createPaymentSdkTokenFormat;
-import static com.payment.paymentsdk.integrationmodels.PaymentSdkTokeniseKt.createPaymentSdkTokenise;
-import static com.payment.paymentsdk.integrationmodels.PaymentSdkTransactionClassKt.createPaymentSdkTransactionClass;
-import static com.payment.paymentsdk.integrationmodels.PaymentSdkTransactionTypeKt.createPaymentSdkTransactionType;
-
-import com.payment.paymentsdk.QuerySdkActivity;
-import com.payment.paymentsdk.sharedclasses.interfaces.CallbackQueryInterface;
 
 
 /**
@@ -355,12 +356,13 @@ public class FlutterPaytabsBridgePlugin implements FlutterPlugin, MethodCallHand
         if (shippingDetails != null) {
             shippingData = new PaymentSdkShippingDetails(shippingDetails.optString("pt_city_shipping"), shippingDetails.optString("pt_country_shipping"), shippingDetails.optString("pt_email_shipping"), shippingDetails.optString("pt_name_shipping"), shippingDetails.optString("pt_phone_shipping"), shippingDetails.optString("pt_state_shipping"), shippingDetails.optString("pt_address_shipping"), shippingDetails.optString("pt_zip_shipping"));
         }
+        final String ptCardDiscounts = paymentDetails.optString("pt_card_discounts", "[]");
+        final List<PaymentSdkCardDiscount> cardDiscounts = new Gson().fromJson(ptCardDiscounts, new TypeToken<List<PaymentSdkCardDiscount>>() {
+        }.getType());
         return new PaymentSdkConfigBuilder(profileId, serverKey, clientKey, amount, currency).setCartDescription(cartDesc).setLanguageCode(locale).setBillingData(billingData).setMerchantCountryCode(paymentDetails.optString("pt_merchant_country_code")).setShippingData(shippingData).setCartId(orderId).setTransactionClass(createPaymentSdkTransactionClass(paymentDetails.optString("pt_transaction_class"))).setTransactionType(transaction_type).setTokenise(tokeniseType, tokenFormat).setTokenisationData(token, transRef).setAlternativePaymentMethods(aPmsList).showBillingInfo(paymentDetails.optBoolean("pt_show_billing_info")).showShippingInfo(paymentDetails.optBoolean("pt_show_shipping_info")).forceShippingInfo(paymentDetails.optBoolean("pt_force_validate_shipping")).setMerchantIcon(iconUri).setScreenTitle(screenTitle).linkBillingNameWithCard(paymentDetails.optBoolean("pt_link_billing_name")).hideCardScanner(paymentDetails.optBoolean("pt_hide_card_scanner"))
                 //New stuff
-                .enableZeroContacts(paymentDetails.optBoolean("pt_enable_zero_contacts"))
-                .isDigitalProduct(paymentDetails.optBoolean("pt_is_digital_product"))
-                .setPaymentExpiry(paymentScreenExpiry)
-                .build();
+                .enableZeroContacts(paymentDetails.optBoolean("pt_enable_zero_contacts")).isDigitalProduct(paymentDetails.optBoolean("pt_is_digital_product")).setPaymentExpiry(paymentScreenExpiry)
+                .setCardDiscount(cardDiscounts).build();
     }
 
     public static String optString(JSONObject json, String key) {
