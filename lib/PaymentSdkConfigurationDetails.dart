@@ -8,12 +8,13 @@ import 'PaymentSdkTokenFormat.dart';
 import 'PaymentSdkTokeniseType.dart';
 import 'PaymentSdkTransactionClass.dart';
 import 'PaymentSdkTransactionType.dart';
+import 'PaymentSDKCardDiscount.dart';
 import 'flutter_paytabs_bridge.dart';
 
 class PaymentSdkConfigurationDetails {
   BillingDetails? billingDetails;
   ShippingDetails? shippingDetails;
-  List<CardDiscount>? cardDiscounts = null;
+  List<PaymentSDKCardDiscount>? cardDiscounts = null;
   String? profileId;
   String? serverKey;
   String? clientKey;
@@ -129,7 +130,7 @@ extension PaymentSdkConfigurationDetailsExtension
       pt_enable_zero_contacts: this.enableZeroContacts,
       pt_is_digital_product: this.isDigitalProduct,
       pt_expiry_time: this.expiryTime,
-      pt_card_discounts: this.cardDiscounts?.map((e) => e.toJson()).toList()
+      pt_card_discounts: this.cardDiscounts?.map
     };
   }
 }

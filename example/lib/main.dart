@@ -3,7 +3,9 @@ import 'dart:io' show Platform;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_paytabs_bridge/BaseBillingShippingInfo.dart';
+import 'package:flutter_paytabs_bridge/CardDiscount.dart';
 import 'package:flutter_paytabs_bridge/IOSThemeConfiguration.dart';
+import 'package:flutter_paytabs_bridge/PaymentSDKCardDiscount.dart';
 import 'package:flutter_paytabs_bridge/PaymentSDKQueryConfiguration.dart';
 import 'package:flutter_paytabs_bridge/PaymentSDKSavedCardInfo.dart';
 import 'package:flutter_paytabs_bridge/PaymentSdkApms.dart';
@@ -56,6 +58,18 @@ class _MyAppState extends State<MyApp> {
     theme.logoImage = "assets/logo.png";
     configuration.iOSThemeConfigurations = theme;
     configuration.tokeniseType = PaymentSdkTokeniseType.MERCHANT_MANDATORY;
+    configuration.cardDiscounts = [
+      PaymentSDKCardDiscount(
+          discountCards: ["4111"],
+          discountValue: 50,
+          discountTitle: "testing discounts ",
+          isPercentage: true),
+      PaymentSDKCardDiscount(
+          discountCards: ["4000"],
+          discountValue: 30,
+          discountTitle: "testing discounts 22 ",
+          isPercentage: false)
+    ];
     return configuration;
   }
 

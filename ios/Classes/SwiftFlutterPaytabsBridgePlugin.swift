@@ -230,6 +230,10 @@ public class SwiftFlutterPaymentSDKBridgePlugin: NSObject, FlutterPlugin {
         if let shippingDictionary = dictionary[pt_shipping_details] as?  [String: Any] {
             configuration.shippingDetails = generateShippingDetails(dictionary: shippingDictionary)
         }
+
+        //  if let discountsDictionary = dictionary[pt_card_discounts] as?  [[String: Any]] {
+        //     configuration.cardDiscounts = generateDiscountDetails(dictionary: discountsDictionary)
+        // }
         return configuration
     }
 
@@ -282,6 +286,23 @@ public class SwiftFlutterPaymentSDKBridgePlugin: NSObject, FlutterPlugin {
         shippingDetails.zip = dictionary[pt_zip_shipping] as? String ?? ""
         return shippingDetails
     }
+
+  private func generateDiscountDetails(dictionary: [[String: Any]]) -> [PaymentSDKCardDiscount]? {
+    var discounts = [PaymentSDKCardDiscount]()
+    
+    for dict in dictionary {
+        if let discountCard = dict[pt_discount_cards] as? [String],
+           let discountValue = dict[pt_discount_value] as? Double,
+           let discountTitle = dict[pt_discount_title] as? String,
+           let isPercentage = dict[pt_is_percentage] as? Bool {
+            let discount = PaymentSDKCardDiscount(discountCards: discountCard, dicsountValue: discountValue, discountTitle: discountTitle, isPercentage: isPercentage)
+            discounts.append(discount)
+        }
+    }
+    
+    return discounts.isEmpty ? nil : discounts
+}
+
     private func generateTheme(dictionary: [String: Any]) -> PaymentSDKTheme? {
         let theme = PaymentSDKTheme.default
         if let imageName = dictionary[pt_ios_logo] as? String {

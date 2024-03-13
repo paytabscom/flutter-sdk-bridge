@@ -87,6 +87,11 @@ const String pt_enable_zero_contacts = "pt_enable_zero_contacts";
 const String pt_is_digital_product = "pt_is_digital_product";
 const String pt_expiry_time = "pt_expiry_time";
 
+const String pt_discount_cards = "pt_discount_cards";
+const String pt_discount_value = "pt_discount_value";
+const String pt_discount_title = "pt_discount_title";
+const String pt_is_percentage = "pt_is_percentage";
+
 class FlutterPaytabsBridge {
   static Future<dynamic> startCardPayment(
       PaymentSdkConfigurationDetails arg, void eventsCallBack(dynamic)) async {
