@@ -35,6 +35,7 @@ import com.payment.paymentsdk.sharedclasses.interfaces.CallbackQueryInterface;
 import com.payment.paymentsdk.sharedclasses.model.response.TransactionResponseBody;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -356,13 +357,33 @@ public class FlutterPaytabsBridgePlugin implements FlutterPlugin, MethodCallHand
         if (shippingDetails != null) {
             shippingData = new PaymentSdkShippingDetails(shippingDetails.optString("pt_city_shipping"), shippingDetails.optString("pt_country_shipping"), shippingDetails.optString("pt_email_shipping"), shippingDetails.optString("pt_name_shipping"), shippingDetails.optString("pt_phone_shipping"), shippingDetails.optString("pt_state_shipping"), shippingDetails.optString("pt_address_shipping"), shippingDetails.optString("pt_zip_shipping"));
         }
-        final String ptCardDiscounts = paymentDetails.optString("pt_card_discounts", "[]");
-        final List<PaymentSdkCardDiscount> cardDiscounts = new Gson().fromJson(ptCardDiscounts, new TypeToken<List<PaymentSdkCardDiscount>>() {
-        }.getType());
+        final List<PaymentSdkCardDiscount> paymentSdkCardDiscounts = getPaymentSdkCardDiscounts(paymentDetails);
         return new PaymentSdkConfigBuilder(profileId, serverKey, clientKey, amount, currency).setCartDescription(cartDesc).setLanguageCode(locale).setBillingData(billingData).setMerchantCountryCode(paymentDetails.optString("pt_merchant_country_code")).setShippingData(shippingData).setCartId(orderId).setTransactionClass(createPaymentSdkTransactionClass(paymentDetails.optString("pt_transaction_class"))).setTransactionType(transaction_type).setTokenise(tokeniseType, tokenFormat).setTokenisationData(token, transRef).setAlternativePaymentMethods(aPmsList).showBillingInfo(paymentDetails.optBoolean("pt_show_billing_info")).showShippingInfo(paymentDetails.optBoolean("pt_show_shipping_info")).forceShippingInfo(paymentDetails.optBoolean("pt_force_validate_shipping")).setMerchantIcon(iconUri).setScreenTitle(screenTitle).linkBillingNameWithCard(paymentDetails.optBoolean("pt_link_billing_name")).hideCardScanner(paymentDetails.optBoolean("pt_hide_card_scanner"))
                 //New stuff
                 .enableZeroContacts(paymentDetails.optBoolean("pt_enable_zero_contacts")).isDigitalProduct(paymentDetails.optBoolean("pt_is_digital_product")).setPaymentExpiry(paymentScreenExpiry)
-                .setCardDiscount(cardDiscounts).build();
+                .setCardDiscount(paymentSdkCardDiscounts).build();
+    }
+
+    @NonNull
+    private static List<PaymentSdkCardDiscount> getPaymentSdkCardDiscounts(JSONObject paymentDetails) {
+        final JSONArray ptCardDiscounts = paymentDetails.optJSONArray("pt_card_discounts");
+        final List<PaymentSdkCardDiscount> paymentSdkCardDiscounts = new ArrayList<>();
+        if (ptCardDiscounts != null) {
+            for (int i = 0; i < ptCardDiscounts.length(); i++) {
+                final JSONObject discount = ptCardDiscounts.optJSONObject(i);
+                final JSONArray cardsPrefixes = discount.optJSONArray("pt_discount_cards");
+                final List<String> cards = new ArrayList<>();
+                if (cardsPrefixes != null) {
+                    for (int j = 0; j < cardsPrefixes.length(); j++) {
+                        cards.add(cardsPrefixes.optString(j));
+                    }
+                }
+                final PaymentSdkCardDiscount cardDiscount = new PaymentSdkCardDiscount(cards, discount.optDouble("pt_discount_value"),
+                        discount.optString("pt_discount_title"), discount.optBoolean("pt_is_percentage"));
+                paymentSdkCardDiscounts.add(cardDiscount);
+            }
+        }
+        return paymentSdkCardDiscounts;
     }
 
     public static String optString(JSONObject json, String key) {

@@ -3,7 +3,6 @@ import 'dart:io' show Platform;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_paytabs_bridge/BaseBillingShippingInfo.dart';
-import 'package:flutter_paytabs_bridge/CardDiscount.dart';
 import 'package:flutter_paytabs_bridge/IOSThemeConfiguration.dart';
 import 'package:flutter_paytabs_bridge/PaymentSDKCardDiscount.dart';
 import 'package:flutter_paytabs_bridge/PaymentSDKQueryConfiguration.dart';
@@ -62,12 +61,12 @@ class _MyAppState extends State<MyApp> {
       PaymentSDKCardDiscount(
           discountCards: ["4111"],
           discountValue: 50,
-          discountTitle: "testing discounts ",
+          discountTitle: "50% discount on cards starting with 4111",
           isPercentage: true),
       PaymentSDKCardDiscount(
-          discountCards: ["4000"],
-          discountValue: 30,
-          discountTitle: "testing discounts 22 ",
+          discountCards: ["4000", "41111"],
+          discountValue: 2,
+          discountTitle: "2 discount on cards starting with 4000 and 41111",
           isPercentage: false)
     ];
     return configuration;

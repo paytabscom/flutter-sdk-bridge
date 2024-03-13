@@ -1,14 +1,12 @@
-import 'package:flutter_paytabs_bridge/CardDiscount.dart';
-
 import 'BaseBillingShippingInfo.dart';
 import 'IOSThemeConfiguration.dart';
+import 'PaymentSDKCardDiscount.dart';
 import 'PaymentSdkApms.dart';
 import 'PaymentSdkLocale.dart';
 import 'PaymentSdkTokenFormat.dart';
 import 'PaymentSdkTokeniseType.dart';
 import 'PaymentSdkTransactionClass.dart';
 import 'PaymentSdkTransactionType.dart';
-import 'PaymentSDKCardDiscount.dart';
 import 'flutter_paytabs_bridge.dart';
 
 class PaymentSdkConfigurationDetails {
@@ -130,7 +128,7 @@ extension PaymentSdkConfigurationDetailsExtension
       pt_enable_zero_contacts: this.enableZeroContacts,
       pt_is_digital_product: this.isDigitalProduct,
       pt_expiry_time: this.expiryTime,
-      pt_card_discounts: this.cardDiscounts?.map
+      pt_card_discounts: this.cardDiscounts?.map((e) => e.map).toList(),
     };
   }
 }
