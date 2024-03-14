@@ -358,10 +358,35 @@ public class FlutterPaytabsBridgePlugin implements FlutterPlugin, MethodCallHand
             shippingData = new PaymentSdkShippingDetails(shippingDetails.optString("pt_city_shipping"), shippingDetails.optString("pt_country_shipping"), shippingDetails.optString("pt_email_shipping"), shippingDetails.optString("pt_name_shipping"), shippingDetails.optString("pt_phone_shipping"), shippingDetails.optString("pt_state_shipping"), shippingDetails.optString("pt_address_shipping"), shippingDetails.optString("pt_zip_shipping"));
         }
         final List<PaymentSdkCardDiscount> paymentSdkCardDiscounts = getPaymentSdkCardDiscounts(paymentDetails);
-        return new PaymentSdkConfigBuilder(profileId, serverKey, clientKey, amount, currency).setCartDescription(cartDesc).setLanguageCode(locale).setBillingData(billingData).setMerchantCountryCode(paymentDetails.optString("pt_merchant_country_code")).setShippingData(shippingData).setCartId(orderId).setTransactionClass(createPaymentSdkTransactionClass(paymentDetails.optString("pt_transaction_class"))).setTransactionType(transaction_type).setTokenise(tokeniseType, tokenFormat).setTokenisationData(token, transRef).setAlternativePaymentMethods(aPmsList).showBillingInfo(paymentDetails.optBoolean("pt_show_billing_info")).showShippingInfo(paymentDetails.optBoolean("pt_show_shipping_info")).forceShippingInfo(paymentDetails.optBoolean("pt_force_validate_shipping")).setMerchantIcon(iconUri).setScreenTitle(screenTitle).linkBillingNameWithCard(paymentDetails.optBoolean("pt_link_billing_name")).hideCardScanner(paymentDetails.optBoolean("pt_hide_card_scanner"))
-                //New stuff
-                .enableZeroContacts(paymentDetails.optBoolean("pt_enable_zero_contacts")).isDigitalProduct(paymentDetails.optBoolean("pt_is_digital_product")).setPaymentExpiry(paymentScreenExpiry)
+        return new PaymentSdkConfigBuilder(profileId, serverKey, clientKey, amount, currency)
+                .setCartDescription(cartDesc)
+                .setLanguageCode(locale)
+                .setBillingData(billingData)
+                .setMerchantCountryCode(paymentDetails.optString("pt_merchant_country_code"))
+                .setShippingData(shippingData)
+                .setCartId(orderId)
+                .setTransactionClass(createPaymentSdkTransactionClass(paymentDetails.optString("pt_transaction_class")))
+                .setTransactionType(transaction_type).setTokenise(tokeniseType, tokenFormat)
+                .setTokenisationData(token, transRef)
+                .setAlternativePaymentMethods(aPmsList)
+                .showBillingInfo(paymentDetails.optBoolean("pt_show_billing_info"))
+                .showShippingInfo(paymentDetails.optBoolean("pt_show_shipping_info"))
+                .forceShippingInfo(paymentDetails.optBoolean("pt_force_validate_shipping"))
+                .setMerchantIcon(iconUri).setScreenTitle(screenTitle)
+                .linkBillingNameWithCard(paymentDetails.optBoolean("pt_link_billing_name"))
+                .hideCardScanner(paymentDetails.optBoolean("pt_hide_card_scanner"))
+                .enableZeroContacts(paymentDetails.optBoolean("pt_enable_zero_contacts"))
+                .isDigitalProduct(paymentDetails.optBoolean("pt_is_digital_product"))
+                .setPaymentExpiry(paymentScreenExpiry)
+                .setMetadata(getMetadata())
                 .setCardDiscount(paymentSdkCardDiscounts).build();
+    }
+
+    private Map<String, Object> getMetadata() {
+        Map<String, Object> metadata = new HashMap<>();
+        metadata.put("PaymentSDKPluginName", "flutter");
+        metadata.put("PaymentSDKPluginVersion", "2.6.8");
+        return metadata;
     }
 
     @NonNull
