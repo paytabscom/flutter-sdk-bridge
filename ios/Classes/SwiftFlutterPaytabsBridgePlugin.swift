@@ -231,9 +231,11 @@ public class SwiftFlutterPaymentSDKBridgePlugin: NSObject, FlutterPlugin {
             configuration.shippingDetails = generateShippingDetails(dictionary: shippingDictionary)
         }
 
-        //  if let discountsDictionary = dictionary[pt_card_discounts] as?  [[String: Any]] {
-        //     configuration.cardDiscounts = generateDiscountDetails(dictionary: discountsDictionary)
-        // }
+         if let discountsDictionary = dictionary[pt_card_discounts] as?  [[String: Any]] {
+            configuration.cardDiscounts = generateDiscountDetails(dictionary: discountsDictionary)
+        }
+
+        configuration.metaData = ["PaymentSDKPluginName": "flutter", "PaymentSDKPluginVersion": "2.6.8"]
         return configuration
     }
 

@@ -189,3 +189,7 @@
 ## 2.6.7
 
 * Bug Fix
+
+## 2.6.8
+
+* Discounts Feature
