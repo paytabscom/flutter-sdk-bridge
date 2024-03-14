@@ -12,7 +12,7 @@ Plugin Support:
 
 ```
 dependencies:
-   flutter_paytabs_bridge: ^2.6.6
+   flutter_paytabs_bridge: ^2.6.8
 ```
 
 ## Usage
@@ -349,6 +349,25 @@ FlutterPaytabsBridge.startAlternativePaymentMethod(await generateConfig(),
 
     });
     
+```
+
+## Discounts
+
+You can add discounts to the payment by passing the discount amount and the discount type to the configuration.
+
+```dart
+ configuration.cardDiscounts = [
+      PaymentSDKCardDiscount(
+          discountCards: ["4111"],
+          discountValue: 50,
+          discountTitle: "50% discount on cards starting with 4111",
+          isPercentage: true),
+      PaymentSDKCardDiscount(
+          discountCards: ["4000", "41111"],
+          discountValue: 2,
+          discountTitle: "2 EGP discount on cards starting with 4000 and 41111",
+          isPercentage: false)
+    ];
 ```
 
 ## Clear saved cards
