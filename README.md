@@ -445,12 +445,13 @@ Use the following guide to cusomize the colors, font, and logo by configuring th
 ### Android Theme
 Use the following guide to customize the colors, font, and logo by configuring the theme and pass it to the payment configuration.
 
--- Override strings
-To override string you can find the keys with the default values here
-[English][english], [Arabic][arabic].
+```bash
+# edit file
+android/src/main/res/values/colors.xml
+```
 
 ````xml
-<resourse>
+<resources>
   // to override colors
      <color name="payment_sdk_primary_color">#5C13DF</color>
      <color name="payment_sdk_secondary_color">#FFC107</color>
@@ -472,8 +473,12 @@ To override string you can find the keys with the default values here
      <dimen name="payment_sdk_input_corner_radius">8dp</dimen>
      <dimen name="payment_sdk_button_corner_radius">8dp</dimen>
      
-</resourse>
+</resources>
 ````
+
+-- Override strings
+To override string you can find the keys with the default values here
+[English][english], [Arabic][arabic].
 
 ## Enums
 
