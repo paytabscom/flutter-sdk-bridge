@@ -439,6 +439,7 @@ Use the following guide to cusomize the colors, font, and logo by configuring th
 ```dart
 	var theme = IOSThemeConfigurations();
 	theme.backgroundColor = "e0556e"; // Color hex value
+	theme.backgroundColorDark = "520f3a"; // Dark Mode Color hex value
 	configuration.iOSThemeConfigurations = theme;
 ```
 
