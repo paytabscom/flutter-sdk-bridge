@@ -63,15 +63,38 @@ const String pt_link_billing_name = 'pt_link_billing_name';
 const String pt_show_shipping_info = 'pt_show_shipping_info';
 const String pt_force_validate_shipping = 'pt_force_validate_shipping';
 const String pt_ios_primary_color = 'pt_ios_primary_color';
+const String pt_ios_primary_color_dark = 'pt_ios_primary_color_dark';
+
 const String pt_ios_primary_font_color = 'pt_ios_primary_font_color';
+const String pt_ios_primary_font_color_dark = 'pt_ios_primary_font_color_dark';
+
+
 const String pt_ios_secondary_color = 'pt_ios_secondary_color';
+const String pt_ios_secondary_color_dark = 'pt_ios_secondary_color_dark';
+
 const String pt_ios_secondary_font_color = 'pt_ios_secondary_font_color';
+const String pt_ios_secondary_font_color_dark = 'pt_ios_secondary_font_color_dark';
+
+
 const String pt_ios_stroke_color = 'pt_ios_stroke_color';
+const String pt_ios_stroke_color_dark = 'pt_ios_stroke_color_dark';
+
+
 const String pt_ios_button_color = 'pt_ios_button_color';
+const String pt_ios_button_color_dark = 'pt_ios_button_color_dark';
+
 const String pt_ios_button_font_color = 'pt_ios_button_font_color';
+const String pt_ios_button_font_color_dark = 'pt_ios_button_font_color_dark';
+
 const String pt_ios_title_font_color = 'pt_ios_title_font_color';
+const String pt_ios_title_font_color_dark = 'pt_ios_title_font_color_dark';
+
 const String pt_ios_background_color = 'pt_ios_background_color';
+const String pt_ios_background_color_dark = 'pt_ios_background_color_dark';
+
 const String pt_ios_placeholder_color = 'pt_ios_placeholder_color';
+const String pt_ios_placeholder_color_dark = 'pt_ios_placeholder_color_dark';
+
 const String pt_ios_primary_font = 'pt_ios_primary_font';
 const String pt_ios_secondary_font = 'pt_ios_secondary_font';
 const String pt_ios_stroke_thinckness = 'pt_ios_stroke_thinckness';

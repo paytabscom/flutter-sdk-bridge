@@ -235,7 +235,7 @@ public class SwiftFlutterPaymentSDKBridgePlugin: NSObject, FlutterPlugin {
             configuration.cardDiscounts = generateDiscountDetails(dictionary: discountsDictionary)
         }
 
-        configuration.metaData = ["PaymentSDKPluginName": "flutter", "PaymentSDKPluginVersion": "2.6.8"]
+        configuration.metaData = ["PaymentSDKPluginName": "flutter", "PaymentSDKPluginVersion": "2.6.9"]
         return configuration
     }
 
@@ -306,29 +306,42 @@ public class SwiftFlutterPaymentSDKBridgePlugin: NSObject, FlutterPlugin {
 }
 
     private func generateTheme(dictionary: [String: Any]) -> PaymentSDKTheme? {
+            var isDark = false
+            if let traitCollection = UIApplication.shared.keyWindow?.traitCollection {
+                if #available(iOS 12.0, *) {
+                    switch traitCollection.userInterfaceStyle {
+                    case .light, .unspecified:
+                        isDark = false
+                    case .dark:
+                        isDark = true
+                    }
+                }
+            }
+
+
         let theme = PaymentSDKTheme.default
         if let imageName = dictionary[pt_ios_logo] as? String {
             theme.logoImage = UIImage(named: imageName)
         }
-        if let colorHex = dictionary[pt_ios_primary_color] as? String {
+        if let colorHex = dictionary[pt_ios_primary_color + "\(isDark ? "_dark" : "")"] as? String {
             theme.primaryColor = UIColor(hex: colorHex)
         }
-        if let colorHex = dictionary[pt_ios_primary_font_color] as? String {
+        if let colorHex = dictionary[pt_ios_primary_font_color + "\(isDark ? "_dark" : "")"] as? String {
             theme.primaryFontColor = UIColor(hex: colorHex)
         }
         if let fontName = dictionary[pt_ios_primary_font] as? String {
             theme.primaryFont = UIFont.init(name: fontName, size: 16)
         }
-        if let colorHex = dictionary[pt_ios_secondary_color] as? String {
+        if let colorHex = dictionary[pt_ios_secondary_color + "\(isDark ? "_dark" : "")"] as? String {
             theme.secondaryColor = UIColor(hex: colorHex)
         }
-        if let colorHex = dictionary[pt_ios_secondary_font_color] as? String {
+        if let colorHex = dictionary[pt_ios_secondary_font_color + "\(isDark ? "_dark" : "")"] as? String {
             theme.secondaryFontColor = UIColor(hex: colorHex)
         }
         if let fontName = dictionary[pt_ios_secondary_font] as? String {
             theme.secondaryFont = UIFont.init(name: fontName, size: 16)
         }
-        if let colorHex = dictionary[pt_ios_stroke_color] as? String {
+        if let colorHex = dictionary[pt_ios_stroke_color + "\(isDark ? "_dark" : "")"] as? String {
             theme.strokeColor = UIColor(hex: colorHex)
         }
         if let value = dictionary[pt_ios_stroke_thinckness] as? CGFloat {
@@ -337,25 +350,25 @@ public class SwiftFlutterPaymentSDKBridgePlugin: NSObject, FlutterPlugin {
         if let value = dictionary[pt_ios_inputs_corner_radius] as? CGFloat {
             theme.inputsCornerRadius = value
         }
-        if let colorHex = dictionary[pt_ios_button_color] as? String {
+        if let colorHex = dictionary[pt_ios_button_color + "\(isDark ? "_dark" : "")"] as? String {
             theme.buttonColor = UIColor(hex: colorHex)
         }
-        if let colorHex = dictionary[pt_ios_button_font_color] as? String {
+        if let colorHex = dictionary[pt_ios_button_font_color + "\(isDark ? "_dark" : "")"] as? String {
             theme.buttonFontColor = UIColor(hex: colorHex)
         }
         if let fontName = dictionary[pt_ios_button_font] as? String {
             theme.buttonFont = UIFont.init(name: fontName, size: 16)
         }
-        if let colorHex = dictionary[pt_ios_title_font_color] as? String {
+        if let colorHex = dictionary[pt_ios_title_font_color + "\(isDark ? "_dark" : "")"] as? String {
             theme.titleFontColor = UIColor(hex: colorHex)
         }
         if let fontName = dictionary[pt_ios_title_font] as? String {
             theme.titleFont = UIFont.init(name: fontName, size: 16)
         }
-        if let colorHex = dictionary[pt_ios_background_color] as? String {
+        if let colorHex = dictionary[pt_ios_background_color + "\(isDark ? "_dark" : "")"] as? String {
             theme.backgroundColor = UIColor(hex: colorHex)
         }
-        if let colorHex = dictionary[pt_ios_placeholder_color] as? String {
+        if let colorHex = dictionary[pt_ios_placeholder_color + "\(isDark ? "_dark" : "")"] as? String {
             theme.placeholderColor = UIColor(hex: colorHex)
         }
         return theme

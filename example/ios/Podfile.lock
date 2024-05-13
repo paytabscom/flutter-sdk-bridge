@@ -1,0 +1,36 @@
+PODS:
+  - Flutter (1.0.0)
+  - flutter_paytabs_bridge (2.4.0):
+    - Flutter
+    - PayTabsSDK (= 6.6.12)
+  - path_provider_foundation (0.0.1):
+    - Flutter
+    - FlutterMacOS
+  - PayTabsSDK (6.6.12)
+
+DEPENDENCIES:
+  - Flutter (from `Flutter`)
+  - flutter_paytabs_bridge (from `.symlinks/plugins/flutter_paytabs_bridge/ios`)
+  - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
+
+SPEC REPOS:
+  https://github.com/CocoaPods/Specs:
+    - PayTabsSDK
+
+EXTERNAL SOURCES:
+  Flutter:
+    :path: Flutter
+  flutter_paytabs_bridge:
+    :path: ".symlinks/plugins/flutter_paytabs_bridge/ios"
+  path_provider_foundation:
+    :path: ".symlinks/plugins/path_provider_foundation/darwin"
+
+SPEC CHECKSUMS:
+  Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
+  flutter_paytabs_bridge: 8f95b832c17d25029f13ff41f4d78eced9533de7
+  path_provider_foundation: 3784922295ac71e43754bd15e0653ccfd36a147c
+  PayTabsSDK: e21452eccc65457a7ca1d71632f437a5d2f51da2
+
+PODFILE CHECKSUM: 30e530dca029506e89ebfe0cc8965d34306c559c
+
+COCOAPODS: 1.15.2

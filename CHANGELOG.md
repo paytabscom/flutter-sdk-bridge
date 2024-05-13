@@ -193,3 +193,7 @@
 ## 2.6.8
 
 * Discounts Feature
+
+## 2.6.9
+
+* Dark Theme colors in iOS

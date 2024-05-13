@@ -55,6 +55,10 @@ class _MyAppState extends State<MyApp> {
         linkBillingNameWithCardHolderName: true);
     final theme = IOSThemeConfigurations();
     theme.logoImage = "assets/logo.png";
+    theme.backgroundColor = "e0556e";
+    theme.backgroundColorDark = "520f3a";
+
+
     configuration.iOSThemeConfigurations = theme;
     configuration.tokeniseType = PaymentSdkTokeniseType.MERCHANT_MANDATORY;
     configuration.cardDiscounts = [
