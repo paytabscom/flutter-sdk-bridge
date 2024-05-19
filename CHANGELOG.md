@@ -197,3 +197,7 @@
 ## 2.6.9
 
 * Dark Theme colors in iOS
+
+## 2.6.10
+
+* Background Colors for input fields

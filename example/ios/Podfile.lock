@@ -2,11 +2,11 @@ PODS:
   - Flutter (1.0.0)
   - flutter_paytabs_bridge (2.4.0):
     - Flutter
-    - PayTabsSDK (= 6.6.12)
+    - PayTabsSDK (= 6.6.13)
   - path_provider_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
-  - PayTabsSDK (6.6.12)
+  - PayTabsSDK (6.6.13)
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
@@ -27,9 +27,9 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
-  flutter_paytabs_bridge: 8f95b832c17d25029f13ff41f4d78eced9533de7
+  flutter_paytabs_bridge: ab85d1181ffd0f493936e9ed5cdb34a92020cc78
   path_provider_foundation: 3784922295ac71e43754bd15e0653ccfd36a147c
-  PayTabsSDK: e21452eccc65457a7ca1d71632f437a5d2f51da2
+  PayTabsSDK: 5cf90f25f0b1bea35adf60760ecad1d23c17ec40
 
 PODFILE CHECKSUM: 30e530dca029506e89ebfe0cc8965d34306c559c
 

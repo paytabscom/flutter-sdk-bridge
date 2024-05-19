@@ -235,7 +235,7 @@ public class SwiftFlutterPaymentSDKBridgePlugin: NSObject, FlutterPlugin {
             configuration.cardDiscounts = generateDiscountDetails(dictionary: discountsDictionary)
         }
 
-        configuration.metaData = ["PaymentSDKPluginName": "flutter", "PaymentSDKPluginVersion": "2.6.9"]
+        configuration.metaData = ["PaymentSDKPluginName": "flutter", "PaymentSDKPluginVersion": "2.6.10"]
         return configuration
     }
 
@@ -371,6 +371,9 @@ public class SwiftFlutterPaymentSDKBridgePlugin: NSObject, FlutterPlugin {
         if let colorHex = dictionary[pt_ios_placeholder_color + "\(isDark ? "_dark" : "")"] as? String {
             theme.placeholderColor = UIColor(hex: colorHex)
         }
+        if let inputColorHex =  dictionary[pt_ios_input_background_color + "\(isDark ? "_dark" : "")"] as? String {
+               theme.inputFieldBackgroundColor = UIColor(hex: inputColorHex)
+            }
         return theme
     }
     private func eventSink(code: Int, message: String, status: String, transactionDetails: [String: Any]? = nil, trace: String? = nil) {

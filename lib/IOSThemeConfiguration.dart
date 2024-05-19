@@ -28,6 +28,9 @@ class IOSThemeConfigurations {
   int? inputsCornerRadius;
   String? buttonFont;
   String? titleFont;
+  String? inputFieldBackgroundColor;
+  String? inputFieldBackgroundColorDark;
+
 
   IOSThemeConfigurations({
     this.logoImage,
@@ -57,6 +60,8 @@ class IOSThemeConfigurations {
     this.inputsCornerRadius,
     this.buttonFont,
     this.titleFont,
+    this.inputFieldBackgroundColor,
+    this.inputFieldBackgroundColorDark,
   });
 }
 
@@ -100,6 +105,8 @@ extension IOSThemeConfigurationsExtension on IOSThemeConfigurations {
       pt_ios_inputs_corner_radius: this.inputsCornerRadius,
       pt_ios_button_font: this.buttonFont,
       pt_ios_title_font: this.titleFont,
+      pt_ios_input_background_color: this.inputFieldBackgroundColor,
+      pt_ios_input_background_color_dark: this.inputFieldBackgroundColorDark
     };
   }
 }

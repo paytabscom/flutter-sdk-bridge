@@ -114,6 +114,9 @@ const String pt_discount_cards = "pt_discount_cards";
 const String pt_discount_value = "pt_discount_value";
 const String pt_discount_title = "pt_discount_title";
 const String pt_is_percentage = "pt_is_percentage";
+const String pt_ios_input_background_color = "pt_ios_input_background_color";
+const String pt_ios_input_background_color_dark = "pt_ios_input_background_color_dark";
+
 
 class FlutterPaytabsBridge {
   static Future<dynamic> startCardPayment(
