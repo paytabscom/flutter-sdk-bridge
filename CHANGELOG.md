@@ -201,3 +201,7 @@
 ## 2.6.10
 
 * Background Colors for input fields
+* 
+## 2.6.11
+
+* Bug Fix
