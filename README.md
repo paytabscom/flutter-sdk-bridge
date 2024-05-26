@@ -1,5 +1,5 @@
 # Flutter PayTabs Bridge
-![Version](https://img.shields.io/badge/flutter%20paytabs%20bridge-v2.6.11-green)
+![Version](https://img.shields.io/badge/flutter%20paytabs%20bridge-v2.6.12-green)
 
 Flutter paytabs plugin is a wrapper for the native PayTabs Android and iOS SDKs, It helps you integrate with PayTabs payment gateway.
 
@@ -12,7 +12,7 @@ Plugin Support:
 
 ```
 dependencies:
-   flutter_paytabs_bridge: ^2.6.11
+   flutter_paytabs_bridge: ^2.6.12
 ```
 
 ## Usage
@@ -431,7 +431,7 @@ By default, the billing name is linked with card holder name, if you set its fla
 
 ```
 ## Customize the Theme:
-![UI guide](https://user-images.githubusercontent.com/13621658/109432213-d7981380-7a12-11eb-9224-c8fc12b0024d.jpg)
+![UI guide](theme_demo.jpg)
 
 ### iOS Theme
 Use the following guide to cusomize the colors, font, and logo by configuring the theme and pass it to the payment configuration.
