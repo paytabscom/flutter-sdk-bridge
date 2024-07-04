@@ -4,7 +4,6 @@ import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 import 'package:flutter_paytabs_bridge/BaseBillingShippingInfo.dart';
 import 'package:flutter_paytabs_bridge/IOSThemeConfiguration.dart';
-import 'package:flutter_paytabs_bridge/PaymentSDKCardDiscount.dart';
 import 'package:flutter_paytabs_bridge/PaymentSDKQueryConfiguration.dart';
 import 'package:flutter_paytabs_bridge/PaymentSDKSavedCardInfo.dart';
 import 'package:flutter_paytabs_bridge/PaymentSdkApms.dart';
@@ -54,24 +53,8 @@ class _MyAppState extends State<MyApp> {
         alternativePaymentMethods: apms,
         linkBillingNameWithCardHolderName: true);
     final theme = IOSThemeConfigurations();
-
-
-
-
     configuration.iOSThemeConfigurations = theme;
     configuration.tokeniseType = PaymentSdkTokeniseType.MERCHANT_MANDATORY;
-    configuration.cardDiscounts = [
-      PaymentSDKCardDiscount(
-          discountCards: ["4111"],
-          discountValue: 50,
-          discountTitle: "50% discount on cards starting with 4111",
-          isPercentage: true),
-      PaymentSDKCardDiscount(
-          discountCards: ["4000", "41111"],
-          discountValue: 2,
-          discountTitle: "2 discount on cards starting with 4000 and 41111",
-          isPercentage: false)
-    ];
     return configuration;
   }
 
