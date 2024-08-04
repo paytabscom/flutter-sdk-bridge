@@ -213,3 +213,12 @@
 ## 2.6.13
 
 * Bug Fix
+
+## 2.6.14
+
+* Bug Fix
+
+## 2.6.15
+
+* Bug Fix
+* Update androidSDK
