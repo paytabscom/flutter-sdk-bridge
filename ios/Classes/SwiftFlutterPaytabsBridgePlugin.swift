@@ -70,7 +70,7 @@ public class SwiftFlutterPaymentSDKBridgePlugin: NSObject, FlutterPlugin {
 
     private func startTokenizedCardPayment(arguments: [String : Any]) {
         let configuration = generateConfiguration(dictionary: arguments)
-       guard let token = arguments["token"] as? String,
+        guard let token = arguments["token"] as? String,
         let transactionReference = arguments["transactionRef"] as? String else { return }
         if let rootViewController = getRootController() {
             PaymentManager.startTokenizedCardPayment(on: rootViewController, configuration: configuration, token: token, transactionRef: transactionReference, delegate: self)

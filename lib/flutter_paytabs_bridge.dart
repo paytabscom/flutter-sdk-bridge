@@ -133,16 +133,33 @@ class FlutterPaytabsBridge {
     return await localChannel.invokeMethod('startCardPayment', arg.map);
   }
 
-  static Future<dynamic> startTokenizedCardPayment(
+  static Future<void> startTokenizedCardPayment(
       PaymentSdkConfigurationDetails arg,
       String token,
       String transactionRef,
-      void eventsCallBack(dynamic)) async {
+      void Function(dynamic) eventsCallBack) async {
+    final completer = Completer<void>();
+
     arg.samsungPayToken = null;
     MethodChannel localChannel = MethodChannel('flutter_paytabs_bridge');
     EventChannel localStream =
-        const EventChannel('flutter_paytabs_bridge_stream');
-    localStream.receiveBroadcastStream().listen(eventsCallBack);
+    const EventChannel('flutter_paytabs_bridge_stream');
+
+    StreamSubscription<dynamic>? subscription;
+    subscription = localStream.receiveBroadcastStream().listen((event) {
+      eventsCallBack(event);
+
+      if (event["status"] == "success" ||
+          event["status"] == "error" ||
+          event["status"] == "event") {
+        if (!completer.isCompleted) {
+          completer.complete();
+        }
+
+        subscription?.cancel();
+      }
+    });
+
     var logoImage = arg.iOSThemeConfigurations?.logoImage ?? "";
     if (logoImage != "") {
       arg.iOSThemeConfigurations?.logoImage = await handleImagePath(logoImage);
@@ -150,8 +167,12 @@ class FlutterPaytabsBridge {
     var argsMap = arg.map;
     argsMap["token"] = token;
     argsMap["transactionRef"] = transactionRef;
-    return await localChannel.invokeMethod(
-        'startTokenizedCardPayment', argsMap);
+
+    localChannel.invokeMethod('startTokenizedCardPayment', argsMap);
+
+    await completer.future;
+
+    await subscription.cancel();
   }
 
   static Future<dynamic> start3DSecureTokenizedCardPayment(

@@ -87,31 +87,37 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> payWithTokenPressed() async {
-    FlutterPaytabsBridge.startTokenizedCardPayment(
-        generateConfig(), "*Token*", "*TransactionReference*", (event) {
-      setState(() {
-        if (event["status"] == "success") {
-          // Handle transaction details here.
-          var transactionDetails = event["data"];
-          print(transactionDetails);
-          if (transactionDetails["isSuccess"]) {
-            print("successful transaction");
-            if (transactionDetails["isPending"]) {
-              print("transaction pending");
-            }
-          } else {
-            print("failed transaction");
-          }
 
-          // print(transactionDetails["isSuccess"]);
-        } else if (event["status"] == "error") {
-          // Handle error here.
-        } else if (event["status"] == "event") {
-          // Handle events here.
-        }
-      });
-    });
+
+      FlutterPaytabsBridge.startTokenizedCardPayment(
+        generateConfig(),
+        "*TOKEN*",
+        "*TRANSACTION REFERENCE*",
+            (event) {
+          setState(() {
+            if (event["status"] == "success") {
+              // Handle transaction details here.
+              var transactionDetails = event["data"];
+              print(transactionDetails);
+              if (transactionDetails["isSuccess"]) {
+                print("successful transaction");
+                if (transactionDetails["isPending"]) {
+                  print("transaction pending");
+                }
+              } else {
+                print("failed transaction");
+              }
+            } else if (event["status"] == "error") {
+              print("Error occurred in transaction: ${event["message"]}");
+            } else if (event["status"] == "event") {
+              print("Event occurred: ${event["message"]}");
+            }
+          });
+        },
+      );
+
   }
+
 
   Future<void> payWith3ds() async {
     FlutterPaytabsBridge.start3DSecureTokenizedCardPayment(
