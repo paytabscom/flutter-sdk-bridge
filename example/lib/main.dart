@@ -4,6 +4,7 @@ import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 import 'package:flutter_paytabs_bridge/BaseBillingShippingInfo.dart';
 import 'package:flutter_paytabs_bridge/IOSThemeConfiguration.dart';
+import 'package:flutter_paytabs_bridge/PaymentSDKNetworks.dart';
 import 'package:flutter_paytabs_bridge/PaymentSDKQueryConfiguration.dart';
 import 'package:flutter_paytabs_bridge/PaymentSDKSavedCardInfo.dart';
 import 'package:flutter_paytabs_bridge/PaymentSdkApms.dart';
@@ -46,8 +47,8 @@ class _MyAppState extends State<MyApp> {
         amount: 20.0,
         showBillingInfo: true,
         forceShippingInfo: false,
-        currencyCode: "EGP",
-        merchantCountryCode: "EG",
+        currencyCode: "SAR",
+        merchantCountryCode: "AE",
         billingDetails: billingDetails,
         shippingDetails: shippingDetails,
         alternativePaymentMethods: apms,
@@ -55,6 +56,7 @@ class _MyAppState extends State<MyApp> {
     final theme = IOSThemeConfigurations();
     configuration.iOSThemeConfigurations = theme;
     configuration.tokeniseType = PaymentSdkTokeniseType.MERCHANT_MANDATORY;
+
     return configuration;
   }
 
@@ -210,6 +212,9 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> applePayPressed() async {
+    List<PaymentSDKNetworks> networks = [];
+    networks.add(PaymentSDKNetworks.visa);
+    networks.add(PaymentSDKNetworks.amex);
     var configuration = PaymentSdkConfigurationDetails(
         profileId: "*Profile id*",
         serverKey: "*server key*",
@@ -222,6 +227,8 @@ class _MyAppState extends State<MyApp> {
         merchantCountryCode: "ae",
         merchantApplePayIndentifier: "merchant.com.bunldeId",
         simplifyApplePayValidation: true);
+        currencyCode: "SAR",
+
     FlutterPaytabsBridge.startApplePayPayment(configuration, (event) {
       setState(() {
         if (event["status"] == "success") {

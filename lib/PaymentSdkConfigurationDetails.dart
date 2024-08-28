@@ -1,6 +1,7 @@
 import 'BaseBillingShippingInfo.dart';
 import 'IOSThemeConfiguration.dart';
 import 'PaymentSDKCardDiscount.dart';
+import 'PaymentSDKNetworks.dart';
 import 'PaymentSdkApms.dart';
 import 'PaymentSdkLocale.dart';
 import 'PaymentSdkTokenFormat.dart';
@@ -43,6 +44,7 @@ class PaymentSdkConfigurationDetails {
   bool? isDigitalProduct = false;
   bool? enableZeroContacts = false;
   int? expiryTime;
+  List<PaymentSDKNetworks>? paymentNetworks;
 
   PaymentSdkConfigurationDetails(
       {this.profileId,
@@ -77,7 +79,8 @@ class PaymentSdkConfigurationDetails {
       this.enableZeroContacts,
       this.isDigitalProduct,
       this.expiryTime,
-      this.cardDiscounts});
+      this.cardDiscounts,
+      this.paymentNetworks});
 
   String getApmsConcatenated(List<PaymentSdkAPms>? list) {
     if (list == null || list.isEmpty) return "";
@@ -91,6 +94,19 @@ class PaymentSdkConfigurationDetails {
     return apmsStr;
   }
 }
+
+String getPaymentNetworksConcatenated(List<PaymentSDKNetworks>? list) {
+  if (list == null || list.isEmpty) return "";
+  String networkStr = "";
+  for (var apm in list) {
+    if (networkStr != "") {
+      networkStr += ",";
+    }
+    networkStr += "${apm.name}";
+  }
+  return networkStr;
+}
+
 
 extension PaymentSdkConfigurationDetailsExtension
     on PaymentSdkConfigurationDetails {
@@ -129,6 +145,7 @@ extension PaymentSdkConfigurationDetailsExtension
       pt_is_digital_product: this.isDigitalProduct,
       pt_expiry_time: this.expiryTime,
       pt_card_discounts: this.cardDiscounts?.map((e) => e.map).toList(),
+      pt_payment_networks: getPaymentNetworksConcatenated(this.paymentNetworks)
     };
   }
 }

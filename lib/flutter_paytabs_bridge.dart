@@ -33,6 +33,9 @@ const String pt_apms = 'pt_apms';
 const String pt_simplify_apple_pay_validation =
     "pt_simplify_apple_pay_validation";
 const String pt_card_discounts = "pt_card_discounts";
+
+const String pt_payment_networks = "pt_payment_networks";
+
 // Billing
 const String pt_billing_details = 'pt_billing_details';
 const String pt_address_billing = 'pt_address_billing';

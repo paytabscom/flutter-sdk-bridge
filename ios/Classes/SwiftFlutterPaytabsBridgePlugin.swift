@@ -1,6 +1,7 @@
 import Flutter
 import UIKit
 import PaymentSDK
+import PassKit
 let channelName = "flutter_paytabs_bridge"
 let streamChannelName = "flutter_paytabs_bridge_stream"
 
@@ -61,6 +62,16 @@ public class SwiftFlutterPaymentSDKBridgePlugin: NSObject, FlutterPlugin {
         }
         return apms
     }
+     private func generatePaymentNetworks(paymentsArray: [String]) -> [PKPaymentNetwork] {
+            var networks = [PKPaymentNetwork]()
+            for paymentNetwork in paymentsArray {
+                if let network = PKPaymentNetwork.fromString(paymentNetwork) {
+                    networks.append(network)
+                }
+            }
+
+            return networks
+        }
     private func startCarPayment(arguments: [String : Any]) {
         let configuration = generateConfiguration(dictionary: arguments)
         if let rootViewController = getRootController() {
@@ -217,7 +228,6 @@ public class SwiftFlutterPaymentSDKBridgePlugin: NSObject, FlutterPlugin {
         if let transactionType = dictionary[pt_transaction_type] as? String {
          configuration.transactionType = TransactionType.init(rawValue: transactionType) ?? .sale
          }
-//        public var paymentNetworks: [PKPaymentNetwork]?
         if let themeDictionary = dictionary[pt_ios_theme] as? [String: Any],
            let theme = generateTheme(dictionary: themeDictionary) {
             configuration.theme = theme
@@ -234,6 +244,12 @@ public class SwiftFlutterPaymentSDKBridgePlugin: NSObject, FlutterPlugin {
          if let discountsDictionary = dictionary[pt_card_discounts] as?  [[String: Any]] {
             configuration.cardDiscounts = generateDiscountDetails(dictionary: discountsDictionary)
         }
+
+         if let paymentNetworksStr = dictionary[pt_payment_networks] as? String,
+            !paymentNetworksStr.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+             let paymentNetworks = paymentNetworksStr.components(separatedBy: ",")
+             configuration.paymentNetworks = generatePaymentNetworks(paymentsArray: paymentNetworks)
+         }
 
         configuration.metaData = ["PaymentSDKPluginName": "flutter", "PaymentSDKPluginVersion": "2.6.16"]
         return configuration
@@ -440,3 +456,5 @@ extension SwiftFlutterPaymentSDKBridgePlugin: PaymentManagerDelegate {
         eventSink(code: 0, message: "Cancelled", status: "event")
     }
 }
+
+
