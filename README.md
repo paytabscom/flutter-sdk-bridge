@@ -249,6 +249,10 @@ FlutterPaytabsBridge.startPaymentWithSavedCards(configuration, support3DsBoolean
 2. Do the steps 1 and 2 from **Pay with Card** although you can ignore Billing & Shipping details and Apple Pay will handle it, also you must pass the **merchant name** and **merchant identifier**.
 
 ```dart
+//ignore this part if you want to use default networks
+ List<PaymentSDKNetworks> networks = [];
+    networks.add(PaymentSDKNetworks.visa);
+    networks.add(PaymentSDKNetworks.amex);
 
  var configuration = PaymentSdkConfigurationDetails(
         profileId: "profile id",
@@ -263,8 +267,9 @@ FlutterPaytabsBridge.startPaymentWithSavedCards(configuration, support3DsBoolean
         currencyCode: "Currency code",
         merchantCountryCode: "2 chars iso country code",
         merchantApplePayIndentifier: "merchant.com.bundleID",
-        linkBillingNameWithCardHolderName: true
-        );
+        linkBillingNameWithCardHolderName: true,
+    paymentNetworks: networks);
+
 ```
 
 3. To simplify ApplePay validation on all user's billing info, pass **simplifyApplePayValidation** parameter in the configuration with **true**.
