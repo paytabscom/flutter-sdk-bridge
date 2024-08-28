@@ -222,7 +222,13 @@
 
 * Bug Fix
 * Update androidSDK
-* 
+
+
 ## 2.6.16
 
 * Bug Fix
+
+## 2.6.17
+
+* Bug Fix
+* Update androidSDK
