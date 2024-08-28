@@ -223,11 +223,11 @@ class _MyAppState extends State<MyApp> {
         cartDescription: "Flowers",
         merchantName: "Flowers Store",
         amount: 20.0,
-        currencyCode: "AED",
-        merchantCountryCode: "ae",
-        merchantApplePayIndentifier: "merchant.com.bunldeId",
-        simplifyApplePayValidation: true);
         currencyCode: "SAR",
+        merchantCountryCode: "AE",
+        merchantApplePayIndentifier: "",
+        simplifyApplePayValidation: true,
+    paymentNetworks: networks);
 
     FlutterPaytabsBridge.startApplePayPayment(configuration, (event) {
       setState(() {
