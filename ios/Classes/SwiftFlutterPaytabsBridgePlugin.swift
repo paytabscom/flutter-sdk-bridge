@@ -241,6 +241,10 @@ public class SwiftFlutterPaymentSDKBridgePlugin: NSObject, FlutterPlugin {
             configuration.shippingDetails = generateShippingDetails(dictionary: shippingDictionary)
         }
 
+        if let cardApprovalDictionary = dictionary[pt_card_approval] as? [String: Any] {
+            configuration.cardApproval = generateCardApproval(dictionary: cardApprovalDictionary)
+        }
+
          if let discountsDictionary = dictionary[pt_card_discounts] as?  [[String: Any]] {
             configuration.cardDiscounts = generateDiscountDetails(dictionary: discountsDictionary)
         }
@@ -292,6 +296,15 @@ public class SwiftFlutterPaymentSDKBridgePlugin: NSObject, FlutterPlugin {
         billingDetails.zip = dictionary[pt_zip_billing] as? String ?? ""
         return billingDetails
     }
+
+       private func generateCardApproval(dictionary: [String: Any]) -> PaymentSDKCardApproval? {
+           if let validationUrl = dictionary[pt_validation_url] as? String,
+            let binLength = dictionary[pt_bin_length] as? Int,
+            let blockIfNoResponse = dictionary[pt_block_if_no_response] as? Bool {
+           return PaymentSDKCardApproval(validationUrl: validationUrl, binLength: binLength, blockIfNoResponse: blockIfNoResponse)
+            }
+          return nil
+        }
     private func generateShippingDetails(dictionary: [String: Any]) -> PaymentSDKShippingDetails? {
         let shippingDetails = PaymentSDKShippingDetails()
         shippingDetails.name = dictionary[pt_name_shipping] as? String ?? ""

@@ -87,3 +87,8 @@ let pt_discount_cards = "pt_discount_cards"
 let pt_discount_value = "pt_discount_value"
 let pt_discount_title = "pt_discount_title"
 let pt_is_percentage = "pt_is_percentage"
+
+let pt_card_approval = "pt_card_approval"
+let pt_validation_url = "pt_validation_url"
+let pt_bin_length = "pt_bin_length"
+let pt_block_if_no_response = "pt_block_if_no_response"

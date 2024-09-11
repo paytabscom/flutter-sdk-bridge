@@ -1,5 +1,6 @@
 import 'BaseBillingShippingInfo.dart';
 import 'IOSThemeConfiguration.dart';
+import 'PaymentSDKCardApproval.dart';
 import 'PaymentSDKCardDiscount.dart';
 import 'PaymentSDKNetworks.dart';
 import 'PaymentSdkApms.dart';
@@ -45,6 +46,7 @@ class PaymentSdkConfigurationDetails {
   bool? enableZeroContacts = false;
   int? expiryTime;
   List<PaymentSDKNetworks>? paymentNetworks;
+  PaymentSDKCardApproval? cardApproval;
 
   PaymentSdkConfigurationDetails(
       {this.profileId,
@@ -80,7 +82,8 @@ class PaymentSdkConfigurationDetails {
       this.isDigitalProduct,
       this.expiryTime,
       this.cardDiscounts,
-      this.paymentNetworks});
+      this.paymentNetworks,
+      this.cardApproval});
 
   String getApmsConcatenated(List<PaymentSdkAPms>? list) {
     if (list == null || list.isEmpty) return "";
@@ -145,7 +148,8 @@ extension PaymentSdkConfigurationDetailsExtension
       pt_is_digital_product: this.isDigitalProduct,
       pt_expiry_time: this.expiryTime,
       pt_card_discounts: this.cardDiscounts?.map((e) => e.map).toList(),
-      pt_payment_networks: getPaymentNetworksConcatenated(this.paymentNetworks)
+      pt_payment_networks: getPaymentNetworksConcatenated(this.paymentNetworks),
+      pt_card_approval: this.cardApproval?.map
     };
   }
 }
