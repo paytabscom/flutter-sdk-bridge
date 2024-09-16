@@ -384,10 +384,15 @@ public class FlutterPaytabsBridgePlugin implements FlutterPlugin, MethodCallHand
                 .setCardDiscount(paymentSdkCardDiscounts).build();
     }
 
+    /**
+     * Retrieves metadata information for the Payment SDK plugin.
+     *
+     * @return A map containing metadata key-value pairs.
+     */
     private Map<String, Object> getMetadata() {
         Map<String, Object> metadata = new HashMap<>();
         metadata.put("PaymentSDKPluginName", "flutter");
-        metadata.put("PaymentSDKPluginVersion", "2.6.17");
+        metadata.put("PaymentSDKPluginVersion", "2.6.18");
         return metadata;
     }
 

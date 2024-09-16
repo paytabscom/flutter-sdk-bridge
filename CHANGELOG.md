@@ -201,7 +201,8 @@
 ## 2.6.10
 
 * Background Colors for input fields
-* 
+*
+
 ## 2.6.11
 
 * Bug Fix
@@ -223,7 +224,6 @@
 * Bug Fix
 * Update androidSDK
 
-
 ## 2.6.16
 
 * Bug Fix
@@ -232,3 +232,9 @@
 
 * Bug Fix
 * Update androidSDK
+
+## 2.6.18
+
+* Update Android SDK.
+* Update iOS SDK.
+* Add card validation support.

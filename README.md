@@ -1,5 +1,5 @@
 # Flutter PayTabs Bridge
-![Version](https://img.shields.io/badge/flutter%20paytabs%20bridge-v2.6.17-green)
+![Version](https://img.shields.io/badge/flutter%20paytabs%20bridge-v2.6.18-green)
 
 Flutter paytabs plugin is a wrapper for the native PayTabs Android and iOS SDKs, It helps you integrate with PayTabs payment gateway.
 
@@ -12,7 +12,7 @@ Plugin Support:
 
 ```
 dependencies:
-   flutter_paytabs_bridge: ^2.6.17
+   flutter_paytabs_bridge: ^2.6.18
 ```
 
 ## Usage
@@ -374,6 +374,28 @@ You can add discounts to the payment by passing the discount amount and the disc
           isPercentage: false)
     ];
 ```
+
+## Card Approval
+
+You can customize BIN-based discounts through the `PaymentSDKCardApproval` class, which collects approval details via an API.
+
+```dart
+final cardApproval = PaymentSDKCardApproval(
+  validationUrl: "https://webhook.site/f80622ae-a0c0-4664-861e-b71ab1b72d90",
+  binLength: 8,
+  blockIfNoResponse: false
+);
+
+final configuration = PaymentSdkConfigurationDetails(
+  ...,
+  cardApproval: cardApproval
+);
+```
+
+- **`validationUrl`**: The endpoint provided by the business to validate the transaction.
+- **`binLength`**: BIN length (default is 6, can be set to 8).
+- **`blockIfNoResponse`**: Determines if the transaction should proceed in case of no response from the validation endpoint.
+
 
 ## Clear saved cards
 
