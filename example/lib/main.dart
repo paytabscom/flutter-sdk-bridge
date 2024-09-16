@@ -4,9 +4,9 @@ import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 import 'package:flutter_paytabs_bridge/BaseBillingShippingInfo.dart';
 import 'package:flutter_paytabs_bridge/IOSThemeConfiguration.dart';
+import 'package:flutter_paytabs_bridge/PaymentSDKCardApproval.dart';
 import 'package:flutter_paytabs_bridge/PaymentSDKNetworks.dart';
 import 'package:flutter_paytabs_bridge/PaymentSDKQueryConfiguration.dart';
-import 'package:flutter_paytabs_bridge/PaymentSDKSavedCardInfo.dart';
 import 'package:flutter_paytabs_bridge/PaymentSdkApms.dart';
 import 'package:flutter_paytabs_bridge/PaymentSdkConfigurationDetails.dart';
 import 'package:flutter_paytabs_bridge/PaymentSdkTokeniseType.dart';
@@ -16,326 +16,382 @@ void main() {
   runApp(MyApp());
 }
 
+/// Main widget for the app
 class MyApp extends StatefulWidget {
   @override
   _MyAppState createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
-  String _instructions = 'Tap on "Pay" Button to try PayTabs plugin';
+  /// Instructions for the user interface.
+  final String _instructions = 'Tap on "Pay" Button to try PayTabs plugin';
 
-  @override
-  void initState() {
-    super.initState();
-  }
+  /// Profile ID for the payment configuration.
+  static const String profileId = "*profile_id*";
 
-  PaymentSdkConfigurationDetails generateConfig() {
-    var billingDetails = BillingDetails("John Smith", "email@domain.com",
-        "+97311111111", "st. 12", "eg", "dubai", "dubai", "12345");
-    var shippingDetails = ShippingDetails("John Smith", "email@domain.com",
-        "+97311111111", "st. 12", "eg", "dubai", "dubai", "12345");
-    List<PaymentSdkAPms> apms = [];
-    apms.add(PaymentSdkAPms.AMAN);
-    final configuration = PaymentSdkConfigurationDetails(
-        profileId: "*profile id*",
-        serverKey: "*server key*",
-        clientKey: "*client key*",
-        cartId: "12433",
-        cartDescription: "Flowers",
-        merchantName: "Flowers Store",
-        screentTitle: "Pay with Card",
-        amount: 20.0,
-        showBillingInfo: true,
-        forceShippingInfo: false,
-        currencyCode: "SAR",
-        merchantCountryCode: "AE",
-        billingDetails: billingDetails,
-        shippingDetails: shippingDetails,
-        alternativePaymentMethods: apms,
-        linkBillingNameWithCardHolderName: true);
-    final theme = IOSThemeConfigurations();
-    configuration.iOSThemeConfigurations = theme;
-    configuration.tokeniseType = PaymentSdkTokeniseType.MERCHANT_MANDATORY;
+  /// Server key for the payment configuration.
+  static const String serverKey = "*server_key*";
 
-    return configuration;
-  }
+  /// Client key for the payment configuration.
+  static const String clientKey = "*client_key*";
 
-  Future<void> payPressed() async {
-    FlutterPaytabsBridge.startCardPayment(generateConfig(), (event) {
-      setState(() {
-        if (event["status"] == "success") {
-          // Handle transaction details here.
-          var transactionDetails = event["data"];
-          print(transactionDetails);
-          if (transactionDetails["isSuccess"]) {
-            print("successful transaction");
-            if (transactionDetails["isPending"]) {
-              print("transaction pending");
-            }
-          } else {
-            print("failed transaction");
-          }
+  /// Cart ID for the payment configuration.
+  static const String cartId = "12433";
 
-          // print(transactionDetails["isSuccess"]);
-        } else if (event["status"] == "error") {
-          print("error");
-          // Handle error here.
-        } else if (event["status"] == "event") {
-          print("event");
-          // Handle events here.
-        }
-      });
-    });
-  }
+  /// Description of the cart for the payment configuration.
+  static const String cartDescription = "Flowers";
 
-  Future<void> payWithTokenPressed() async {
+  /// Merchant name for the payment configuration.
+  static const String merchantName = "Flowers Store";
 
+  /// Screen title for the payment configuration.
+  static const String screenTitle = "Pay with Card";
 
-      FlutterPaytabsBridge.startTokenizedCardPayment(
-        generateConfig(),
-        "*TOKEN*",
-        "*TRANSACTION REFERENCE*",
-            (event) {
-          setState(() {
-            if (event["status"] == "success") {
-              // Handle transaction details here.
-              var transactionDetails = event["data"];
-              print(transactionDetails);
-              if (transactionDetails["isSuccess"]) {
-                print("successful transaction");
-                if (transactionDetails["isPending"]) {
-                  print("transaction pending");
-                }
-              } else {
-                print("failed transaction");
-              }
-            } else if (event["status"] == "error") {
-              print("Error occurred in transaction: ${event["message"]}");
-            } else if (event["status"] == "event") {
-              print("Event occurred: ${event["message"]}");
-            }
-          });
-        },
-      );
+  /// Amount for the payment configuration.
+  static const double amount = 20.0;
 
-  }
+  /// Currency code for the payment configuration.
+  static const String currencyCode = "EGP";
 
+  /// Merchant country code for the payment configuration.
+  static const String merchantCountryCode = "EG";
 
-  Future<void> payWith3ds() async {
-    FlutterPaytabsBridge.start3DSecureTokenizedCardPayment(
-        generateConfig(),
-        PaymentSDKSavedCardInfo("4111 11## #### 1111", "visa"),
-        "*Token*", (event) {
-      setState(() {
-        if (event["status"] == "success") {
-          // Handle transaction details here.
-          var transactionDetails = event["data"];
-          print(transactionDetails);
-          if (transactionDetails["isSuccess"]) {
-            print("successful transaction");
-            if (transactionDetails["isPending"]) {
-              print("transaction pending");
-            }
-          } else {
-            print("failed transaction");
-          }
+  /// Apple Pay identifier for the payment configuration.
+  static const String merchantApplePayIdentifier = "";
 
-          // print(transactionDetails["isSuccess"]);
-        } else if (event["status"] == "error") {
-          // Handle error here.
-        } else if (event["status"] == "event") {
-          // Handle events here.
-        }
-      });
-    });
-  }
+  /// Flag to simplify Apple Pay validation.
+  static const bool simplifyApplePayValidation = true;
 
-  Future<void> payWithSavedCards() async {
-    FlutterPaytabsBridge.startPaymentWithSavedCards(generateConfig(), false,
-        (event) {
-      setState(() {
-        if (event["status"] == "success") {
-          // Handle transaction details here.
-          var transactionDetails = event["data"];
-          print(transactionDetails);
-          if (transactionDetails["isSuccess"]) {
-            print("successful transaction");
-            if (transactionDetails["isPending"]) {
-              print("transaction pending");
-            }
-          } else {
-            print("failed transaction");
-          }
+  /// Flag to show billing information.
+  static const bool showBillingInfo = true;
 
-          // print(transactionDetails["isSuccess"]);
-        } else if (event["status"] == "error") {
-          // Handle error here.
-        } else if (event["status"] == "event") {
-          // Handle events here.
-        }
-      });
-    });
-  }
+  /// Flag to force shipping information.
+  static const bool forceShippingInfo = true;
 
-  Future<void> apmsPayPressed() async {
-    FlutterPaytabsBridge.startAlternativePaymentMethod(generateConfig(),
-        (event) {
-      setState(() {
-        if (event["status"] == "success") {
-          // Handle transaction details here.
-          var transactionDetails = event["data"];
-          print(transactionDetails);
-        } else if (event["status"] == "error") {
-          // Handle error here.
-        } else if (event["status"] == "event") {
-          // Handle events here.
-        }
-      });
-    });
-  }
+  /// Tokenization type for the payment configuration.
+  static const tokeniseType = PaymentSdkTokeniseType.MERCHANT_MANDATORY;
 
-  Future<void> queryPressed() async {
-    FlutterPaytabsBridge.queryTransaction(
-        generateConfig(), generateQueryConfig(), (event) {
-      setState(() {
-        if (event["status"] == "success") {
-          // Handle transaction details here.
-          var transactionDetails = event["data"];
-          print(transactionDetails);
-        } else if (event["status"] == "error") {
-          // Handle error here.
-        } else if (event["status"] == "event") {
-          // Handle events here.
-        }
-      });
-    });
-  }
+  /// List of alternative payment methods.
+  final List<PaymentSdkAPms> apms = [PaymentSdkAPms.AMAN];
 
-  Future<void> applePayPressed() async {
-    List<PaymentSDKNetworks> networks = [];
-    networks.add(PaymentSDKNetworks.visa);
-    networks.add(PaymentSDKNetworks.amex);
-    var configuration = PaymentSdkConfigurationDetails(
-        profileId: "*Profile id*",
-        serverKey: "*server key*",
-        clientKey: "*client key*",
-        cartId: "12433",
-        cartDescription: "Flowers",
-        merchantName: "Flowers Store",
-        amount: 20.0,
-        currencyCode: "SAR",
-        merchantCountryCode: "AE",
-        merchantApplePayIndentifier: "",
-        simplifyApplePayValidation: true,
-    paymentNetworks: networks);
+  /// List of supported payment networks.
+  final List<PaymentSDKNetworks> networks = [
+    PaymentSDKNetworks.visa,
+    PaymentSDKNetworks.amex
+  ];
 
-    FlutterPaytabsBridge.startApplePayPayment(configuration, (event) {
-      setState(() {
-        if (event["status"] == "success") {
-          // Handle transaction details here.
-          var transactionDetails = event["data"];
-          print(transactionDetails);
-        } else if (event["status"] == "error") {
-          // Handle error here.
-        } else if (event["status"] == "event") {
-          // Handle events here.
-        }
-      });
-    });
-  }
+  /// Card approval configuration for the payment configuration.
+  final PaymentSDKCardApproval cardApproval = PaymentSDKCardApproval(
+    validationUrl: "https://www.example.com/validation",
+    binLength: 6,
+    blockIfNoResponse: false,
+  );
 
-  Widget applePayButton() {
-    if (Platform.isIOS) {
-      return TextButton(
-        onPressed: () {
-          applePayPressed();
-        },
-        child: Text('Pay with Apple Pay'),
-      );
-    }
-    return SizedBox(height: 0);
-  }
+  /// Billing name for the payment configuration.
+  static const String billingName = "John Smith";
+
+  /// Billing email for the payment configuration.
+  static const String billingEmail = "email@domain.com";
+
+  /// Billing phone number for the payment configuration.
+  static const String billingPhone = "+97311111111";
+
+  /// Billing address for the payment configuration.
+  static const String billingAddress = "st. 12";
+
+  /// Billing country for the payment configuration.
+  static const String billingCountry = "eg";
+
+  /// Billing city for the payment configuration.
+  static const String billingCity = "dubai";
+
+  /// Billing state for the payment configuration.
+  static const String billingState = "dubai";
+
+  /// Billing zip code for the payment configuration.
+  static const String billingZipCode = "12345";
+
+  /// Shipping name for the payment configuration.
+  static const String shippingName = billingName;
+
+  /// Shipping email for the payment configuration.
+  static const String shippingEmail = billingEmail;
+
+  /// Shipping phone number for the payment configuration.
+  static const String shippingPhone = billingPhone;
+
+  /// Shipping address for the payment configuration.
+  static const String shippingAddress = billingAddress;
+
+  /// Shipping country for the payment configuration.
+  static const String shippingCountry = billingCountry;
+
+  /// Shipping city for the payment configuration.
+  static const String shippingCity = billingCity;
+
+  /// Shipping state for the payment configuration.
+  static const String shippingState = billingState;
+
+  /// Shipping zip code for the payment configuration.
+  static const String shippingZipCode = billingZipCode;
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(
-          title: const Text('PayTabs Plugin Example App'),
-        ),
+        appBar: AppBar(title: const Text('PayTabs Plugin Example App')),
         body: Center(
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-              Text('$_instructions'),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(_instructions),
               SizedBox(height: 16),
+              ..._buildPaymentButtons(),
               TextButton(
-                onPressed: () {
-                  payPressed();
-                },
-                child: Text('Pay with Card'),
+                onPressed: _handleQuery,
+                child: Text('Query Transaction'),
               ),
               TextButton(
-                onPressed: () {
-                  Future.delayed(const Duration(seconds: 20)).then(
-                      (value) => FlutterPaytabsBridge.cancelPayment((dynamic) {
-                            debugPrint("cancel payment $dynamic");
-                          }));
-                },
-                child: Text('Cancel Payment After 20 sec'),
+                onPressed: _clearSavedCards,
+                child: Text('Clear Saved Cards'),
               ),
-              TextButton(
-                onPressed: () {
-                  payWithTokenPressed();
-                },
-                child: Text('Pay with Token'),
-              ),
-              TextButton(
-                onPressed: () {
-                  payWith3ds();
-                },
-                child: Text('Pay with 3ds'),
-              ),
-              TextButton(
-                onPressed: () {
-                  payWithSavedCards();
-                },
-                child: Text('Pay with saved cards'),
-              ),
-              SizedBox(height: 16),
-              TextButton(
-                onPressed: () {
-                  apmsPayPressed();
-                },
-                child: Text('Pay with Alternative payment methods'),
-              ),
-              SizedBox(height: 16),
-              TextButton(
-                onPressed: () {
-                  queryPressed();
-                },
-                child: Text('Query transaction'),
-              ),
-              TextButton(
-                onPressed: () {
-                  _clearSavedCards();
-                },
-                child: Text('Clear saved cards'),
-              ),
-              SizedBox(height: 16),
-              applePayButton()
-            ])),
+              _buildApplePayButton(),
+            ],
+          ),
+        ),
       ),
     );
   }
 
-  Future _clearSavedCards() async {
+  /// Creates billing details for the payment configuration.
+  ///
+  /// Returns a [BillingDetails] object containing the billing information.
+  BillingDetails _createBillingDetails() {
+    return BillingDetails(
+      billingName,
+      billingEmail,
+      billingPhone,
+      billingAddress,
+      billingCountry,
+      billingCity,
+      billingState,
+      billingZipCode,
+    );
+  }
+
+  /// Creates shipping details for the payment configuration.
+  ///
+  /// Returns a [ShippingDetails] object containing the shipping information.
+  ShippingDetails _createShippingDetails() {
+    return ShippingDetails(
+      shippingName,
+      shippingEmail,
+      shippingPhone,
+      shippingAddress,
+      shippingCountry,
+      shippingCity,
+      shippingState,
+      shippingZipCode,
+    );
+  }
+
+  /// Generates the payment configuration details.
+  ///
+  /// This method creates and returns a [PaymentSdkConfigurationDetails] object
+  /// that contains all the necessary information for configuring a payment.
+  ///
+  /// Returns:
+  ///   A [PaymentSdkConfigurationDetails] object containing the payment configuration.
+  PaymentSdkConfigurationDetails _generatePaymentConfig() {
+    final configuration = PaymentSdkConfigurationDetails(
+      profileId: profileId,
+      serverKey: serverKey,
+      clientKey: clientKey,
+      cartId: cartId,
+      cartDescription: cartDescription,
+      merchantName: merchantName,
+      screentTitle: screenTitle,
+      amount: amount,
+      showBillingInfo: showBillingInfo,
+      forceShippingInfo: forceShippingInfo,
+      currencyCode: currencyCode,
+      merchantCountryCode: merchantCountryCode,
+      billingDetails: _createBillingDetails(),
+      shippingDetails: _createShippingDetails(),
+      alternativePaymentMethods: apms,
+      linkBillingNameWithCardHolderName: true,
+      cardApproval: cardApproval,
+    );
+
+    configuration.iOSThemeConfigurations = IOSThemeConfigurations();
+    configuration.tokeniseType = tokeniseType;
+
+    return configuration;
+  }
+
+  /// Handles the payment process for any provided payment method.
+  ///
+  /// This method takes a payment method function, generates the payment configuration,
+  /// and processes the transaction event.
+  ///
+  /// Parameters:
+  /// - [paymentMethod]: A function that initiates the payment process.
+  Future<void> _handlePayment(Function paymentMethod) async {
+    paymentMethod(_generatePaymentConfig(), (event) {
+      setState(() {
+        _processTransactionEvent(event);
+      });
+    });
+  }
+
+  /// Processes transaction event responses.
+  ///
+  /// This method handles the different statuses of a transaction event and logs
+  /// the appropriate messages.
+  ///
+  /// Parameters:
+  /// - [event]: The event data containing the transaction status and details.
+  void _processTransactionEvent(dynamic event) {
+    if (event["status"] == "success") {
+      final transactionDetails = event["data"];
+      _logTransaction(transactionDetails);
+    } else if (event["status"] == "error") {
+      debugPrint("Error occurred in transaction: ${event["message"]}");
+    } else if (event["status"] == "event") {
+      debugPrint("Event occurred: ${event["message"]}");
+    }
+  }
+
+  /// Logs transaction details.
+  ///
+  /// This method logs the details of a transaction, including whether it was
+  /// successful or pending.
+  ///
+  /// Parameters:
+  /// - [transactionDetails]: The details of the transaction.
+  void _logTransaction(dynamic transactionDetails) {
+    if (transactionDetails["isSuccess"]) {
+      debugPrint("successful transaction");
+      if (transactionDetails["isPending"]) {
+        debugPrint("transaction pending");
+      }
+    } else {
+      debugPrint(
+          "failed transaction. Reason: ${transactionDetails["payResponseReturn"]}");
+    }
+  }
+
+  /// Generates the query configuration.
+  ///
+  /// This method creates and returns a [PaymentSDKQueryConfiguration] object
+  /// that contains the necessary information for querying a transaction.
+  ///
+  /// Returns:
+  ///   A [PaymentSDKQueryConfiguration] object containing the query configuration.
+  PaymentSDKQueryConfiguration _generateQueryConfig() {
+    return PaymentSDKQueryConfiguration("ServerKey", "ClientKey",
+        "Country Iso 2", "Profile Id", "Transaction Reference");
+  }
+
+  /// Handles transaction query.
+  ///
+  /// This method initiates a transaction query using the generated query configuration
+  /// and processes the event response.
+  Future<void> _handleQuery() async {
+    FlutterPaytabsBridge.queryTransaction(
+      _generatePaymentConfig(),
+      _generateQueryConfig(),
+      (event) {
+        setState(() {
+          _processTransactionEvent(event);
+        });
+      },
+    );
+  }
+
+  /// Handles the Apple Pay payment process.
+  ///
+  /// This method configures and initiates the Apple Pay payment process,
+  /// and processes the event response.
+  Future<void> _handleApplePay() async {
+    final configuration = PaymentSdkConfigurationDetails(
+      profileId: profileId,
+      serverKey: serverKey,
+      clientKey: clientKey,
+      cartId: cartId,
+      cartDescription: cartDescription,
+      merchantName: merchantName,
+      amount: amount,
+      currencyCode: currencyCode,
+      merchantCountryCode: merchantCountryCode,
+      merchantApplePayIndentifier: merchantApplePayIdentifier,
+      simplifyApplePayValidation: simplifyApplePayValidation,
+      paymentNetworks: networks,
+    );
+    FlutterPaytabsBridge.startApplePayPayment(configuration, (event) {
+      setState(() {
+        _processTransactionEvent(event);
+      });
+    });
+  }
+
+  /// Clears saved cards.
+  ///
+  /// This method clears the saved cards using the FlutterPaytabsBridge and logs the result.
+  Future<void> _clearSavedCards() async {
     final result = await FlutterPaytabsBridge.clearSavedCards();
     debugPrint("ClearSavedCards $result");
   }
 
-  PaymentSDKQueryConfiguration generateQueryConfig() {
-    return new PaymentSDKQueryConfiguration("ServerKey", "ClientKey",
-        "Country Iso 2", "Profile Id", "Transaction Reference");
+  /// Builds the Apple Pay button, shown only on iOS.
+  ///
+  /// This method returns a [TextButton] widget for Apple Pay if the platform is iOS,
+  /// otherwise it returns an empty [SizedBox].
+  ///
+  /// Returns:
+  ///   A [Widget] representing the Apple Pay button or an empty box.
+  Widget _buildApplePayButton() {
+    if (Platform.isIOS) {
+      return TextButton(
+        onPressed: _handleApplePay,
+        child: Text('Pay with Apple Pay'),
+      );
+    }
+    return SizedBox.shrink();
+  }
+
+  /// Builds the payment buttons.
+  ///
+  /// This method returns a list of [TextButton] widgets for different payment methods.
+  ///
+  /// Returns:
+  ///   A list of [Widget] representing the payment buttons.
+  List<Widget> _buildPaymentButtons() {
+    return [
+      TextButton(
+        onPressed: () => _handlePayment(FlutterPaytabsBridge.startCardPayment),
+        child: Text('Pay with Card'),
+      ),
+      TextButton(
+        onPressed: () =>
+            _handlePayment(FlutterPaytabsBridge.startTokenizedCardPayment),
+        child: Text('Pay with Token'),
+      ),
+      TextButton(
+        onPressed: () => _handlePayment(
+            FlutterPaytabsBridge.start3DSecureTokenizedCardPayment),
+        child: Text('Pay with 3DS'),
+      ),
+      TextButton(
+        onPressed: () =>
+            _handlePayment(FlutterPaytabsBridge.startPaymentWithSavedCards),
+        child: Text('Pay with Saved Cards'),
+      ),
+      TextButton(
+        onPressed: () =>
+            _handlePayment(FlutterPaytabsBridge.startAlternativePaymentMethod),
+        child: Text('Pay with Alternative Payment Methods'),
+      ),
+    ];
   }
 }

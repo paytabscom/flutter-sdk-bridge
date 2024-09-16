@@ -20,6 +20,7 @@ import com.payment.paymentsdk.QuerySdkActivity;
 import com.payment.paymentsdk.integrationmodels.PaymentSDKQueryConfiguration;
 import com.payment.paymentsdk.integrationmodels.PaymentSdkApms;
 import com.payment.paymentsdk.integrationmodels.PaymentSdkBillingDetails;
+import com.payment.paymentsdk.integrationmodels.PaymentSdkCardApproval;
 import com.payment.paymentsdk.integrationmodels.PaymentSdkCardDiscount;
 import com.payment.paymentsdk.integrationmodels.PaymentSdkConfigurationDetails;
 import com.payment.paymentsdk.integrationmodels.PaymentSdkError;
@@ -379,6 +380,7 @@ public class FlutterPaytabsBridgePlugin implements FlutterPlugin, MethodCallHand
                 .isDigitalProduct(paymentDetails.optBoolean("pt_is_digital_product"))
                 .setPaymentExpiry(paymentScreenExpiry)
                 .setMetadata(getMetadata())
+                .setCardApproval(getCardApproval(paymentDetails))
                 .setCardDiscount(paymentSdkCardDiscounts).build();
     }
 
@@ -409,6 +411,22 @@ public class FlutterPaytabsBridgePlugin implements FlutterPlugin, MethodCallHand
             }
         }
         return paymentSdkCardDiscounts;
+    }
+
+    /**
+     * Retrieves the card approval details from the provided JSON object.
+     *
+     * @param paymentDetails The JSON object containing payment details.
+     * @return A PaymentSdkCardApproval object containing the card approval details, or null if not present.
+     */
+    private static PaymentSdkCardApproval getCardApproval(JSONObject paymentDetails) {
+        JSONObject cardApproval = paymentDetails.optJSONObject("pt_card_approval");
+        if (cardApproval == null) return null;
+        return new PaymentSdkCardApproval(
+                cardApproval.optString("pt_validation_url"),
+                cardApproval.optInt("pt_bin_length"),
+                cardApproval.optBoolean("pt_block_if_no_response")
+        );
     }
 
     public static String optString(JSONObject json, String key) {
