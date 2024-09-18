@@ -71,17 +71,15 @@ const String pt_ios_primary_color_dark = 'pt_ios_primary_color_dark';
 const String pt_ios_primary_font_color = 'pt_ios_primary_font_color';
 const String pt_ios_primary_font_color_dark = 'pt_ios_primary_font_color_dark';
 
-
 const String pt_ios_secondary_color = 'pt_ios_secondary_color';
 const String pt_ios_secondary_color_dark = 'pt_ios_secondary_color_dark';
 
 const String pt_ios_secondary_font_color = 'pt_ios_secondary_font_color';
-const String pt_ios_secondary_font_color_dark = 'pt_ios_secondary_font_color_dark';
-
+const String pt_ios_secondary_font_color_dark =
+    'pt_ios_secondary_font_color_dark';
 
 const String pt_ios_stroke_color = 'pt_ios_stroke_color';
 const String pt_ios_stroke_color_dark = 'pt_ios_stroke_color_dark';
-
 
 const String pt_ios_button_color = 'pt_ios_button_color';
 const String pt_ios_button_color_dark = 'pt_ios_button_color_dark';
@@ -118,7 +116,8 @@ const String pt_discount_value = "pt_discount_value";
 const String pt_discount_title = "pt_discount_title";
 const String pt_is_percentage = "pt_is_percentage";
 const String pt_ios_input_background_color = "pt_ios_input_background_color";
-const String pt_ios_input_background_color_dark = "pt_ios_input_background_color_dark";
+const String pt_ios_input_background_color_dark =
+    "pt_ios_input_background_color_dark";
 const String pt_card_approval = "pt_card_approval";
 const String pt_validation_url = "pt_validation_url";
 const String pt_bin_length = "pt_bin_length";
@@ -149,7 +148,7 @@ class FlutterPaytabsBridge {
     arg.samsungPayToken = null;
     MethodChannel localChannel = MethodChannel('flutter_paytabs_bridge');
     EventChannel localStream =
-    const EventChannel('flutter_paytabs_bridge_stream');
+        const EventChannel('flutter_paytabs_bridge_stream');
 
     StreamSubscription<dynamic>? subscription;
     subscription = localStream.receiveBroadcastStream().listen((event) {
@@ -295,9 +294,6 @@ class FlutterPaytabsBridge {
 
   static Future<dynamic> clearSavedCards() async {
     MethodChannel localChannel = MethodChannel('flutter_paytabs_bridge');
-    EventChannel localStream =
-        const EventChannel('flutter_paytabs_bridge_stream');
-
     return await localChannel.invokeMethod('clearSavedCards');
   }
 }
