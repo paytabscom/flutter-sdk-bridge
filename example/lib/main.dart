@@ -10,6 +10,7 @@ import 'package:flutter_paytabs_bridge/PaymentSDKQueryConfiguration.dart';
 import 'package:flutter_paytabs_bridge/PaymentSdkApms.dart';
 import 'package:flutter_paytabs_bridge/PaymentSdkConfigurationDetails.dart';
 import 'package:flutter_paytabs_bridge/PaymentSdkTokeniseType.dart';
+import 'package:flutter_paytabs_bridge/PaymentSdkTransactionType.dart';
 import 'package:flutter_paytabs_bridge/flutter_paytabs_bridge.dart';
 
 void main() {
@@ -70,6 +71,9 @@ class _MyAppState extends State<MyApp> {
 
   /// Tokenization type for the payment configuration.
   static const tokeniseType = PaymentSdkTokeniseType.MERCHANT_MANDATORY;
+
+  /// Transaction type for the payment configuration.
+  static const transactionType = PaymentSdkTransactionType.SALE;
 
   /// List of alternative payment methods.
   final List<PaymentSdkAPms> apms = [PaymentSdkAPms.AMAN];
@@ -207,6 +211,7 @@ class _MyAppState extends State<MyApp> {
       profileId: profileId,
       serverKey: serverKey,
       clientKey: clientKey,
+      transactionType: transactionType,
       cartId: cartId,
       cartDescription: cartDescription,
       merchantName: merchantName,
