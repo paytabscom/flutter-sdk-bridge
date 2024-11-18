@@ -392,7 +392,7 @@ public class FlutterPaytabsBridgePlugin implements FlutterPlugin, MethodCallHand
     private Map<String, Object> getMetadata() {
         Map<String, Object> metadata = new HashMap<>();
         metadata.put("PaymentSDKPluginName", "flutter");
-        metadata.put("PaymentSDKPluginVersion", "2.6.18");
+        metadata.put("PaymentSDKPluginVersion", "2.6.19");
         return metadata;
     }
 

@@ -1,5 +1,5 @@
 # Flutter PayTabs Bridge
-![Version](https://img.shields.io/badge/flutter%20paytabs%20bridge-v2.6.18-green)
+![Version](https://img.shields.io/badge/flutter%20paytabs%20bridge-v2.6.19-green)
 
 Flutter paytabs plugin is a wrapper for the native PayTabs Android and iOS SDKs, It helps you integrate with PayTabs payment gateway.
 
@@ -12,7 +12,7 @@ Plugin Support:
 
 ```
 dependencies:
-   flutter_paytabs_bridge: ^2.6.18
+   flutter_paytabs_bridge: ^2.6.19
 ```
 
 ## Usage
@@ -69,7 +69,7 @@ var shippingDetails = new ShippingDetails("shipping name",
         screentTitle: "Pay with Card",
         billingDetails: billingDetails,
         shippingDetails: shippingDetails,
-        locale: PaymentSdkLocale.EN, //PaymentSdkLocale.AR or PaymentSdkLocale.DEFAULT 
+        locale: PaymentSdkLocale.EN, //PaymentSdkLocale.AR, PaymentSdkLocale.FR, PaymentSdkLocale.TR, PaymentSdkLocale.UR or PaymentSdkLocale.DEFAULT. 
         amount: "amount in double",
         currencyCode: "Currency code",
         merchantCountryCode: "2 chars iso country code");
@@ -458,7 +458,7 @@ By default, the billing name is linked with card holder name, if you set its fla
 
 ```
 ## Customize the Theme:
-![UI guide](theme_demo.jpg)
+![UI guide](theme_demo.png)
 
 ### iOS Theme
 Use the following guide to cusomize the colors, font, and logo by configuring the theme and pass it to the payment configuration.
@@ -481,29 +481,58 @@ android/src/main/res/values/colors.xml
 ````xml
 
 <resources>
-    // to override colors
-    <color name="payment_sdk_primary_color">#000000</color>
-    <color name="payment_sdk_secondary_color">#1B1B1B</color>
-    <color name="payment_sdk_background_color">#292929</color>
-    <color name="payment_sdk_button_background_color">#45444A</color>
-    <color name="payment_sdk_input_field_background_color">#8E8E8D</color>
-    <color name="payment_sdk_stroke_color">#90918F</color>
-
-    <color name="payment_sdk_title_text_color">#FFFFFF</color>
-
-    <color name="payment_sdk_primary_font_color">#FFFFFF</color>
-    <color name="payment_sdk_secondary_font_color">#0094F1</color>
+    <!-- Override colors -->
+    <color name="payment_sdk_primary_color">#ffffff</color>
+    <color name="payment_sdk_secondary_color">#0073bc</color>
+    <color name="payment_sdk_status_bar_color">#444647</color>
+    <color name="payment_sdk_primary_font_color">#4c4c4c</color>
+    <color name="payment_sdk_secondary_font_color">#0073bc</color>
+    <color name="payment_sdk_hint_font_color">#a5a5a5</color>
+    <color name="payment_sdk_stroke_color">#e1e1e1</color>
     <color name="payment_sdk_button_text_color">#FFF</color>
-    <color name="payment_sdk_hint_font_color">#D8D8D8</color>
-    <color name="payment_sdk_error_text_color">#650303</color>
+    <color name="payment_sdk_title_text_color">#1e1e1e</color>
+    <color name="payment_sdk_button_background_color">#0073bc</color>
+    <color name="payment_sdk_background_color">#F9FAFD</color>
+    <color name="payment_sdk_blue_F2FAFD">#F2FAFD</color>
+    <color name="payment_sdk_error_text_color">#EC2213</color>
+    <color name="payment_sdk_back_black_dim">#4D6E6E6E</color>
+    <color name="payment_sdk_input_field_background_color">#FFFFFFFF</color>
+    <color name="payment_sdk_enabled_switch_track_color">#00000000</color>
+    <color name="payment_sdk_enabled_switch_handle_color">#3db39e</color>
+    <color name="payment_sdk_disabled_switch_track_color">#00000000</color>
+    <color name="payment_sdk_disabled_switch_handle_color">#c7c7c7</color>
+    <color name="payment_sdk_switch_stroke_color">#4c4c4c</color>
+    <color name="payment_sdk_amount_font_color">#4c4c4c</color>
+    <color name="payment_sdk_original_amount_font_color">#a5a5a5</color>
+    <color name="payment_sdk_billing_header_background_color">#0073bc</color>
+    <color name="payment_sdk_billing_text_color">#FFF</color>
 
-    // to override dimens
-    <dimen name="payment_sdk_primary_font_size">17sp</dimen>
-    <dimen name="payment_sdk_secondary_font_size">15sp</dimen>
+    <!-- Override dimens -->
+    <dimen name="payment_sdk_title_font_size">18sp</dimen>
+    <dimen name="payment_sdk_title_margin">24dp</dimen>
+    <dimen name="payment_sdk_primary_font_size">16sp</dimen>
+    <dimen name="payment_sdk_secondary_font_size">16sp</dimen>
+    <dimen name="payment_sdk_button_font_size">16sp</dimen>
     <dimen name="payment_sdk_separator_thickness">1dp</dimen>
     <dimen name="payment_sdk_stroke_thickness">.5dp</dimen>
     <dimen name="payment_sdk_input_corner_radius">8dp</dimen>
+    <dimen name="payment_sdk_card_corner_radius">8dp</dimen>
+    <dimen name="payment_sdk_card_margin">16dp</dimen>
+    <dimen name="payment_sdk_billing_header_corner_radius">0dp</dimen>
+    <dimen name="payment_sdk_billing_header_margin">0dp</dimen>
     <dimen name="payment_sdk_button_corner_radius">8dp</dimen>
+    <dimen name="payment_sdk_error_font_size">12sp</dimen>
+    <dimen name="payment_sdk_amount_font_size">16sp</dimen>
+
+    <!-- Override styles -->
+    <style name="PaymentSdkTheme" parent="Theme.MaterialComponents.NoActionBar">
+        <!-- Hides the payment screen title background -->
+        <item name="payment_sdk_hideScreenTitleBackground">true</item>
+        <!-- Sets the alignment of the payment screen title [start-end-center] -->
+        <item name="payment_sdk_screenTitleAlignment">start</item>
+        <!-- Hides the card and button shadows -->
+        <item name="payment_sdk_hideViewsShadow">true</item>
+    </style>
 
 </resources>
 ````
@@ -583,7 +612,8 @@ enum PaymentSdkAPms {
   SAMSUNG_PAY,
   APPLE_PAY,
   SOUHOOLA,
-  TABBY
+  TABBY,
+  HALAN
 }
 ```
 

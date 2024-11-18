@@ -238,3 +238,9 @@
 * Update Android SDK.
 * Update iOS SDK.
 * Add card validation support.
+
+## 2.6.19
+
+* Update Android SDK.
+* Update iOS SDK.
+* Add Halan APM.
