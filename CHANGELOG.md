@@ -244,3 +244,8 @@
 * Update Android SDK.
 * Update iOS SDK.
 * Add Halan APM.
+
+## 2.6.20
+
+* Update Android SDK.
+* Fix ui minor issue.
