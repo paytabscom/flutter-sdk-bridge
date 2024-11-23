@@ -247,7 +247,12 @@ class FlutterPaytabsBridge {
   }
 
   static Future<String> handleImagePath(String path) async {
-    var bytes = await rootBundle.load(path);
+    var bytes;
+    if (File(path).existsSync()) {
+      bytes = File(path).readAsBytesSync().buffer.asByteData();
+    } else {
+      bytes = await rootBundle.load(path);
+    }
     String dir = (await getApplicationDocumentsDirectory()).path;
     var imageName = path.split("/").last;
     String logoPath = '$dir/$imageName';
