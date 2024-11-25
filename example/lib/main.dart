@@ -155,10 +155,6 @@ class _MyAppState extends State<MyApp> {
                 onPressed: _handleQuery,
                 child: Text('Query Transaction'),
               ),
-              TextButton(
-                onPressed: _clearSavedCards,
-                child: Text('Clear Saved Cards'),
-              ),
               _buildApplePayButton(),
             ],
           ),
@@ -340,14 +336,6 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
-  /// Clears saved cards.
-  ///
-  /// This method clears the saved cards using the FlutterPaytabsBridge and logs the result.
-  Future<void> _clearSavedCards() async {
-    final result = await FlutterPaytabsBridge.clearSavedCards();
-    debugPrint("ClearSavedCards $result");
-  }
-
   /// Builds the Apple Pay button, shown only on iOS.
   ///
   /// This method returns a [TextButton] widget for Apple Pay if the platform is iOS,
@@ -386,11 +374,6 @@ class _MyAppState extends State<MyApp> {
         onPressed: () => _handlePayment(
             FlutterPaytabsBridge.start3DSecureTokenizedCardPayment),
         child: Text('Pay with 3DS'),
-      ),
-      TextButton(
-        onPressed: () =>
-            _handlePayment(FlutterPaytabsBridge.startPaymentWithSavedCards),
-        child: Text('Pay with Saved Cards'),
       ),
       TextButton(
         onPressed: () =>

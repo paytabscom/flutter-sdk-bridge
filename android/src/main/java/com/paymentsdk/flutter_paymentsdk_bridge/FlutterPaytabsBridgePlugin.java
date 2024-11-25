@@ -8,7 +8,6 @@ import static com.payment.paymentsdk.integrationmodels.PaymentSdkTransactionClas
 import static com.payment.paymentsdk.integrationmodels.PaymentSdkTransactionTypeKt.createPaymentSdkTransactionType;
 
 import android.app.Activity;
-import android.os.Build;
 
 import androidx.annotation.NonNull;
 
@@ -99,9 +98,6 @@ public class FlutterPaytabsBridgePlugin implements FlutterPlugin, MethodCallHand
             case "queryTransaction":
                 queryTransaction(call);
                 break;
-            case "startPaymentWithSavedCards":
-                makePaymentWithSavedCards(call);
-                break;
             case "startSamsungPayPayment":
                 makeSamsungPayment(call);
                 break;
@@ -111,23 +107,6 @@ public class FlutterPaytabsBridgePlugin implements FlutterPlugin, MethodCallHand
             case "cancelPayment":
                 cancelPayment();
                 break;
-            case "clearSavedCards":
-                clearSavedCards(result);
-                break;
-        }
-    }
-
-
-    private void clearSavedCards(Result result) {
-        try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                PaymentSdkActivity.clearSavedCards(activity);
-                result.success(null);
-            } else {
-                result.error("0", "Unsupported Android Version. Min supported SDK is 23", "{}");
-            }
-        } catch (Exception e) {
-            result.error("0", e.getMessage(), "{}");
         }
     }
 
@@ -179,15 +158,6 @@ public class FlutterPaytabsBridgePlugin implements FlutterPlugin, MethodCallHand
         }
     }
 
-    private void makePaymentWithSavedCards(@NonNull MethodCall call) {
-        try {
-            HashMap<String, Object> arguments = call.arguments();
-            JSONObject paymentDetails = new JSONObject(arguments);
-            PaymentSdkActivity.startPaymentWithSavedCards(activity, getPaymentSdkConfigurationDetails(paymentDetails), getIsSupport3DS(paymentDetails), getCallback());
-        } catch (Exception e) {
-            eventSink.error("0", e.getMessage(), "{}");
-        }
-    }
 
     private void makeApmsPayment(@NonNull MethodCall call) {
         try {
@@ -359,29 +329,7 @@ public class FlutterPaytabsBridgePlugin implements FlutterPlugin, MethodCallHand
             shippingData = new PaymentSdkShippingDetails(shippingDetails.optString("pt_city_shipping"), shippingDetails.optString("pt_country_shipping"), shippingDetails.optString("pt_email_shipping"), shippingDetails.optString("pt_name_shipping"), shippingDetails.optString("pt_phone_shipping"), shippingDetails.optString("pt_state_shipping"), shippingDetails.optString("pt_address_shipping"), shippingDetails.optString("pt_zip_shipping"));
         }
         final List<PaymentSdkCardDiscount> paymentSdkCardDiscounts = getPaymentSdkCardDiscounts(paymentDetails);
-        return new PaymentSdkConfigBuilder(profileId, serverKey, clientKey, amount, currency)
-                .setCartDescription(cartDesc)
-                .setLanguageCode(locale)
-                .setBillingData(billingData)
-                .setMerchantCountryCode(paymentDetails.optString("pt_merchant_country_code"))
-                .setShippingData(shippingData)
-                .setCartId(orderId)
-                .setTransactionClass(createPaymentSdkTransactionClass(paymentDetails.optString("pt_transaction_class")))
-                .setTransactionType(transaction_type).setTokenise(tokeniseType, tokenFormat)
-                .setTokenisationData(token, transRef)
-                .setAlternativePaymentMethods(aPmsList)
-                .showBillingInfo(paymentDetails.optBoolean("pt_show_billing_info"))
-                .showShippingInfo(paymentDetails.optBoolean("pt_show_shipping_info"))
-                .forceShippingInfo(paymentDetails.optBoolean("pt_force_validate_shipping"))
-                .setMerchantIcon(iconUri).setScreenTitle(screenTitle)
-                .linkBillingNameWithCard(paymentDetails.optBoolean("pt_link_billing_name"))
-                .hideCardScanner(paymentDetails.optBoolean("pt_hide_card_scanner"))
-                .enableZeroContacts(paymentDetails.optBoolean("pt_enable_zero_contacts"))
-                .isDigitalProduct(paymentDetails.optBoolean("pt_is_digital_product"))
-                .setPaymentExpiry(paymentScreenExpiry)
-                .setMetadata(getMetadata())
-                .setCardApproval(getCardApproval(paymentDetails))
-                .setCardDiscount(paymentSdkCardDiscounts).build();
+        return new PaymentSdkConfigBuilder(profileId, serverKey, clientKey, amount, currency).setCartDescription(cartDesc).setLanguageCode(locale).setBillingData(billingData).setMerchantCountryCode(paymentDetails.optString("pt_merchant_country_code")).setShippingData(shippingData).setCartId(orderId).setTransactionClass(createPaymentSdkTransactionClass(paymentDetails.optString("pt_transaction_class"))).setTransactionType(transaction_type).setTokenise(tokeniseType, tokenFormat).setTokenisationData(token, transRef).setAlternativePaymentMethods(aPmsList).showBillingInfo(paymentDetails.optBoolean("pt_show_billing_info")).showShippingInfo(paymentDetails.optBoolean("pt_show_shipping_info")).forceShippingInfo(paymentDetails.optBoolean("pt_force_validate_shipping")).setMerchantIcon(iconUri).setScreenTitle(screenTitle).linkBillingNameWithCard(paymentDetails.optBoolean("pt_link_billing_name")).hideCardScanner(paymentDetails.optBoolean("pt_hide_card_scanner")).enableZeroContacts(paymentDetails.optBoolean("pt_enable_zero_contacts")).isDigitalProduct(paymentDetails.optBoolean("pt_is_digital_product")).setPaymentExpiry(paymentScreenExpiry).setMetadata(getMetadata()).setCardApproval(getCardApproval(paymentDetails)).setCardDiscount(paymentSdkCardDiscounts).build();
     }
 
     /**
@@ -392,7 +340,7 @@ public class FlutterPaytabsBridgePlugin implements FlutterPlugin, MethodCallHand
     private Map<String, Object> getMetadata() {
         Map<String, Object> metadata = new HashMap<>();
         metadata.put("PaymentSDKPluginName", "flutter");
-        metadata.put("PaymentSDKPluginVersion", "2.6.20");
+        metadata.put("PaymentSDKPluginVersion", "2.7.0");
         return metadata;
     }
 
@@ -410,8 +358,7 @@ public class FlutterPaytabsBridgePlugin implements FlutterPlugin, MethodCallHand
                         cards.add(cardsPrefixes.optString(j));
                     }
                 }
-                final PaymentSdkCardDiscount cardDiscount = new PaymentSdkCardDiscount(cards, discount.optDouble("pt_discount_value"),
-                        discount.optString("pt_discount_title"), discount.optBoolean("pt_is_percentage"));
+                final PaymentSdkCardDiscount cardDiscount = new PaymentSdkCardDiscount(cards, discount.optDouble("pt_discount_value"), discount.optString("pt_discount_title"), discount.optBoolean("pt_is_percentage"));
                 paymentSdkCardDiscounts.add(cardDiscount);
             }
         }
@@ -427,11 +374,7 @@ public class FlutterPaytabsBridgePlugin implements FlutterPlugin, MethodCallHand
     private static PaymentSdkCardApproval getCardApproval(JSONObject paymentDetails) {
         JSONObject cardApproval = paymentDetails.optJSONObject("pt_card_approval");
         if (cardApproval == null) return null;
-        return new PaymentSdkCardApproval(
-                cardApproval.optString("pt_validation_url"),
-                cardApproval.optInt("pt_bin_length"),
-                cardApproval.optBoolean("pt_block_if_no_response")
-        );
+        return new PaymentSdkCardApproval(cardApproval.optString("pt_validation_url"), cardApproval.optInt("pt_bin_length"), cardApproval.optBoolean("pt_block_if_no_response"));
     }
 
     public static String optString(JSONObject json, String key) {
