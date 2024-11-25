@@ -214,34 +214,6 @@ FlutterPaytabsBridge.start3DSecureTokenizedCardPayment(configuration, savedCardI
 ```
 <img width="197" alt="rec 3ds" src="https://user-images.githubusercontent.com/17829232/188836295-d8d48978-a80f-40d3-bda3-439423fcdec0.png">
 
-# 4-Pay with Saved Card
-Start payment by calling `startPaymentWithSavedCards` method and handle the transaction details
-
-```dart
-
-FlutterPaytabsBridge.startPaymentWithSavedCards(configuration, support3DsBoolean, (event) {
-      setState(() {
-        if (event["status"] == "success") {
-          // Handle transaction details here.
-          var transactionDetails = event["data"];
-          print(transactionDetails);
-          
-          if (transactionDetails["isSuccess"]) {
-            print("successful transaction");
-          } else {
-            print("failed transaction");
-          }
-        } else if (event["status"] == "error") {
-          // Handle error here.
-        } else if (event["status"] == "event") {
-          // Handle cancel events here.
-        }
-      });
-    });
-     
-```
-<img width="197" alt="rec 3ds" src="https://user-images.githubusercontent.com/17829232/205496703-b823e57b-348c-4109-9429-ab261e5a5b50.png">
-
 ### Pay with Apple Pay
 
 1. Follow the guide [Steps to configure Apple Pay][applepayguide] to learn how to configure ApplePay with PayTabs.
@@ -395,15 +367,6 @@ final configuration = PaymentSdkConfigurationDetails(
 - **`validationUrl`**: The endpoint provided by the business to validate the transaction.
 - **`binLength`**: BIN length (default is 6, can be set to 8).
 - **`blockIfNoResponse`**: Determines if the transaction should proceed in case of no response from the validation endpoint.
-
-
-## Clear saved cards
-
-You can clear the saved cards using the following method call.
-
-```dart
-FlutterPaytabsBridge.clearSavedCards()
-```
 
 ## Query transaction
 
