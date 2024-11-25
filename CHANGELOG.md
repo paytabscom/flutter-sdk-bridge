@@ -249,3 +249,8 @@
 
 * Update Android SDK.
 * Fix ui minor issue.
+
+## 2.7.0
+
+* Update Android SDK.
+* Remove deprecated saved cards feature.
