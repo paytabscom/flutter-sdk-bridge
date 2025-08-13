@@ -1,15 +1,49 @@
-.DS_Store
+# Flutter/Dart
 .dart_tool/
-
 .packages
+.buildlog/
+.hitcount
+.pub-cache/
 .pub/
-
 build/
-android/.idea/.name
-android/.idea/gradle.xml
-android/.idea/jarRepositories.xml
-android/.idea/misc.xml
-android/.idea/modules.xml
-android/.idea/runConfigurations.xml
-android/.idea/caches/build_file_checksums.ser
-android/.idea/codeStyles/Project.xml
+# Keep example/pubspec.lock only
+pubspec.lock
+!example/pubspec.lock
+
+# IDEs and project files
+.idea/
+*.iml
+.vscode/
+.fleet/
+
+# Android
+**/.gradle/
+**/local.properties
+**/captures/
+**/out/
+android/app/*.iml
+
+# iOS/macOS
+**/Flutter/ephemeral/
+**/*.xcworkspace/
+**/*.xcuserdatad/
+**/*.xcuserstate
+**/.symlinks/**
+**/Pods/
+# If you want to commit Podfile.lock comment out the next line
+**/Podfile.lock
+
+# Node
+**/node_modules/
+
+# Flutter plugin generated files
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.melos_tool/**
+
+# Misc
+.DS_Store
+.env
+.env.*
+*.log
