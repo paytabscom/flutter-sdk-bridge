@@ -9,7 +9,7 @@
         android:label="flutter_paytabs_bridge_example"
         android:icon="@mipmap/ic_launcher">
         <activity
-            android:name=".MainActivity"
+            android:name="com.paytabs.flutter_paytabs_bridge_example.MainActivity"
             android:launchMode="singleTop"
             android:exported="true"
             android:theme="@style/LaunchTheme"

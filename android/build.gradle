@@ -5,26 +5,25 @@ version '1.0'
 buildscript {
     repositories {
         google()
-        jcenter()
+        mavenCentral()
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.3.0'
+        classpath 'com.android.tools.build:gradle:8.12.0'
     }
 }
 
 rootProject.allprojects {
     repositories {
         google()
-        jcenter()
-        maven { url 'https://jitpack.io' }
+        mavenCentral()
     }
 }
 
 apply plugin: 'com.android.library'
 
 android {
-    compileSdk 34
+    compileSdkVersion 36
 
     defaultConfig {
         minSdkVersion 21
@@ -32,14 +31,11 @@ android {
     lintOptions {
         disable 'InvalidPackage'
     }
-    configurations.configureEach {
-        resolutionStrategy {
-            exclude group: "org.jetbrains.kotlinx", module: "kotlinx-coroutines-debug"
-        }
-    }
-    namespace 'com.paymentsdk.flutter_paymentsdk_bridge'
+    namespace 'com.paytabs.flutter_payment_sdk_bridge_example'
 }
 
 dependencies {
-    implementation 'com.paytabs:payment-sdk:6.7.0'
+    implementation "com.paytabs:payment-sdk-test:6.8.0-beta01"
+    implementation "androidx.appcompat:appcompat:1.7.1"
+    implementation "com.google.code.gson:gson:2.13.1"
 }
