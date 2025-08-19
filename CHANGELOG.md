@@ -254,3 +254,10 @@
 
 * Update Android SDK.
 * Remove deprecated saved cards feature.
+
+## 2.7.1
+
+* Support new Android memory page size 16K.
+* Add new APMs: Tamara, Tru and Forsa
+* Update Android SDK.
+* Update iOS SDK.

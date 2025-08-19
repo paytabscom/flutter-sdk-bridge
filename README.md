@@ -12,7 +12,7 @@ Plugin Support:
 
 ```
 dependencies:
-   flutter_paytabs_bridge: ^2.7.0
+   flutter_paytabs_bridge: ^2.7.1
 ```
 
 ## Usage
@@ -576,7 +576,10 @@ enum PaymentSdkAPms {
   APPLE_PAY,
   SOUHOOLA,
   TABBY,
-  HALAN
+  HALAN,
+  TRU,
+  FORSA,
+  TAMARA
 }
 ```
 
