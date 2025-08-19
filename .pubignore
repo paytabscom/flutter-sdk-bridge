@@ -1,0 +1,38 @@
+# Exclude the example app from publication
+example/**
+
+# IDE/editor settings
+.vscode/**
+**/.idea/**
+**/.settings/**
+**/.classpath
+**/.project
+
+# Node modules anywhere (e.g., example/ios/node_modules)
+**/node_modules/**
+
+# iOS/CocoaPods artifacts (mostly in examples)
+**/Pods/**
+**/Podfile.lock
+**/*.xcworkspace/**
+**/*.xcodeproj/**
+**/*.xcuserdatad/**
+**/*.xccheckout
+**/*.xcscmblueprint
+**/DerivedData/**
+
+# Android/Gradle build artifacts
+**/.gradle/**
+**/build/**
+
+# Misc caches and OS files
+**/.DS_Store
+**/Thumbs.db
+
+# Other common transient files
+**/*.iml
+**/.flutter-plugins
+**/.flutter-plugins-dependencies
+**/.packages
+.packages
+.dart_tool/**
