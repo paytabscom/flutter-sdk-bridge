@@ -255,7 +255,7 @@ public class SwiftFlutterPaymentSDKBridgePlugin: NSObject, FlutterPlugin {
              configuration.paymentNetworks = generatePaymentNetworks(paymentsArray: paymentNetworks)
          }
 
-        configuration.metaData = ["PaymentSDKPluginName": "flutter", "PaymentSDKPluginVersion": "2.7.0"]
+        configuration.metaData = ["PaymentSDKPluginName": "flutter", "PaymentSDKPluginVersion": "2.7.1"]
         return configuration
     }
 
