@@ -261,3 +261,7 @@
 * Add new APMs: Tamara, Tru and Forsa
 * Update Android SDK.
 * Update iOS SDK.
+
+## 2.7.2
+
+* Bug Fix
