@@ -1,17 +1,11 @@
-import 'dart:async';
-import 'dart:io' show Platform;
-
 import 'package:flutter/material.dart';
-import 'package:flutter_paytabs_bridge/BaseBillingShippingInfo.dart';
-import 'package:flutter_paytabs_bridge/IOSThemeConfiguration.dart';
-import 'package:flutter_paytabs_bridge/PaymentSDKCardApproval.dart';
-import 'package:flutter_paytabs_bridge/PaymentSDKNetworks.dart';
-import 'package:flutter_paytabs_bridge/PaymentSDKQueryConfiguration.dart';
-import 'package:flutter_paytabs_bridge/PaymentSdkApms.dart';
-import 'package:flutter_paytabs_bridge/PaymentSdkConfigurationDetails.dart';
-import 'package:flutter_paytabs_bridge/PaymentSdkTokeniseType.dart';
-import 'package:flutter_paytabs_bridge/PaymentSdkTransactionType.dart';
-import 'package:flutter_paytabs_bridge/flutter_paytabs_bridge.dart';
+import 'models/payment_form_model.dart';
+import 'widgets/credentials_section.dart';
+import 'widgets/payment_config_section.dart';
+import 'widgets/billing_section.dart';
+import 'widgets/shipping_section.dart';
+import 'widgets/card_approval_section.dart';
+import 'widgets/payment_methods_section.dart';
 
 void main() {
   runApp(MyApp());
@@ -24,138 +18,70 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  /// Instructions for the user interface.
-  final String _instructions = 'Tap on "Pay" Button to try PayTabs plugin';
+  // Form key for validation
+  final _formKey = GlobalKey<FormState>();
+  final _scrollController = ScrollController();
+  final _scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
 
-  /// Profile ID for the payment configuration.
-  static const String profileId = "*profile_id*";
-
-  /// Server key for the payment configuration.
-  static const String serverKey = "*server_key*";
-
-  /// Client key for the payment configuration.
-  static const String clientKey = "*client_key*";
-
-  /// Cart ID for the payment configuration.
-  static const String cartId = "12433";
-
-  /// Description of the cart for the payment configuration.
-  static const String cartDescription = "Flowers";
-
-  /// Merchant name for the payment configuration.
-  static const String merchantName = "Flowers Store";
-
-  /// Screen title for the payment configuration.
-  static const String screenTitle = "Pay with Card";
-
-  /// Amount for the payment configuration.
-  static const double amount = 20.0;
-
-  /// Currency code for the payment configuration.
-  static const String currencyCode = "EGP";
-
-  /// Merchant country code for the payment configuration.
-  static const String merchantCountryCode = "EG";
-
-  /// Apple Pay identifier for the payment configuration.
-  static const String merchantApplePayIdentifier = "";
-
-  /// Flag to simplify Apple Pay validation.
-  static const bool simplifyApplePayValidation = true;
-
-  /// Flag to show billing information.
-  static const bool showBillingInfo = true;
-
-  /// Flag to force shipping information.
-  static const bool forceShippingInfo = true;
-
-  /// Tokenization type for the payment configuration.
-  static const tokeniseType = PaymentSdkTokeniseType.MERCHANT_MANDATORY;
-
-  /// Transaction type for the payment configuration.
-  static const transactionType = PaymentSdkTransactionType.SALE;
-
-  /// List of alternative payment methods.
-  final List<PaymentSdkAPms> apms = [PaymentSdkAPms.AMAN];
-
-  /// List of supported payment networks.
-  final List<PaymentSDKNetworks> networks = [
-    PaymentSDKNetworks.visa,
-    PaymentSDKNetworks.amex
-  ];
-
-  /// Card approval configuration for the payment configuration.
-  final PaymentSDKCardApproval cardApproval = PaymentSDKCardApproval(
-    validationUrl: "https://www.example.com/validation",
-    binLength: 6,
-    blockIfNoResponse: false,
-  );
-
-  /// Billing name for the payment configuration.
-  static const String billingName = "John Smith";
-
-  /// Billing email for the payment configuration.
-  static const String billingEmail = "email@domain.com";
-
-  /// Billing phone number for the payment configuration.
-  static const String billingPhone = "+97311111111";
-
-  /// Billing address for the payment configuration.
-  static const String billingAddress = "st. 12";
-
-  /// Billing country for the payment configuration.
-  static const String billingCountry = "eg";
-
-  /// Billing city for the payment configuration.
-  static const String billingCity = "dubai";
-
-  /// Billing state for the payment configuration.
-  static const String billingState = "dubai";
-
-  /// Billing zip code for the payment configuration.
-  static const String billingZipCode = "12345";
-
-  /// Shipping name for the payment configuration.
-  static const String shippingName = billingName;
-
-  /// Shipping email for the payment configuration.
-  static const String shippingEmail = billingEmail;
-
-  /// Shipping phone number for the payment configuration.
-  static const String shippingPhone = billingPhone;
-
-  /// Shipping address for the payment configuration.
-  static const String shippingAddress = billingAddress;
-
-  /// Shipping country for the payment configuration.
-  static const String shippingCountry = billingCountry;
-
-  /// Shipping city for the payment configuration.
-  static const String shippingCity = billingCity;
-
-  /// Shipping state for the payment configuration.
-  static const String shippingState = billingState;
-
-  /// Shipping zip code for the payment configuration.
-  static const String shippingZipCode = billingZipCode;
+  // Payment form model
+  final PaymentFormModel _model = PaymentFormModel();
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      scaffoldMessengerKey: _scaffoldMessengerKey,
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        inputDecorationTheme: InputDecorationTheme(
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
+          contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        ),
+      ),
       home: Scaffold(
-        appBar: AppBar(title: const Text('PayTabs Plugin Example App')),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text(_instructions),
-              SizedBox(height: 16),
-              ..._buildPaymentButtons(),
-              TextButton(
-                onPressed: _handleQuery,
-                child: Text('Query Transaction'),
+        appBar: AppBar(
+          title: const Text('PayTabs Plugin Example'),
+          elevation: 0,
+        ),
+        body: Form(
+          key: _formKey,
+          child: ListView(
+            controller: _scrollController,
+            padding: EdgeInsets.all(16),
+            children: [
+              CredentialsSection(
+                model: _model,
+                onChanged: (model) => setState(() {}),
               ),
-              _buildApplePayButton(),
+              PaymentConfigSection(
+                model: _model,
+                onChanged: (model) => setState(() {}),
+                onDateSelected: (date) {
+                  setState(() {
+                    _model.receiptDate = date;
+                  });
+                },
+              ),
+              BillingSection(
+                model: _model,
+                onChanged: (model) => setState(() {}),
+              ),
+              ShippingSection(
+                model: _model,
+                onChanged: (model) => setState(() {}),
+              ),
+              CardApprovalSection(
+                model: _model,
+                onChanged: (model) => setState(() {}),
+              ),
+              PaymentMethodsSection(
+                model: _model,
+                onChanged: (model) => setState(() {}),
+                formKey: _formKey,
+                onTransactionEvent: _processTransactionEvent,
+              ),
             ],
           ),
         ),
@@ -163,223 +89,81 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
-  /// Creates billing details for the payment configuration.
-  ///
-  /// Returns a [BillingDetails] object containing the billing information.
-  BillingDetails _createBillingDetails() {
-    return BillingDetails(
-      billingName,
-      billingEmail,
-      billingPhone,
-      billingAddress,
-      billingCountry,
-      billingCity,
-      billingState,
-      billingZipCode,
-    );
-  }
-
-  /// Creates shipping details for the payment configuration.
-  ///
-  /// Returns a [ShippingDetails] object containing the shipping information.
-  ShippingDetails _createShippingDetails() {
-    return ShippingDetails(
-      shippingName,
-      shippingEmail,
-      shippingPhone,
-      shippingAddress,
-      shippingCountry,
-      shippingCity,
-      shippingState,
-      shippingZipCode,
-    );
-  }
-
-  /// Generates the payment configuration details.
-  ///
-  /// This method creates and returns a [PaymentSdkConfigurationDetails] object
-  /// that contains all the necessary information for configuring a payment.
-  ///
-  /// Returns:
-  ///   A [PaymentSdkConfigurationDetails] object containing the payment configuration.
-  PaymentSdkConfigurationDetails _generatePaymentConfig() {
-    final configuration = PaymentSdkConfigurationDetails(
-      profileId: profileId,
-      serverKey: serverKey,
-      clientKey: clientKey,
-      transactionType: transactionType,
-      cartId: cartId,
-      cartDescription: cartDescription,
-      merchantName: merchantName,
-      screentTitle: screenTitle,
-      amount: amount,
-      showBillingInfo: showBillingInfo,
-      forceShippingInfo: forceShippingInfo,
-      currencyCode: currencyCode,
-      merchantCountryCode: merchantCountryCode,
-      billingDetails: _createBillingDetails(),
-      shippingDetails: _createShippingDetails(),
-      alternativePaymentMethods: apms,
-      linkBillingNameWithCardHolderName: true,
-      cardApproval: cardApproval,
-    );
-
-    configuration.iOSThemeConfigurations = IOSThemeConfigurations();
-    configuration.tokeniseType = tokeniseType;
-
-    return configuration;
-  }
-
-  /// Handles the payment process for any provided payment method.
-  ///
-  /// This method takes a payment method function, generates the payment configuration,
-  /// and processes the transaction event.
-  ///
-  /// Parameters:
-  /// - [paymentMethod]: A function that initiates the payment process.
-  Future<void> _handlePayment(Function paymentMethod) async {
-    paymentMethod(_generatePaymentConfig(), (event) {
-      setState(() {
-        _processTransactionEvent(event);
-      });
+  /// Processes transaction event responses.
+  void _processTransactionEvent(dynamic event) {
+    setState(() {
+      if (event["status"] == "success") {
+        final transactionDetails = event["data"];
+        _logTransaction(transactionDetails);
+        if (transactionDetails["isSuccess"]) {
+          if (transactionDetails["isPending"]) {
+            _showSnackBar("Transaction pending", Colors.orange);
+          } else {
+            _showSnackBar("Transaction successful!", Colors.green);
+          }
+        } else {
+          // Transaction was processed but failed
+          final reason = transactionDetails["payResponseReturn"] ?? 
+                        transactionDetails["responseMessage"] ?? 
+                        transactionDetails["message"] ?? 
+                        "Unknown error";
+          final responseCode = transactionDetails["responseCode"] ?? "";
+          final errorMessage = responseCode.isNotEmpty 
+              ? "Transaction failed (Code: $responseCode): $reason"
+              : "Transaction failed: $reason";
+          _showSnackBar(errorMessage, Colors.red);
+        }
+      } else if (event["status"] == "error") {
+        final errorMessage = event["message"] ?? "An error occurred";
+        debugPrint("Error occurred in transaction: $errorMessage");
+        debugPrint("Full error event: $event");
+        _showSnackBar("Error: $errorMessage", Colors.red);
+      } else if (event["status"] == "event") {
+        final eventMessage = event["message"] ?? "Event occurred";
+        debugPrint("Event occurred: $eventMessage");
+        _showSnackBar("Event: $eventMessage", Colors.orange);
+      }
     });
   }
 
-  /// Processes transaction event responses.
-  ///
-  /// This method handles the different statuses of a transaction event and logs
-  /// the appropriate messages.
-  ///
-  /// Parameters:
-  /// - [event]: The event data containing the transaction status and details.
-  void _processTransactionEvent(dynamic event) {
-    if (event["status"] == "success") {
-      final transactionDetails = event["data"];
-      _logTransaction(transactionDetails);
-    } else if (event["status"] == "error") {
-      debugPrint("Error occurred in transaction: ${event["message"]}");
-    } else if (event["status"] == "event") {
-      debugPrint("Event occurred: ${event["message"]}");
-    }
+  /// Shows a snackbar message
+  void _showSnackBar(String message, Color color) {
+    _scaffoldMessengerKey.currentState?.showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: color,
+        duration: Duration(seconds: 4),
+        action: SnackBarAction(
+          label: 'Dismiss',
+          textColor: Colors.white,
+          onPressed: () {
+            _scaffoldMessengerKey.currentState?.hideCurrentSnackBar();
+          },
+        ),
+      ),
+    );
   }
 
   /// Logs transaction details.
-  ///
-  /// This method logs the details of a transaction, including whether it was
-  /// successful or pending.
-  ///
-  /// Parameters:
-  /// - [transactionDetails]: The details of the transaction.
   void _logTransaction(dynamic transactionDetails) {
+    debugPrint("=== Transaction Details ===");
+    debugPrint("Full transaction data: $transactionDetails");
+    
     if (transactionDetails["isSuccess"]) {
-      debugPrint("successful transaction");
+      debugPrint("✓ Transaction successful");
       if (transactionDetails["isPending"]) {
-        debugPrint("transaction pending");
+        debugPrint("⚠ Transaction is pending");
       }
+      debugPrint("Transaction Reference: ${transactionDetails["transactionReference"] ?? "N/A"}");
+      debugPrint("Response Code: ${transactionDetails["responseCode"] ?? "N/A"}");
     } else {
-      debugPrint(
-          "failed transaction. Reason: ${transactionDetails["payResponseReturn"]}");
+      debugPrint("✗ Transaction failed");
+      debugPrint("Response Code: ${transactionDetails["responseCode"] ?? "N/A"}");
+      debugPrint("Response Message: ${transactionDetails["responseMessage"] ?? "N/A"}");
+      debugPrint("Pay Response Return: ${transactionDetails["payResponseReturn"] ?? "N/A"}");
+      debugPrint("Message: ${transactionDetails["message"] ?? "N/A"}");
+      debugPrint("Transaction Reference: ${transactionDetails["transactionReference"] ?? "N/A"}");
     }
-  }
-
-  /// Generates the query configuration.
-  ///
-  /// This method creates and returns a [PaymentSDKQueryConfiguration] object
-  /// that contains the necessary information for querying a transaction.
-  ///
-  /// Returns:
-  ///   A [PaymentSDKQueryConfiguration] object containing the query configuration.
-  PaymentSDKQueryConfiguration _generateQueryConfig() {
-    return PaymentSDKQueryConfiguration("ServerKey", "ClientKey",
-        "Country Iso 2", "Profile Id", "Transaction Reference");
-  }
-
-  /// Handles transaction query.
-  ///
-  /// This method initiates a transaction query using the generated query configuration
-  /// and processes the event response.
-  Future<void> _handleQuery() async {
-    FlutterPaytabsBridge.queryTransaction(
-      _generatePaymentConfig(),
-      _generateQueryConfig(),
-      (event) {
-        setState(() {
-          _processTransactionEvent(event);
-        });
-      },
-    );
-  }
-
-  /// Handles the Apple Pay payment process.
-  ///
-  /// This method configures and initiates the Apple Pay payment process,
-  /// and processes the event response.
-  Future<void> _handleApplePay() async {
-    final configuration = PaymentSdkConfigurationDetails(
-      profileId: profileId,
-      serverKey: serverKey,
-      clientKey: clientKey,
-      cartId: cartId,
-      cartDescription: cartDescription,
-      merchantName: merchantName,
-      amount: amount,
-      currencyCode: currencyCode,
-      merchantCountryCode: merchantCountryCode,
-      merchantApplePayIndentifier: merchantApplePayIdentifier,
-      simplifyApplePayValidation: simplifyApplePayValidation,
-      paymentNetworks: networks,
-    );
-    FlutterPaytabsBridge.startApplePayPayment(configuration, (event) {
-      setState(() {
-        _processTransactionEvent(event);
-      });
-    });
-  }
-
-  /// Builds the Apple Pay button, shown only on iOS.
-  ///
-  /// This method returns a [TextButton] widget for Apple Pay if the platform is iOS,
-  /// otherwise it returns an empty [SizedBox].
-  ///
-  /// Returns:
-  ///   A [Widget] representing the Apple Pay button or an empty box.
-  Widget _buildApplePayButton() {
-    if (Platform.isIOS) {
-      return TextButton(
-        onPressed: _handleApplePay,
-        child: Text('Pay with Apple Pay'),
-      );
-    }
-    return SizedBox.shrink();
-  }
-
-  /// Builds the payment buttons.
-  ///
-  /// This method returns a list of [TextButton] widgets for different payment methods.
-  ///
-  /// Returns:
-  ///   A list of [Widget] representing the payment buttons.
-  List<Widget> _buildPaymentButtons() {
-    return [
-      TextButton(
-        onPressed: () => _handlePayment(FlutterPaytabsBridge.startCardPayment),
-        child: Text('Pay with Card'),
-      ),
-      TextButton(
-        onPressed: () =>
-            _handlePayment(FlutterPaytabsBridge.startTokenizedCardPayment),
-        child: Text('Pay with Token'),
-      ),
-      TextButton(
-        onPressed: () => _handlePayment(
-            FlutterPaytabsBridge.start3DSecureTokenizedCardPayment),
-        child: Text('Pay with 3DS'),
-      ),
-      TextButton(
-        onPressed: () =>
-            _handlePayment(FlutterPaytabsBridge.startAlternativePaymentMethod),
-        child: Text('Pay with Alternative Payment Methods'),
-      ),
-    ];
+    debugPrint("===========================");
   }
 }
