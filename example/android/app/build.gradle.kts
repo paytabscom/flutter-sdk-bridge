@@ -16,6 +16,7 @@ android {
     namespace = "com.paytabs.flutter_payment_sdk_bridge_example"
     compileSdk = 36
     val appVersionCode = (System.getenv()["NEW_BUILD_NUMBER"] ?: "1")?.toInt()
+    val appVersionName = (System.getenv()["VERSION_NAME"] ?: "1.0.0")?.toString()
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
@@ -30,7 +31,7 @@ android {
         minSdk = flutter.minSdkVersion
         targetSdk = 36
         versionCode = appVersionCode
-        versionName = flutter.versionName
+        versionName = appVersionName
     }
     signingConfigs {
         create("release") {
