@@ -45,22 +45,27 @@ workflows:
       - name: Update CHANGELOG with bug fix
         script: |
           NEW_VERSION=$NEW_VERSION
+          echo "Updating CHANGELOG for version $NEW_VERSION"
 
-          # Create new changelog entry with bug fix
-          {
-            echo "## $NEW_VERSION"
-            echo ""
-            echo "* Bug Fix"
-            echo ""
-          } > changelog_entry.txt
+          # Create temporary file with new changelog entry
+          cat > /tmp/changelog_entry.txt << 'EOF'
+          ## $NEW_VERSION
 
-          # Prepend to CHANGELOG.md
-          cat changelog_entry.txt CHANGELOG.md > CHANGELOG.md.tmp
-          mv CHANGELOG.md.tmp CHANGELOG.md
-          rm changelog_entry.txt
+          * Bug Fix
 
-          # Verify the change
-          head -5 CHANGELOG.md
+          EOF
+
+          # Replace $NEW_VERSION with actual version
+          sed -i "s|\$NEW_VERSION|$NEW_VERSION|g" /tmp/changelog_entry.txt
+
+          # Prepend new entry to CHANGELOG.md
+          cat /tmp/changelog_entry.txt CHANGELOG.md > CHANGELOG.md.new
+          mv CHANGELOG.md.new CHANGELOG.md
+          rm /tmp/changelog_entry.txt
+
+          echo "✓ CHANGELOG updated successfully"
+          echo "First 10 lines of CHANGELOG:"
+          head -10 CHANGELOG.md
 
       - name: Create release branch
         script: |
@@ -96,25 +101,31 @@ workflows:
 
       - name: Configure pub.dev credentials
         script: |
-          # Create credentials in ~/.pub-cache (standard location)
-          mkdir -p ~/.pub-cache
-          echo "$PUB_DEV_CREDENTIALS" > ~/.pub-cache/credentials.json
-          chmod 600 ~/.pub-cache/credentials.json
-          echo "✓ Wrote pub credentials to ~/.pub-cache/credentials.json"
-
-          # Also create credentials in macOS location
+          # Get the user's home directory
           USER_HOME=$(eval echo ~"$USER")
+
+          # Create credentials in macOS location (primary)
           PUB_CREDENTIALS_DIR="$USER_HOME/Library/Application Support/dart"
           mkdir -p "$PUB_CREDENTIALS_DIR"
           echo "$PUB_DEV_CREDENTIALS" > "$PUB_CREDENTIALS_DIR/pub-credentials.json"
           chmod 600 "$PUB_CREDENTIALS_DIR/pub-credentials.json"
           echo "✓ Wrote pub credentials to $PUB_CREDENTIALS_DIR/pub-credentials.json"
 
-          # Also create credentials in Linux location
+          # Also create credentials in ~/.pub-cache (fallback)
+          mkdir -p ~/.pub-cache
+          echo "$PUB_DEV_CREDENTIALS" > ~/.pub-cache/credentials.json
+          chmod 600 ~/.pub-cache/credentials.json
+          echo "✓ Wrote pub credentials to ~/.pub-cache/credentials.json"
+
+          # Also create credentials in ~/.config/dart (Linux)
           mkdir -p ~/.config/dart
           echo "$PUB_DEV_CREDENTIALS" > ~/.config/dart/pub-credentials.json
           chmod 600 ~/.config/dart/pub-credentials.json
           echo "✓ Wrote pub credentials to ~/.config/dart/pub-credentials.json"
+
+          echo ""
+          echo "Verifying credentials file exists:"
+          ls -la "$PUB_CREDENTIALS_DIR/pub-credentials.json"
 
       - name: Publish package
         script: |
