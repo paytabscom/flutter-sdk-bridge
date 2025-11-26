@@ -37,8 +37,9 @@ workflows:
           echo "Bumping version from $CURRENT_VERSION to $NEW_VERSION"
           echo "NEW_VERSION=$NEW_VERSION" >> $CM_ENV
 
-          # Update pubspec.yaml
-          sed -i "s/^version: $CURRENT_VERSION/version: $NEW_VERSION/" pubspec.yaml
+          # Update pubspec.yaml (escape special chars and use portable sed)
+          sed -i.bak "s/version: $CURRENT_VERSION/version: $NEW_VERSION/" pubspec.yaml
+          rm -f pubspec.yaml.bak
 
       - name: Update CHANGELOG with bug fix
         script: |
