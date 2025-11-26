@@ -7,9 +7,6 @@ workflows:
         - pub_credentials
         - git
       vars:
-        PUBDEV_ACCESS_TOKEN: $PUBDEV_ACCESS_TOKEN
-        PUBDEV_REFRESH_TOKEN: $PUBDEV_REFRESH_TOKEN
-        PUBDEV_TOKEN_EXPIRATION: $PUBDEV_TOKEN_EXPIRATION
         GIT_CREDENTIALS: $GIT_CREDENTIALS
         GitUserEmail: $Git_Mail
         GitUserName: $Git_User
