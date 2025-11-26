@@ -1,0 +1,109 @@
+workflows:
+  publish-to-pubdev:
+    name: Bump Version, Update Changelog and Publish to pub.dev
+    max_build_duration: 45
+    environment:
+      groups:
+        - pub_credentials
+        - git
+      vars:
+        PUBDEV_ACCESS_TOKEN: $PUBDEV_ACCESS_TOKEN
+        PUBDEV_REFRESH_TOKEN: $PUBDEV_REFRESH_TOKEN
+        PUBDEV_TOKEN_EXPIRATION: $PUBDEV_TOKEN_EXPIRATION
+        GIT_CREDENTIALS: $GIT_CREDENTIALS
+        GitUserEmail: $Git_Mail
+        GitUserName: $Git_User
+      flutter: stable
+    scripts:
+      - name: Setup git credentials
+        script: |
+          git config --global user.email "$GitUserEmail"
+          git config --global user.name "$GitUserName"
+
+      - name: Read current version
+        script: |
+          CURRENT_VERSION=$(grep "^version:" pubspec.yaml | sed 's/version: //')
+          echo "Current version: $CURRENT_VERSION"
+          echo "CURRENT_VERSION=$CURRENT_VERSION" >> $CM_ENV
+
+      - name: Bump version
+        script: |
+          CURRENT_VERSION=$CURRENT_VERSION
+          # Increment patch version (e.g., 2.7.2 -> 2.7.3)
+          IFS='.' read -r MAJOR MINOR PATCH <<< "$CURRENT_VERSION"
+          NEW_PATCH=$((PATCH + 1))
+          NEW_VERSION="$MAJOR.$MINOR.$NEW_PATCH"
+
+          echo "Bumping version from $CURRENT_VERSION to $NEW_VERSION"
+          echo "NEW_VERSION=$NEW_VERSION" >> $CM_ENV
+
+          # Update pubspec.yaml
+          sed -i "s/^version: $CURRENT_VERSION/version: $NEW_VERSION/" pubspec.yaml
+
+      - name: Update CHANGELOG with bug fix
+        script: |
+          NEW_VERSION=$NEW_VERSION
+
+          # Create new changelog entry with bug fix
+          cat > changelog_entry.txt << 'CHANGELOG_EOF'
+          ## $NEW_VERSION
+
+          * Bug Fix
+
+          CHANGELOG_EOF
+
+          # Prepend to CHANGELOG.md
+          cat changelog_entry.txt CHANGELOG.md > CHANGELOG.md.tmp
+          mv CHANGELOG.md.tmp CHANGELOG.md
+          rm changelog_entry.txt
+
+      - name: Create release branch
+        script: |
+          NEW_VERSION=$NEW_VERSION
+          git checkout -b "release_$NEW_VERSION"
+          git add pubspec.yaml CHANGELOG.md
+          git commit -m "Bump version to $NEW_VERSION and update CHANGELOG"
+          git push "https://${GIT_CREDENTIALS#*://}" "release_$NEW_VERSION" 2>&1 | grep -v "${GIT_CREDENTIALS}"
+
+      - name: Create and push git tag
+        script: |
+          NEW_VERSION=$NEW_VERSION
+          git tag -a "v$NEW_VERSION" -m "Release version $NEW_VERSION"
+          git push "https://${GIT_CREDENTIALS#*://}" "v$NEW_VERSION" 2>&1 | grep -v "${GIT_CREDENTIALS}"
+
+      - name: Get Flutter dependencies
+        script: |
+          flutter pub get
+
+      - name: Verify package health
+        script: |
+          flutter pub global activate pana
+          pana --no-warning
+
+      - name: Publish to pub.dev
+        script: |
+          mkdir -p ~/.pub-cache
+          cat > ~/.pub-cache/credentials.json << EOF
+          {
+            "version": 1,
+            "hosted": [{
+              "url": "https://pub.dartlang.org",
+              "credentialType": "oauth2",
+              "accessToken": "$PUBDEV_ACCESS_TOKEN",
+              "refreshToken": "$PUBDEV_REFRESH_TOKEN",
+              "tokenExpiration": $PUBDEV_TOKEN_EXPIRATION
+            }]
+          }
+          EOF
+
+          chmod 600 ~/.pub-cache/credentials.json
+
+          flutter pub publish --force
+
+    publishing:
+      email:
+        recipients:
+          - mobile.devop@paytabs.com
+        notify:
+          success: true
+          failure: true
