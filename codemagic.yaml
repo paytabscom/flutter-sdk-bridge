@@ -67,13 +67,21 @@ workflows:
           git checkout -b "release_$NEW_VERSION"
           git add pubspec.yaml CHANGELOG.md
           git commit -m "Bump version to $NEW_VERSION and update CHANGELOG"
-          git push "https://${GIT_CREDENTIALS#*://}" "release_$NEW_VERSION" --set-upstream 2>&1 | grep -v "${GIT_CREDENTIALS}" || true
+
+          # Push with proper authentication
+          git remote set-url origin "https://${GIT_CREDENTIALS#*://}"
+          git push -u origin "release_$NEW_VERSION"
+          echo "✓ Successfully pushed release_$NEW_VERSION branch"
 
       - name: Create and push git tag
         script: |
           NEW_VERSION=$NEW_VERSION
           git tag -a "v$NEW_VERSION" -m "Release version $NEW_VERSION"
-          git push "https://${GIT_CREDENTIALS#*://}" "refs/tags/v$NEW_VERSION" 2>&1 | grep -v "${GIT_CREDENTIALS}" || true
+
+          # Push tag with authentication
+          git remote set-url origin "https://${GIT_CREDENTIALS#*://}"
+          git push origin "v$NEW_VERSION"
+          echo "✓ Successfully pushed tag v$NEW_VERSION"
 
       - name: Get Flutter dependencies
         script: |
@@ -86,36 +94,9 @@ workflows:
 
       - name: Publish to pub.dev
         script: |
-          mkdir -p ~/.pub-cache
-
-          # Set up credentials file
-          cat > ~/.pub-cache/credentials.json << 'EOF'
-          {
-            "version": 1,
-            "hosted": [{
-              "url": "https://pub.dartlang.org",
-              "credentialType": "oauth2",
-              "accessToken": "PUBDEV_ACCESS_TOKEN_VALUE",
-              "refreshToken": "PUBDEV_REFRESH_TOKEN_VALUE",
-              "tokenExpiration": PUBDEV_TOKEN_EXPIRATION_VALUE
-            }]
-          }
-          EOF
-
-          # Replace placeholders with actual values
-          sed -i.bak "s|PUBDEV_ACCESS_TOKEN_VALUE|$PUBDEV_ACCESS_TOKEN|g" ~/.pub-cache/credentials.json
-          sed -i.bak "s|PUBDEV_REFRESH_TOKEN_VALUE|$PUBDEV_REFRESH_TOKEN|g" ~/.pub-cache/credentials.json
-          sed -i.bak "s|PUBDEV_TOKEN_EXPIRATION_VALUE|$PUBDEV_TOKEN_EXPIRATION|g" ~/.pub-cache/credentials.json
-          rm -f ~/.pub-cache/credentials.json.bak
-
-          chmod 600 ~/.pub-cache/credentials.json
-
-          # Debug: verify credentials file (without showing tokens)
-          echo "Credentials file created successfully"
-          ls -la ~/.pub-cache/credentials.json
-
-          echo "Publishing to pub.dev..."
-          flutter pub publish --force
+          # Make the publish script executable and run it
+          chmod +x scripts/publish.sh
+          ./scripts/publish.sh
 
     publishing:
       email:
