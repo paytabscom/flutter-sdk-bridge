@@ -99,15 +99,8 @@ workflows:
 
           chmod 600 ~/.pub-cache/credentials.json
 
-          # Publish with timeout and skip interactive prompts
-          timeout 300 flutter pub publish --force --skip-validation || {
-            EXIT_CODE=$?
-            if [ $EXIT_CODE -eq 124 ]; then
-              echo "Publish command timed out after 5 minutes"
-              exit 1
-            fi
-            exit $EXIT_CODE
-          }
+          echo "Publishing to pub.dev..."
+          flutter pub publish --force
 
     publishing:
       email:
