@@ -13,6 +13,7 @@ workflows:
         GIT_CREDENTIALS: $GIT_CREDENTIALS
         GitUserEmail: $Git_Mail
         GitUserName: $Git_User
+        PUB_DEV_CREDENTIALS: $PUB_DEV_CREDENTIALS
       flutter: stable
     scripts:
       - name: Setup git credentials
@@ -64,59 +65,45 @@ workflows:
       - name: Create release branch
         script: |
           NEW_VERSION=$NEW_VERSION
+          echo "Creating release branch: release_$NEW_VERSION"
+
           git checkout -b "release_$NEW_VERSION"
           git add pubspec.yaml CHANGELOG.md
           git commit -m "Bump version to $NEW_VERSION and update CHANGELOG"
 
           # Push with proper authentication
-          git remote set-url origin "https://${GIT_CREDENTIALS#*://}"
+          echo "Pushing release branch to GitHub..."
+          git remote set-url origin "https://${GIT_CREDENTIALS}"
           git push -u origin "release_$NEW_VERSION"
           echo "✓ Successfully pushed release_$NEW_VERSION branch"
 
       - name: Create and push git tag
         script: |
           NEW_VERSION=$NEW_VERSION
+          echo "Creating tag: v$NEW_VERSION"
+
           git tag -a "v$NEW_VERSION" -m "Release version $NEW_VERSION"
 
           # Push tag with authentication
-          git remote set-url origin "https://${GIT_CREDENTIALS#*://}"
+          echo "Pushing tag to GitHub..."
+          git remote set-url origin "https://${GIT_CREDENTIALS}"
           git push origin "v$NEW_VERSION"
           echo "✓ Successfully pushed tag v$NEW_VERSION"
 
       - name: Get Flutter dependencies
         script: |
           flutter pub get
-
-      - name: Verify package health
+      - name: Configure pub.dev credentials
         script: |
-          flutter pub global activate pana
-          pana --no-warning
+          mkdir -p ~/.config/dart
+          echo "$PUB_DEV_CREDENTIALS" > ~/.config/dart/pub-credentials.json
+          echo "Wrote pub credentials file to ~/.config/dart/pub-credentials.json"
 
-      - name: Publish to pub.dev
-        script: |
-          # Create pub-cache directory
-          mkdir -p ~/.pub-cache
+      - name: Verify credentials file
+        script: cat ~/.config/dart/pub-credentials.json
 
-          # Create credentials file in the correct format for pub.dev
-          cat > ~/.pub-cache/credentials.json << EOF
-          {
-            "version": 1,
-            "hosted": [{
-              "url": "https://pub.dartlang.org",
-              "credentialType": "oauth2",
-              "accessToken": "$PUBDEV_ACCESS_TOKEN",
-              "refreshToken": "$PUBDEV_REFRESH_TOKEN",
-              "tokenExpiration": $PUBDEV_TOKEN_EXPIRATION
-            }]
-          }
-          EOF
-
-          chmod 600 ~/.pub-cache/credentials.json
-
-          echo "Publishing to pub.dev..."
-          # Pass access token through stdin to avoid interactive authentication
-          echo "$PUBDEV_ACCESS_TOKEN" | flutter pub publish --force
-
+      - name: Publish package
+        script: flutter pub publish --force
     publishing:
       email:
         recipients:
