@@ -93,17 +93,19 @@ workflows:
       - name: Get Flutter dependencies
         script: |
           flutter pub get
+
       - name: Configure pub.dev credentials
         script: |
-          mkdir -p ~/.config/dart
-          echo "$PUB_DEV_CREDENTIALS" > ~/.config/dart/pub-credentials.json
-          echo "Wrote pub credentials file to ~/.config/dart/pub-credentials.json"
-
-      - name: Verify credentials file
-        script: cat ~/.config/dart/pub-credentials.json
+          mkdir -p ~/.pub-cache
+          echo "$PUB_DEV_CREDENTIALS" > ~/.pub-cache/credentials.json
+          chmod 600 ~/.pub-cache/credentials.json
+          echo "✓ Wrote pub credentials file to ~/.pub-cache/credentials.json"
 
       - name: Publish package
-        script: flutter pub publish --force
+        script: |
+          echo "Publishing flutter_paytabs_bridge to pub.dev..."
+          flutter pub publish --force
+          echo "✓ Successfully published to pub.dev"
     publishing:
       email:
         recipients:
