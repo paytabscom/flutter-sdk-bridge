@@ -46,17 +46,20 @@ workflows:
           NEW_VERSION=$NEW_VERSION
 
           # Create new changelog entry with bug fix
-          cat > changelog_entry.txt << 'CHANGELOG_EOF'
-          ## $NEW_VERSION
-
-          * Bug Fix
-
-          CHANGELOG_EOF
+          {
+            echo "## $NEW_VERSION"
+            echo ""
+            echo "* Bug Fix"
+            echo ""
+          } > changelog_entry.txt
 
           # Prepend to CHANGELOG.md
           cat changelog_entry.txt CHANGELOG.md > CHANGELOG.md.tmp
           mv CHANGELOG.md.tmp CHANGELOG.md
           rm changelog_entry.txt
+
+          # Verify the change
+          head -5 CHANGELOG.md
 
       - name: Create release branch
         script: |
@@ -84,20 +87,32 @@ workflows:
       - name: Publish to pub.dev
         script: |
           mkdir -p ~/.pub-cache
-          cat > ~/.pub-cache/credentials.json << EOF
+
+          # Set up credentials file
+          cat > ~/.pub-cache/credentials.json << 'EOF'
           {
             "version": 1,
             "hosted": [{
               "url": "https://pub.dartlang.org",
               "credentialType": "oauth2",
-              "accessToken": "$PUBDEV_ACCESS_TOKEN",
-              "refreshToken": "$PUBDEV_REFRESH_TOKEN",
-              "tokenExpiration": $PUBDEV_TOKEN_EXPIRATION
+              "accessToken": "PUBDEV_ACCESS_TOKEN_VALUE",
+              "refreshToken": "PUBDEV_REFRESH_TOKEN_VALUE",
+              "tokenExpiration": PUBDEV_TOKEN_EXPIRATION_VALUE
             }]
           }
           EOF
 
+          # Replace placeholders with actual values
+          sed -i.bak "s|PUBDEV_ACCESS_TOKEN_VALUE|$PUBDEV_ACCESS_TOKEN|g" ~/.pub-cache/credentials.json
+          sed -i.bak "s|PUBDEV_REFRESH_TOKEN_VALUE|$PUBDEV_REFRESH_TOKEN|g" ~/.pub-cache/credentials.json
+          sed -i.bak "s|PUBDEV_TOKEN_EXPIRATION_VALUE|$PUBDEV_TOKEN_EXPIRATION|g" ~/.pub-cache/credentials.json
+          rm -f ~/.pub-cache/credentials.json.bak
+
           chmod 600 ~/.pub-cache/credentials.json
+
+          # Debug: verify credentials file (without showing tokens)
+          echo "Credentials file created successfully"
+          ls -la ~/.pub-cache/credentials.json
 
           echo "Publishing to pub.dev..."
           flutter pub publish --force
