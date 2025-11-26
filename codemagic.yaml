@@ -94,9 +94,28 @@ workflows:
 
       - name: Publish to pub.dev
         script: |
-          # Make the publish script executable and run it
-          chmod +x scripts/publish.sh
-          ./scripts/publish.sh
+          # Create pub-cache directory
+          mkdir -p ~/.pub-cache
+
+          # Create credentials file in the correct format for pub.dev
+          cat > ~/.pub-cache/credentials.json << EOF
+          {
+            "version": 1,
+            "hosted": [{
+              "url": "https://pub.dartlang.org",
+              "credentialType": "oauth2",
+              "accessToken": "$PUBDEV_ACCESS_TOKEN",
+              "refreshToken": "$PUBDEV_REFRESH_TOKEN",
+              "tokenExpiration": $PUBDEV_TOKEN_EXPIRATION
+            }]
+          }
+          EOF
+
+          chmod 600 ~/.pub-cache/credentials.json
+
+          echo "Publishing to pub.dev..."
+          # Pass access token through stdin to avoid interactive authentication
+          echo "$PUBDEV_ACCESS_TOKEN" | flutter pub publish --force
 
     publishing:
       email:
