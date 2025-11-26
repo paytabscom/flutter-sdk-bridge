@@ -96,10 +96,25 @@ workflows:
 
       - name: Configure pub.dev credentials
         script: |
+          # Create credentials in ~/.pub-cache (standard location)
           mkdir -p ~/.pub-cache
           echo "$PUB_DEV_CREDENTIALS" > ~/.pub-cache/credentials.json
           chmod 600 ~/.pub-cache/credentials.json
-          echo "✓ Wrote pub credentials file to ~/.pub-cache/credentials.json"
+          echo "✓ Wrote pub credentials to ~/.pub-cache/credentials.json"
+
+          # Also create credentials in macOS location
+          USER_HOME=$(eval echo ~"$USER")
+          PUB_CREDENTIALS_DIR="$USER_HOME/Library/Application Support/dart"
+          mkdir -p "$PUB_CREDENTIALS_DIR"
+          echo "$PUB_DEV_CREDENTIALS" > "$PUB_CREDENTIALS_DIR/pub-credentials.json"
+          chmod 600 "$PUB_CREDENTIALS_DIR/pub-credentials.json"
+          echo "✓ Wrote pub credentials to $PUB_CREDENTIALS_DIR/pub-credentials.json"
+
+          # Also create credentials in Linux location
+          mkdir -p ~/.config/dart
+          echo "$PUB_DEV_CREDENTIALS" > ~/.config/dart/pub-credentials.json
+          chmod 600 ~/.config/dart/pub-credentials.json
+          echo "✓ Wrote pub credentials to ~/.config/dart/pub-credentials.json"
 
       - name: Publish package
         script: |

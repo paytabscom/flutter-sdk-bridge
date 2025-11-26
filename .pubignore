@@ -1,38 +1,30 @@
-# Exclude the example app from publication
-example/**
+# Ignore IDE and editor files
+.vscode/
+.idea/
+*.iml
 
-# IDE/editor settings
-.vscode/**
-**/.idea/**
-**/.settings/**
-**/.classpath
-**/.project
+# Ignore build and generated files
+build/
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
 
-# Node modules anywhere (e.g., example/ios/node_modules)
-**/node_modules/**
+# Ignore example node_modules
+example/ios/node_modules/
 
-# iOS/CocoaPods artifacts (mostly in examples)
-**/Pods/**
-**/Podfile.lock
-**/*.xcworkspace/**
-**/*.xcodeproj/**
-**/*.xcuserdatad/**
-**/*.xccheckout
-**/*.xcscmblueprint
-**/DerivedData/**
+# Ignore version control
+.git/
+.gitignore
 
-# Android/Gradle build artifacts
-**/.gradle/**
-**/build/**
+# Ignore scripts
+scripts/
+*.sh
 
-# Misc caches and OS files
-**/.DS_Store
-**/Thumbs.db
+# Ignore test files
+test/
 
-# Other common transient files
-**/*.iml
-**/.flutter-plugins
-**/.flutter-plugins-dependencies
-**/.packages
-.packages
-.dart_tool/**
+# Ignore example app
+example/
+
+# Ignore documentation
+*.md
