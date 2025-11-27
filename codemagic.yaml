@@ -95,6 +95,20 @@ workflows:
       - name: Get Flutter dependencies
         script: |
           flutter pub get
+
+      - name: Debug environment variables
+        script: |
+          echo "=== ALL ENVIRONMENT VARIABLES ==="
+          env | sort
+          echo ""
+          echo "=== VARIABLES CONTAINING 'PUB' OR 'DEV' ==="
+          env | grep -iE 'pub|dev|cred' || echo "  (none found)"
+          echo ""
+          echo "=== CHECKING SPECIFIC VARIABLES ==="
+          echo "PUB_DEV_CREDENTIALS: ${PUB_DEV_CREDENTIALS:-<NOT SET>}"
+          echo "PUB_CREDENTIALS: ${PUB_CREDENTIALS:-<NOT SET>}"
+          echo "PUBDEV_CREDENTIALS: ${PUBDEV_CREDENTIALS:-<NOT SET>}"
+
       - name: Setup pub credentials
         script: |
           mkdir -p "$HOME/Library/Application Support/dart"
