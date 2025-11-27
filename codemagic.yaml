@@ -6,11 +6,6 @@ workflows:
       groups:
         - pub_credentials
         - git
-      vars:
-        GIT_CREDENTIALS: $GIT_CREDENTIALS
-        GitUserEmail: $Git_Mail
-        GitUserName: $Git_User
-        PUB_DEV_CREDENTIALS: $PUB_DEV_CREDENTIALS
       flutter: stable
     scripts:
       - name: Setup git credentials
@@ -98,16 +93,17 @@ workflows:
 
       - name: Debug environment variables
         script: |
-          echo "=== ALL ENVIRONMENT VARIABLES ==="
-          env | sort
-          echo ""
-          echo "=== VARIABLES CONTAINING 'PUB' OR 'DEV' ==="
-          env | grep -iE 'pub|dev|cred' || echo "  (none found)"
-          echo ""
           echo "=== CHECKING SPECIFIC VARIABLES ==="
-          echo "PUB_DEV_CREDENTIALS: ${PUB_DEV_CREDENTIALS:-<NOT SET>}"
-          echo "PUB_CREDENTIALS: ${PUB_CREDENTIALS:-<NOT SET>}"
-          echo "PUBDEV_CREDENTIALS: ${PUBDEV_CREDENTIALS:-<NOT SET>}"
+          echo "PUB_DEV_CREDENTIALS value:"
+          printenv PUB_DEV_CREDENTIALS || echo "<NOT SET>"
+          echo ""
+          echo "PUB_DEV_CREDENTIALS length: ${#PUB_DEV_CREDENTIALS}"
+          echo ""
+          echo "Full content (raw):"
+          echo "$PUB_DEV_CREDENTIALS"
+          echo ""
+          echo "Checking if it's a valid JSON:"
+          echo "$PUB_DEV_CREDENTIALS" | head -c 200
 
       - name: Setup pub credentials
         script: |
