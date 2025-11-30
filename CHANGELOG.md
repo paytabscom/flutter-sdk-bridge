@@ -1,3 +1,7 @@
+## $NEW_VERSION
+
+* Bug Fix
+
 ## 2.0.3-beta
 
 * First releases
