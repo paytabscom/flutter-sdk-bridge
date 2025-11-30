@@ -40,15 +40,12 @@ workflows:
           echo "Updating CHANGELOG for version $NEW_VERSION"
 
           # Create temporary file with new changelog entry
-          cat > /tmp/changelog_entry.txt << 'EOF'
+          cat > /tmp/changelog_entry.txt << EOF
           ## $NEW_VERSION
-
+          
           * Bug Fix
-
+          
           EOF
-
-          # Replace $NEW_VERSION with actual version
-          sed -i "s|\$NEW_VERSION|$NEW_VERSION|g" /tmp/changelog_entry.txt
 
           # Prepend new entry to CHANGELOG.md
           cat /tmp/changelog_entry.txt CHANGELOG.md > CHANGELOG.md.new
