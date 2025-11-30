@@ -70,7 +70,8 @@ workflows:
 
           # Push with proper authentication
           echo "Pushing release branch to GitHub..."
-          git remote set-url origin "https://${GIT_CREDENTIALS}"
+          REPO_URL=$(git config --get remote.origin.url)
+          git remote set-url origin "https://${GIT_CREDENTIALS}@github.com/${REPO_URL##*github.com/}"
           git push -u origin "release_$NEW_VERSION"
           echo "✓ Successfully pushed release_$NEW_VERSION branch"
 
@@ -83,7 +84,8 @@ workflows:
 
           # Push tag with authentication
           echo "Pushing tag to GitHub..."
-          git remote set-url origin "https://${GIT_CREDENTIALS}"
+          REPO_URL=$(git config --get remote.origin.url)
+          git remote set-url origin "https://${GIT_CREDENTIALS}@github.com/${REPO_URL##*github.com/}"
           git push origin "v$NEW_VERSION"
           echo "✓ Successfully pushed tag v$NEW_VERSION"
 
