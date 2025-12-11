@@ -28,9 +28,12 @@ class PaymentFormModel {
   String currencyCode = PaymentSdkDefaultConfig.defaultCurrency;
   String merchantCountryCode = PaymentSdkDefaultConfig.defaultMerchantCountryCode;
   String merchantApplePayIdentifier = PaymentSdkDefaultConfig.defaultMerchantAppleBundleID;
+  String merchantApplePayName = PaymentSdkDefaultConfig.defaultMerchantName;
   bool simplifyApplePayValidation = true;
   bool showBillingInfo = true;
   bool forceShippingInfo = true;
+  bool isDigitalProduct = false;
+  bool enableZeroContacts = false;
   PaymentSdkTokeniseType tokeniseType = PaymentSdkTokeniseType.MERCHANT_MANDATORY;
   PaymentSdkTransactionType transactionType = PaymentSdkTransactionType.SALE;
 

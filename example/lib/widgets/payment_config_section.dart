@@ -142,6 +142,33 @@ class PaymentConfigSection extends StatelessWidget {
             onChanged(model);
           },
         ),
+        SizedBox(height: 8),
+        buildCustomSwitch(
+          label: "Simplify Apple Pay Validation",
+          value: model.simplifyApplePayValidation,
+          onChanged: (value) {
+            model.simplifyApplePayValidation = value;
+            onChanged(model);
+          },
+        ),
+        SizedBox(height: 8),
+        buildCustomSwitch(
+          label: "Digital Product (Apple Pay)",
+          value: model.isDigitalProduct,
+          onChanged: (value) {
+            model.isDigitalProduct = value;
+            onChanged(model);
+          },
+        ),
+        SizedBox(height: 8),
+        buildCustomSwitch(
+          label: "Enable Zero Contacts (Apple Pay)",
+          value: model.enableZeroContacts,
+          onChanged: (value) {
+            model.enableZeroContacts = value;
+            onChanged(model);
+          },
+        ),
         SizedBox(height: 24),
       ],
     );

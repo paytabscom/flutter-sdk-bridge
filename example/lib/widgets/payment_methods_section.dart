@@ -294,13 +294,13 @@ class PaymentMethodsSection extends StatelessWidget {
   /// Generates the payment configuration details.
   PaymentSdkConfigurationDetails _generatePaymentConfig() {
     final configuration = PaymentSdkConfigurationDetails(
-      profileId: model.profileId,
-      serverKey: model.serverKey,
-      clientKey: model.clientKey,
+      profileId: model.profileId.trim(),
+      serverKey: model.serverKey.trim(),
+      clientKey: model.clientKey.trim(),
       transactionType: model.transactionType,
       cartId: model.cartId,
       cartDescription: model.cartDescription,
-      merchantName: model.merchantName,
+      merchantName: model.merchantName.trim(),
       screentTitle: model.screenTitle,
       amount: model.amount,
       showBillingInfo: model.showBillingInfo,
@@ -311,11 +311,11 @@ class PaymentMethodsSection extends StatelessWidget {
       shippingDetails: _createShippingDetails(),
       alternativePaymentMethods: model.apms,
       linkBillingNameWithCardHolderName: true,
-      cardApproval: PaymentSDKCardApproval(
-        validationUrl: model.cardApprovalValidationUrl,
-        binLength: model.cardApprovalBinLength,
-        blockIfNoResponse: model.cardApprovalBlockIfNoResponse,
-      ),
+      // cardApproval: PaymentSDKCardApproval(
+      //   validationUrl: model.cardApprovalValidationUrl,
+      //   binLength: model.cardApprovalBinLength,
+      //   blockIfNoResponse: model.cardApprovalBlockIfNoResponse,
+      // ),
     );
 
     configuration.iOSThemeConfigurations = IOSThemeConfigurations();
@@ -324,12 +324,46 @@ class PaymentMethodsSection extends StatelessWidget {
     return configuration;
   }
 
+  /// Validates card payment configuration
+  String? _validateCardPayment() {
+    // Validate amount
+    if (model.amount <= 0) {
+      return "Amount must be greater than 0";
+    }
+    
+    // Validate required credentials
+    if (model.profileId.trim().isEmpty) {
+      return "Profile ID is required";
+    }
+    if (model.serverKey.trim().isEmpty) {
+      return "Server Key is required";
+    }
+    if (model.clientKey.trim().isEmpty) {
+      return "Client Key is required";
+    }
+    
+    return null;
+  }
+
   /// Handles the payment process for any provided payment method.
   Future<void> _handlePayment(
     BuildContext context,
     Function paymentMethod,
   ) async {
     if (!formKey.currentState!.validate()) {
+      return;
+    }
+
+    // Validate card payment
+    final validationError = _validateCardPayment();
+    if (validationError != null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(validationError),
+          backgroundColor: Colors.red,
+          duration: Duration(seconds: 3),
+        ),
+      );
       return;
     }
 
@@ -425,26 +459,82 @@ class PaymentMethodsSection extends StatelessWidget {
     );
   }
 
+  /// Validates Apple Pay configuration
+  String? _validateApplePay() {
+    // Validate amount
+    if (model.amount <= 0) {
+      return "Amount must be greater than 0";
+    }
+    
+    // Validate required credentials
+    if (model.profileId.trim().isEmpty) {
+      return "Profile ID is required";
+    }
+    if (model.serverKey.trim().isEmpty) {
+      return "Server Key is required";
+    }
+    if (model.clientKey.trim().isEmpty) {
+      return "Client Key is required";
+    }
+    
+    // Validate Apple Pay specific fields
+    final merchantID = model.merchantApplePayIdentifier.trim().toLowerCase();
+    if (merchantID.isEmpty) {
+      return "Apple Pay Merchant ID is required. Please enter it in the Credentials section.";
+    }
+    
+    final merchantName = model.merchantApplePayName.trim();
+    if (merchantName.isEmpty) {
+      return "Apple Pay Merchant Name is required. Please enter it in the Credentials section.";
+    }
+    
+    return null;
+  }
+
   /// Handles the Apple Pay payment process.
   Future<void> _handleApplePay(BuildContext context) async {
     if (!formKey.currentState!.validate()) {
       return;
     }
 
+    // Validate Apple Pay configuration
+    final validationError = _validateApplePay();
+    if (validationError != null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(validationError),
+          backgroundColor: Colors.red,
+          duration: Duration(seconds: 4),
+        ),
+      );
+      return;
+    }
+
+    // Normalize merchant ID to lowercase (Apple Pay merchant IDs are case-sensitive and should be lowercase)
+    final merchantID = model.merchantApplePayIdentifier.trim().toLowerCase();
+    final merchantName = model.merchantApplePayName.trim();
+
     final configuration = PaymentSdkConfigurationDetails(
-      profileId: model.profileId,
-      serverKey: model.serverKey,
-      clientKey: model.clientKey,
+      profileId: model.profileId.trim(),
+      serverKey: model.serverKey.trim(),
+      clientKey: model.clientKey.trim(),
       cartId: model.cartId,
       cartDescription: model.cartDescription,
-      merchantName: model.merchantName,
+      merchantName: merchantName,
       amount: model.amount,
       currencyCode: model.currencyCode,
       merchantCountryCode: model.merchantCountryCode,
-      merchantApplePayIndentifier: model.merchantApplePayIdentifier,
+      merchantApplePayIndentifier: merchantID,
       simplifyApplePayValidation: model.simplifyApplePayValidation,
+      forceShippingInfo: model.forceShippingInfo,
+      isDigitalProduct: model.isDigitalProduct,
+      enableZeroContacts: model.enableZeroContacts,
       paymentNetworks: model.networks,
+      billingDetails: _createBillingDetails(),
+      shippingDetails: _createShippingDetails(),
+      showBillingInfo: model.showBillingInfo,
     );
+    
     FlutterPaytabsBridge.startApplePayPayment(configuration, (event) {
       onTransactionEvent(event);
     });

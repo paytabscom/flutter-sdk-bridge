@@ -49,6 +49,26 @@ class CredentialsSection extends StatelessWidget {
           icon: Icons.key,
           obscureText: true,
         ),
+        SizedBox(height: 12),
+        buildTextField(
+          label: "Apple Pay Merchant Name",
+          value: model.merchantApplePayName,
+          onChanged: (value) {
+            model.merchantApplePayName = value;
+            onChanged(model);
+          },
+          icon: Icons.apple,
+        ),
+        SizedBox(height: 12),
+        buildTextField(
+          label: "Apple Pay Merchant ID",
+          value: model.merchantApplePayIdentifier,
+          onChanged: (value) {
+            model.merchantApplePayIdentifier = value;
+            onChanged(model);
+          },
+          icon: Icons.business,
+        ),
         SizedBox(height: 24),
       ],
     );
