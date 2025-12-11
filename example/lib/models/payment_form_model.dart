@@ -2,6 +2,7 @@ import 'package:flutter_paytabs_bridge/PaymentSdkApms.dart';
 import 'package:flutter_paytabs_bridge/PaymentSDKNetworks.dart';
 import 'package:flutter_paytabs_bridge/PaymentSdkTokeniseType.dart';
 import 'package:flutter_paytabs_bridge/PaymentSdkTransactionType.dart';
+import 'package:flutter_paytabs_bridge_example/constants/PaymentSdkDefaultConfig.dart';
 
 /// Model class to hold all payment form data and visibility flags
 class PaymentFormModel {
@@ -14,19 +15,19 @@ class PaymentFormModel {
   bool showPaymentMethods = false;
 
   // Credentials
-  String profileId = "*profile_id*";
-  String serverKey = "*server_key*";
-  String clientKey = "*client_key*";
+  String profileId = PaymentSdkDefaultConfig.profileID;
+  String serverKey = PaymentSdkDefaultConfig.serverKey;
+  String clientKey = PaymentSdkDefaultConfig.clientKey;
 
   // Payment Configuration
   String cartId = "12433";
   String cartDescription = "Flowers";
-  String merchantName = "Flowers Store";
+  String merchantName = PaymentSdkDefaultConfig.defaultMerchantName;
   String screenTitle = "Pay with Card";
-  double amount = 20.0;
-  String currencyCode = "EGP";
-  String merchantCountryCode = "EG";
-  String merchantApplePayIdentifier = "";
+  double amount = PaymentSdkDefaultConfig.defaultAmount;
+  String currencyCode = PaymentSdkDefaultConfig.defaultCurrency;
+  String merchantCountryCode = PaymentSdkDefaultConfig.defaultMerchantCountryCode;
+  String merchantApplePayIdentifier = PaymentSdkDefaultConfig.defaultMerchantAppleBundleID;
   bool simplifyApplePayValidation = true;
   bool showBillingInfo = true;
   bool forceShippingInfo = true;

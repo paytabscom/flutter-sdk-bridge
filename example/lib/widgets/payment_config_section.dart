@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/payment_form_model.dart';
 import '../constants/currencies.dart';
+import '../constants/countries.dart';
 import 'common_widgets.dart';
 
 /// Widget for payment configuration section
@@ -80,16 +81,7 @@ class PaymentConfigSection extends StatelessWidget {
         SizedBox(height: 12),
         _buildCurrencyDropdown(context),
         SizedBox(height: 12),
-        buildTextField(
-          label: "Merchant Country Code (ISO 2)",
-          value: model.merchantCountryCode,
-          onChanged: (value) {
-            model.merchantCountryCode = value;
-            onChanged(model);
-          },
-          icon: Icons.flag,
-          maxLength: 2,
-        ),
+        _buildCountryCodeDropdown(context),
         SizedBox(height: 12),
         _buildReceiptDatePicker(context),
         SizedBox(height: 12),
@@ -177,6 +169,50 @@ class PaymentConfigSection extends StatelessWidget {
       onChanged: (String? newValue) {
         if (newValue != null) {
           model.currencyCode = newValue;
+          onChanged(model);
+        }
+      },
+    );
+  }
+
+  Widget _buildCountryCodeDropdown(BuildContext context) {
+    // Ensure the current value is in the list, otherwise use the first item
+    final String currentValue = Countries.list.contains(model.merchantCountryCode.toUpperCase())
+        ? model.merchantCountryCode.toUpperCase()
+        : Countries.list.first;
+    
+    // Update model if current value is not valid
+    if (currentValue != model.merchantCountryCode) {
+      model.merchantCountryCode = currentValue;
+    }
+    
+    return DropdownButtonFormField<String>(
+      value: currentValue,
+      decoration: InputDecoration(
+        labelText: "Merchant Country Code",
+        prefixIcon: Icon(Icons.flag),
+        filled: true,
+        fillColor: Colors.grey[50],
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+        contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      ),
+      items: Countries.list.map((String countryCode) {
+        final countryName = Countries.getCountryName(countryCode);
+        return DropdownMenuItem<String>(
+          value: countryCode,
+          child: Text(
+            countryName != countryCode 
+                ? "$countryCode - $countryName"
+                : countryCode,
+            style: TextStyle(fontSize: 14),
+          ),
+        );
+      }).toList(),
+      onChanged: (String? newValue) {
+        if (newValue != null) {
+          model.merchantCountryCode = newValue;
           onChanged(model);
         }
       },

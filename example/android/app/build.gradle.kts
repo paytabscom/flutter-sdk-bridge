@@ -7,11 +7,12 @@ plugins {
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id("dev.flutter.flutter-gradle-plugin")
 }
-val keystoreProperties =
-    Properties().apply {
-        var file = File("key.properties")
-        if (file.exists()) load(file.reader())
+val keystorePropertiesFile = File("key.properties")
+val keystoreProperties = Properties().apply {
+    if (keystorePropertiesFile.exists()) {
+        load(keystorePropertiesFile.reader())
     }
+}
 android {
     namespace = "com.paytabs.flutter_payment_sdk_bridge_example"
     compileSdk = 36
@@ -35,23 +36,43 @@ android {
     }
     signingConfigs {
         create("release") {
-            if (System.getenv()["CI"].toBoolean()) { // CI=true is exported by Codemagic
-                storeFile = file(System.getenv()["CM_KEYSTORE_PATH"])
-                storePassword = System.getenv()["CM_KEYSTORE_PASSWORD"]
-                keyAlias = System.getenv()["CM_KEY_ALIAS"]
-                keyPassword = System.getenv()["CM_KEY_PASSWORD"]
-            } else {
-                storeFile = file(keystoreProperties.getProperty("storeFile"))
-                storePassword = keystoreProperties.getProperty("storePassword")
-                keyAlias = keystoreProperties.getProperty("keyAlias")
-                keyPassword = keystoreProperties.getProperty("keyPassword")
+            val isCI = System.getenv()["CI"]?.toBoolean() == true
+            if (isCI) { // CI=true is exported by Codemagic
+                val keystorePath = System.getenv()["CM_KEYSTORE_PATH"]
+                val keystorePassword = System.getenv()["CM_KEYSTORE_PASSWORD"]
+                val keyAliasEnv = System.getenv()["CM_KEY_ALIAS"]
+                val keyPasswordEnv = System.getenv()["CM_KEY_PASSWORD"]
+                
+                if (keystorePath != null && keystorePassword != null && 
+                    keyAliasEnv != null && keyPasswordEnv != null) {
+                    storeFile = file(keystorePath)
+                    storePassword = keystorePassword
+                    keyAlias = keyAliasEnv
+                    keyPassword = keyPasswordEnv
+                }
+            } else if (keystorePropertiesFile.exists()) {
+                val storeFileProp = keystoreProperties.getProperty("storeFile")
+                val storePasswordProp = keystoreProperties.getProperty("storePassword")
+                val keyAliasProp = keystoreProperties.getProperty("keyAlias")
+                val keyPasswordProp = keystoreProperties.getProperty("keyPassword")
+                
+                if (storeFileProp != null && storePasswordProp != null && 
+                    keyAliasProp != null && keyPasswordProp != null) {
+                    storeFile = file(storeFileProp)
+                    storePassword = storePasswordProp
+                    keyAlias = keyAliasProp
+                    keyPassword = keyPasswordProp
+                }
             }
         }
     }
 
     buildTypes {
         release {
-            signingConfig = signingConfigs.getByName("release")
+            val releaseSigningConfig = signingConfigs.findByName("release")
+            if (releaseSigningConfig != null && releaseSigningConfig.storeFile != null) {
+                signingConfig = releaseSigningConfig
+            }
         }
     }
 }
