@@ -13,6 +13,13 @@ workflows:
           git config --global user.email "$Git_Mail"
           git config --global user.name "$Git_User"
 
+          # Setup git remote with credentials ONCE
+          REPO_URL=$(git config --get remote.origin.url)
+          # Robustly extract path handling SSH, HTTPS, and HTTPS+User formats
+          REPO_PATH=$(echo "$REPO_URL" | sed -e 's|.*github.com[:/]||' -e 's|\.git$||')
+          git remote set-url origin "https://${GIT_CREDENTIALS}@github.com/${REPO_PATH}.git"
+          echo "✓ Git remote configured for https://${GIT_CREDENTIALS}@github.com/${REPO_PATH}.git"
+
       - name: Read current version
         script: |
           CURRENT_VERSION=$(grep "^version:" pubspec.yaml | sed 's/version: //')
@@ -67,10 +74,6 @@ workflows:
           git commit -m "Bump version to $NEW_VERSION and update CHANGELOG"
 
           # Push with proper authentication
-          REPO_URL=$(git config --get remote.origin.url)
-          # Extract repo path (works for both https://github.com/org/repo and git@github.com:org/repo)
-          REPO_PATH=$(echo "$REPO_URL" | sed -e 's|https://github.com/||' -e 's|git@github.com:||' -e 's|\.git$||')
-          git remote set-url origin "https://${GIT_CREDENTIALS}@github.com/${REPO_PATH}.git"
           git push origin "$BUILD_BRANCH"
           echo "✓ Successfully pushed to $BUILD_BRANCH"
 
@@ -85,10 +88,6 @@ workflows:
 
           # Push with proper authentication
           echo "Pushing release branch to GitHub..."
-          REPO_URL=$(git config --get remote.origin.url)
-          # Extract repo path (works for both https://github.com/org/repo and git@github.com:org/repo)
-          REPO_PATH=$(echo "$REPO_URL" | sed -e 's|https://github.com/||' -e 's|git@github.com:||' -e 's|\.git$||')
-          git remote set-url origin "https://${GIT_CREDENTIALS}@github.com/${REPO_PATH}.git"
           git push -u origin "release_$NEW_VERSION"
           echo "✓ Successfully pushed release_$NEW_VERSION branch"
 
@@ -101,10 +100,6 @@ workflows:
 
           # Push tag with authentication
           echo "Pushing tag to GitHub..."
-          REPO_URL=$(git config --get remote.origin.url)
-          # Extract repo path (works for both https://github.com/org/repo and git@github.com:org/repo)
-          REPO_PATH=$(echo "$REPO_URL" | sed -e 's|https://github.com/||' -e 's|git@github.com:||' -e 's|\.git$||')
-          git remote set-url origin "https://${GIT_CREDENTIALS}@github.com/${REPO_PATH}.git"
           git push origin "v$NEW_VERSION"
           echo "✓ Successfully pushed tag v$NEW_VERSION"
 
