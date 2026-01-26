@@ -1,3 +1,7 @@
+## 2.7.4
+
+* Bug Fix
+
 ## $NEW_VERSION
 
 * Bug Fix
