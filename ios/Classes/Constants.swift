@@ -79,6 +79,7 @@ let pt_ios_input_background_color_dark = "pt_ios_input_background_color_dark"
 let pt_payment_networks = "pt_payment_networks"
 
 let pt_ios_logo = "pt_ios_logo"
+let pt_transaction_class = "pt_transaction_class"
 let pt_transaction_type = "pt_transaction_type"
 let pt_apms = "pt_apms"
 //card Discounts
