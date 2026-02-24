@@ -11,6 +11,16 @@ public class SwiftFlutterPaymentSDKBridgePlugin: NSObject, FlutterPlugin {
     var flutterListening = false
     var flutterResult: FlutterResult?
 
+    private func log(_ message: String) {}
+
+    private func runOnMain(_ block: @escaping () -> Void) {
+        if Thread.isMainThread {
+            block()
+        } else {
+            DispatchQueue.main.async(execute: block)
+        }
+    }
+
     enum CallMethods: String {
         case startCardPayment
         case startApplePayPayment
@@ -31,23 +41,32 @@ public class SwiftFlutterPaymentSDKBridgePlugin: NSObject, FlutterPlugin {
 
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
         let arguments: [String: Any] = call.arguments as? [String: Any] ?? [String: Any]()
+        log("handle method=\(call.method), argsKeys=\(Array(arguments.keys)), flutterListening=\(flutterListening)")
         switch call.method {
         case CallMethods.startCardPayment.rawValue:
             startCarPayment(arguments: arguments)
+            result(nil)
         case CallMethods.startApplePayPayment.rawValue:
             startApplePayPayment(arguments: arguments)
+            result(nil)
         case CallMethods.startApmsPayment.rawValue:
             startAlternativePaymentMethod(arguments: arguments)
+            result(nil)
         case CallMethods.startTokenizedCardPayment.rawValue:
             startTokenizedCardPayment(arguments: arguments)
+            result(nil)
         case CallMethods.start3DSecureTokenizedCardPayment.rawValue:
             start3DSecureTokenizedCardPayment(arguments: arguments)
+            result(nil)
         case CallMethods.queryTransaction.rawValue:
             queryTransaction(arguments: arguments)
+            result(nil)
         case CallMethods.cancelPayment.rawValue:
             cancelPayment()
+            result(nil)
         default:
-            break
+            log("handle unknown method=\(call.method)")
+            result(FlutterMethodNotImplemented)
         }
     }
 
@@ -72,48 +91,146 @@ public class SwiftFlutterPaymentSDKBridgePlugin: NSObject, FlutterPlugin {
         return networks
     }
 
+    private func mapTransactionClass(_ transactionClass: String?) -> TransactionClass {
+        guard let transactionClass = transactionClass?.trimmingCharacters(in: .whitespacesAndNewlines).lowercased(),
+              !transactionClass.isEmpty else {
+            return .ecom
+        }
+        switch transactionClass {
+        case "recur", "recurring":
+            return .recur
+        default:
+            return .ecom
+        }
+    }
+
+    private func mapTransactionType(_ transactionType: String?) -> TransactionType {
+        guard let transactionType = transactionType?.trimmingCharacters(in: .whitespacesAndNewlines).lowercased(),
+              !transactionType.isEmpty else {
+            return .sale
+        }
+        return TransactionType(rawValue: transactionType) ?? .sale
+    }
+
+    private func validateConfiguration(_ configuration: PaymentSDKConfiguration) -> [String] {
+        var missing = [String]()
+
+        if configuration.profileID.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            missing.append("profileID")
+        }
+        if configuration.serverKey.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            missing.append("serverKey")
+        }
+        if configuration.clientKey.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            missing.append("clientKey")
+        }
+        if configuration.currency.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            missing.append("currency")
+        }
+        if configuration.amount <= 0 {
+            missing.append("amount")
+        }
+        if configuration.merchantCountryCode.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            missing.append("merchantCountryCode")
+        }
+        if configuration.cartID.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            missing.append("cartID")
+        }
+
+        return missing
+    }
+
     private func startCarPayment(arguments: [String: Any]) {
+        log("startCardPayment called")
         let configuration = generateConfiguration(dictionary: arguments)
+        let missing = validateConfiguration(configuration)
+        if !missing.isEmpty {
+            let message = "Invalid config. Missing/invalid: \(missing.joined(separator: ","))"
+            log("startCardPayment validation failed: \(message)")
+            eventSink(code: -2, message: message, status: "error")
+            return
+        }
         if let rootViewController = getRootController() {
-            PaymentManager.startCardPayment(on: rootViewController, configuration: configuration, delegate: self)
+            log("startCardPayment presenting on \(String(describing: type(of: rootViewController)))")
+            runOnMain { [weak self] in
+                self?.log("startCardPayment runOnMain isMainThread=\(Thread.isMainThread)")
+                PaymentManager.startCardPayment(on: rootViewController, configuration: configuration, delegate: self)
+            }
+        } else {
+            log("startCardPayment aborted, root controller is nil")
+            eventSink(code: -1, message: "Unable to resolve root view controller", status: "error")
         }
     }
 
     private func startTokenizedCardPayment(arguments: [String: Any]) {
+        log("startTokenizedCardPayment called")
         let configuration = generateConfiguration(dictionary: arguments)
+        let missing = validateConfiguration(configuration)
+        if !missing.isEmpty {
+            let message = "Invalid config. Missing/invalid: \(missing.joined(separator: ","))"
+            log("startTokenizedCardPayment validation failed: \(message)")
+            eventSink(code: -2, message: message, status: "error")
+            return
+        }
         guard let token = arguments["token"] as? String,
               let transactionReference = arguments["transactionRef"] as? String
         else {
+            log("startTokenizedCardPayment missing token/transactionRef")
             return
         }
         if let rootViewController = getRootController() {
-            PaymentManager.startTokenizedCardPayment(on: rootViewController, configuration: configuration, token: token, transactionRef: transactionReference, delegate: self)
+            log("startTokenizedCardPayment presenting on \(String(describing: type(of: rootViewController))), transactionRef=\(transactionReference)")
+            runOnMain { [weak self] in
+                self?.log("startTokenizedCardPayment runOnMain isMainThread=\(Thread.isMainThread)")
+                PaymentManager.startTokenizedCardPayment(on: rootViewController, configuration: configuration, token: token, transactionRef: transactionReference, delegate: self)
+            }
+        } else {
+            log("startTokenizedCardPayment aborted, root controller is nil")
+            eventSink(code: -1, message: "Unable to resolve root view controller", status: "error")
         }
     }
 
     private func start3DSecureTokenizedCardPayment(arguments: [String: Any]) {
+        log("start3DSecureTokenizedCardPayment called")
         let configuration = generateConfiguration(dictionary: arguments)
+        let missing = validateConfiguration(configuration)
+        if !missing.isEmpty {
+            let message = "Invalid config. Missing/invalid: \(missing.joined(separator: ","))"
+            log("start3DSecureTokenizedCardPayment validation failed: \(message)")
+            eventSink(code: -2, message: message, status: "error")
+            return
+        }
         guard let token = arguments["token"] as? String,
               let cardInfoDic = arguments["paymentSDKSavedCardInfo"] as? [String: Any],
               let cardType = cardInfoDic["pt_card_type"] as? String,
               let maskedCard = cardInfoDic["pt_masked_card"] as? String
         else {
+            log("start3DSecureTokenizedCardPayment missing token/savedCardInfo")
             return
         }
 
-        let savedCardInfo = PaymentSDKSavedCardInfo(maskedCard: maskedCard, cardType: token)
+        let savedCardInfo = PaymentSDKSavedCardInfo(maskedCard: maskedCard, cardType: cardType)
 
         if let rootViewController = getRootController() {
-            PaymentManager.start3DSecureTokenizedCardPayment(on: rootViewController,
-                                                             configuration: configuration,
-                                                             savedCardInfo: savedCardInfo,
-                                                             token: token,
-                                                             delegate: self)
+            log("start3DSecureTokenizedCardPayment presenting on \(String(describing: type(of: rootViewController))), cardType=\(cardType)")
+            runOnMain { [weak self] in
+                self?.log("start3DSecureTokenizedCardPayment runOnMain isMainThread=\(Thread.isMainThread)")
+                PaymentManager.start3DSecureTokenizedCardPayment(on: rootViewController,
+                                                                 configuration: configuration,
+                                                                 savedCardInfo: savedCardInfo,
+                                                                 token: token,
+                                                                 delegate: self)
+            }
+        } else {
+            log("start3DSecureTokenizedCardPayment aborted, root controller is nil")
+            eventSink(code: -1, message: "Unable to resolve root view controller", status: "error")
         }
     }
 
     private func queryTransaction(arguments: [String: Any]) {
+        log("queryTransaction called")
         guard let queryDictionary = arguments["paymentSDKQueryConfiguration"] as? [String: Any] else {
+            log("queryTransaction missing paymentSDKQueryConfiguration")
             return
         }
         let configuration = generateQueryConfiguration(dictionary: queryDictionary)
@@ -121,28 +238,26 @@ public class SwiftFlutterPaymentSDKBridgePlugin: NSObject, FlutterPlugin {
             guard let self = self else {
                 return
             }
+            self.log("queryTransaction callback received, hasDetails=\(transactionDetails != nil), hasError=\(error != nil), flutterListening=\(self.flutterListening)")
             if let _transactionDetails = transactionDetails {
-                if self.flutterListening {
-                    do {
-                        let encoder = JSONEncoder()
-                        let data = try! encoder.encode(transactionDetails)
-                        var dictionary = try! JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any]
-                        dictionary?["isSuccess"] = transactionDetails?.isSuccess()
-                        dictionary?["isPending"] = transactionDetails?.isPending()
-                        dictionary?["isOnHold"] = transactionDetails?.isOnHold()
-                        dictionary?["isAuthorized"] = transactionDetails?.isAuthorized()
-                        dictionary?["isProcessed"] = transactionDetails?.isProcessed()
+                do {
+                    let encoder = JSONEncoder()
+                    let data = try! encoder.encode(transactionDetails)
+                    var dictionary = try! JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any]
+                    dictionary?["isSuccess"] = transactionDetails?.isSuccess()
+                    dictionary?["isPending"] = transactionDetails?.isPending()
+                    dictionary?["isOnHold"] = transactionDetails?.isOnHold()
+                    dictionary?["isAuthorized"] = transactionDetails?.isAuthorized()
+                    dictionary?["isProcessed"] = transactionDetails?.isProcessed()
 
-
-                        self.eventSink(code: 200,
-                                       message: "",
-                                       status: "success",
-                                       transactionDetails: dictionary)
-                    } catch {
-                        self.eventSink(code: (error as NSError).code,
-                                       message: error.localizedDescription,
-                                       status: "error")
-                    }
+                    self.eventSink(code: 200,
+                                   message: "",
+                                   status: "success",
+                                   transactionDetails: dictionary)
+                } catch {
+                    self.eventSink(code: (error as NSError).code,
+                                   message: error.localizedDescription,
+                                   status: "error")
                 }
 
             } else if let _error = error {
@@ -154,41 +269,111 @@ public class SwiftFlutterPaymentSDKBridgePlugin: NSObject, FlutterPlugin {
     }
 
     private func cancelPayment() {
+        log("cancelPayment called")
         PaymentManager.cancelPayment { [weak self] didCancel in
             guard let self = self else {
                 return
             }
-            if self.flutterListening {
-                if didCancel ?? false {
-                    self.eventSink(code: 0, message: "Cancelled", status: "event")
-                } else {
-                    self.eventSink(code: 0, message: "Cannot Cancel", status: "event")
-                }
+            self.log("cancelPayment callback didCancel=\(String(describing: didCancel)), flutterListening=\(self.flutterListening)")
+            if didCancel ?? false {
+                self.eventSink(code: 0, message: "Cancelled", status: "event")
+            } else {
+                self.eventSink(code: 0, message: "Cannot Cancel", status: "event")
             }
         }
     }
 
     private func startAlternativePaymentMethod(arguments: [String: Any]) {
+        log("startAlternativePaymentMethod called")
         let configuration = generateConfiguration(dictionary: arguments)
+        let missing = validateConfiguration(configuration)
+        if !missing.isEmpty {
+            let message = "Invalid config. Missing/invalid: \(missing.joined(separator: ","))"
+            log("startAlternativePaymentMethod validation failed: \(message)")
+            eventSink(code: -2, message: message, status: "error")
+            return
+        }
         if let rootViewController = getRootController() {
-            PaymentManager.startAlternativePaymentMethod(on: rootViewController, configuration: configuration, delegate: self)
+            log("startAlternativePaymentMethod presenting on \(String(describing: type(of: rootViewController)))")
+            runOnMain { [weak self] in
+                self?.log("startAlternativePaymentMethod runOnMain isMainThread=\(Thread.isMainThread)")
+                PaymentManager.startAlternativePaymentMethod(on: rootViewController, configuration: configuration, delegate: self)
+            }
+        } else {
+            log("startAlternativePaymentMethod aborted, root controller is nil")
+            eventSink(code: -1, message: "Unable to resolve root view controller", status: "error")
         }
     }
 
     private func startApplePayPayment(arguments: [String: Any]) {
+        log("startApplePayPayment called")
         let configuration = generateConfiguration(dictionary: arguments)
+        let missing = validateConfiguration(configuration)
+        if !missing.isEmpty {
+            let message = "Invalid config. Missing/invalid: \(missing.joined(separator: ","))"
+            log("startApplePayPayment validation failed: \(message)")
+            eventSink(code: -2, message: message, status: "error")
+            return
+        }
         if let rootViewController = getRootController() {
-            PaymentManager.startApplePayPayment(on: rootViewController, configuration: configuration, delegate: self)
+            log("startApplePayPayment presenting on \(String(describing: type(of: rootViewController)))")
+            runOnMain { [weak self] in
+                self?.log("startApplePayPayment runOnMain isMainThread=\(Thread.isMainThread)")
+                PaymentManager.startApplePayPayment(on: rootViewController, configuration: configuration, delegate: self)
+            }
+        } else {
+            log("startApplePayPayment aborted, root controller is nil")
+            eventSink(code: -1, message: "Unable to resolve root view controller", status: "error")
         }
     }
 
     func getRootController() -> UIViewController? {
-        let keyWindow = UIApplication.shared.windows.first(where: { $0.isKeyWindow }) ?? UIApplication.shared.windows.first
-        let topController = keyWindow?.rootViewController
+        guard let rootViewController = getKeyWindow()?.rootViewController else {
+            log("getRootController failed: keyWindow/rootViewController is nil")
+            return nil
+        }
+        let topController = topMostController(from: rootViewController)
+        log("getRootController resolved \(String(describing: type(of: topController)))")
         return topController
     }
 
+    private func getKeyWindow() -> UIWindow? {
+        let activeScenes = UIApplication.shared.connectedScenes
+            .compactMap { $0 as? UIWindowScene }
+            .filter { $0.activationState == .foregroundActive || $0.activationState == .foregroundInactive }
+
+        for scene in activeScenes {
+            if let keyWindow = scene.windows.first(where: { $0.isKeyWindow }) {
+                log("getKeyWindow resolved from active scene")
+                return keyWindow
+            }
+        }
+        let fallback = UIApplication.shared.windows.first(where: { $0.isKeyWindow }) ?? UIApplication.shared.windows.first
+        if fallback == nil {
+            log("getKeyWindow fallback failed: no windows available")
+        } else {
+            log("getKeyWindow resolved from fallback window list")
+        }
+        return fallback
+    }
+
+    private func topMostController(from controller: UIViewController) -> UIViewController {
+        if let presented = controller.presentedViewController {
+            return topMostController(from: presented)
+        }
+        if let navController = controller as? UINavigationController,
+           let visibleController = navController.visibleViewController {
+            return topMostController(from: visibleController)
+        }
+        if let tabController = controller as? UITabBarController,
+           let selectedController = tabController.selectedViewController {
+            return topMostController(from: selectedController)
+        }
+        return controller
+    }
+
     private func generateConfiguration(dictionary: [String: Any]) -> PaymentSDKConfiguration {
+        log("generateConfiguration called, keys=\(Array(dictionary.keys))")
         let configuration = PaymentSDKConfiguration()
         configuration.profileID = dictionary[pt_profile_id] as? String ?? ""
         configuration.serverKey = dictionary[pt_server_key] as? String ?? ""
@@ -227,9 +412,8 @@ public class SwiftFlutterPaymentSDKBridgePlugin: NSObject, FlutterPlugin {
            let type = TokenFormat.getType(type: tokenFormat) {
             configuration.tokenFormat = type
         }
-        if let transactionType = dictionary[pt_transaction_type] as? String {
-            configuration.transactionType = TransactionType.init(rawValue: transactionType) ?? .sale
-        }
+        configuration.transactionClass = mapTransactionClass(dictionary[pt_transaction_class] as? String)
+        configuration.transactionType = mapTransactionType(dictionary[pt_transaction_type] as? String)
         if let themeDictionary = dictionary[pt_ios_theme] as? [String: Any],
            let theme = generateTheme(dictionary: themeDictionary) {
             configuration.theme = theme
@@ -257,7 +441,8 @@ public class SwiftFlutterPaymentSDKBridgePlugin: NSObject, FlutterPlugin {
             configuration.paymentNetworks = generatePaymentNetworks(paymentsArray: paymentNetworks)
         }
 
-        configuration.metaData = ["PaymentSDKPluginName": "flutter", "PaymentSDKPluginVersion": "2.7.2"]
+        configuration.metaData = ["PaymentSDKPluginName": "flutter", "PaymentSDKPluginVersion": "2.7.5"]
+        log("generateConfiguration completed amount=\(configuration.amount), currency=\(configuration.currency), cartID=\(configuration.cartID), transactionClass=\(configuration.transactionClass.rawValue), transactionType=\(configuration.transactionType.rawValue)")
         return configuration
     }
 
@@ -341,7 +526,7 @@ public class SwiftFlutterPaymentSDKBridgePlugin: NSObject, FlutterPlugin {
 
     private func generateTheme(dictionary: [String: Any]) -> PaymentSDKTheme? {
         var isDark = false
-        if let traitCollection = UIApplication.shared.keyWindow?.traitCollection {
+        if let traitCollection = getKeyWindow()?.traitCollection {
             if #available(iOS 12.0, *) {
                 switch traitCollection.userInterfaceStyle {
                 case .light, .unspecified:
@@ -417,7 +602,7 @@ public class SwiftFlutterPaymentSDKBridgePlugin: NSObject, FlutterPlugin {
         response["message"] = message
         response["status"] = status
         if let _trace = trace {
-            response["trace"] = trace
+            response["trace"] = _trace
         }
         if let transactionDetails = transactionDetails {
             response["data"] = transactionDetails
@@ -432,49 +617,69 @@ extension SwiftFlutterPaymentSDKBridgePlugin: FlutterStreamHandler {
     public func onListen(withArguments arguments: Any?, eventSink events: @escaping FlutterEventSink) -> FlutterError? {
         flutterEventSink = events
         flutterListening = true
+        log("onListen called, flutterListening=true")
         return nil
     }
 
     public func onCancel(withArguments arguments: Any?) -> FlutterError? {
         flutterListening = false;
+        flutterEventSink = nil
+        log("onCancel called, flutterListening=false")
         return nil
     }
 }
 
 extension SwiftFlutterPaymentSDKBridgePlugin: PaymentManagerDelegate {
     public func paymentManager(didFinishTransaction transactionDetails: PaymentSDKTransactionDetails?, error: Error?) {
-        if flutterListening {
-            if let error = error {
-                let trace = (error as? LocalizedError)?.failureReason
+        log("paymentManager didFinishTransaction callback, hasDetails=\(transactionDetails != nil), hasError=\(error != nil), flutterListening=\(flutterListening)")
+        if let error = error {
+            let trace = (error as? LocalizedError)?.failureReason
+            eventSink(code: (error as NSError).code,
+                      message: error.localizedDescription,
+                      status: "error",
+                      trace: trace)
+        } else {
+            do {
+                let encoder = JSONEncoder()
+                let data = try encoder.encode(transactionDetails)
+                var dictionary = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any]
+                dictionary?["isSuccess"] = transactionDetails?.isSuccess()
+                dictionary?["isPending"] = transactionDetails?.isPending()
+                dictionary?["isOnHold"] = transactionDetails?.isOnHold()
+                dictionary?["isAuthorized"] = transactionDetails?.isAuthorized()
+                dictionary?["isProcessed"] = transactionDetails?.isProcessed()
+
+                eventSink(code: 200,
+                          message: "",
+                          status: "success",
+                          transactionDetails: dictionary)
+            } catch {
                 eventSink(code: (error as NSError).code,
                           message: error.localizedDescription,
-                          status: "error",
-                          trace: trace)
-            } else {
-                do {
-                    let encoder = JSONEncoder()
-                    let data = try encoder.encode(transactionDetails)
-                    var dictionary = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any]
-                    dictionary?["isSuccess"] = transactionDetails?.isSuccess()
-                    dictionary?["isPending"] = transactionDetails?.isPending()
-                    dictionary?["isOnHold"] = transactionDetails?.isOnHold()
-                    dictionary?["isAuthorized"] = transactionDetails?.isAuthorized()
-                    dictionary?["isProcessed"] = transactionDetails?.isProcessed()
-
-                    eventSink(code: 200,
-                              message: "",
-                              status: "success",
-                              transactionDetails: dictionary)
-                } catch {
-                    eventSink(code: (error as NSError).code,
-                              message: error.localizedDescription,
-                              status: "error")
-                }
+                          status: "error")
             }
         }
     }
 
+    public func paymentManager(didRecieveValidation error: Error?) {
+        if let error = error {
+            log("paymentManager didRecieveValidation error=\(error.localizedDescription)")
+            eventSink(code: (error as NSError).code,
+                      message: error.localizedDescription,
+                      status: "error")
+        }
+    }
+
+    public func paymentManager(didStartPaymentTransaction rootViewController: UIViewController) {
+        log("paymentManager didStartPaymentTransaction callback")
+    }
+
     public func paymentManager(didCancelPayment error: Error?) {
+        if let error = error {
+            log("paymentManager didCancelPayment with error=\(error.localizedDescription)")
+        } else {
+            log("paymentManager didCancelPayment")
+        }
         eventSink(code: 0, message: "Cancelled", status: "event")
     }
 }
