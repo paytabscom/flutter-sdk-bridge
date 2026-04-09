@@ -26,5 +26,4 @@ test/
 # Ignore example app
 example/
 
-# Ignore documentation
-*.md
+# Do not add `*.md` here: pub.dev requires README.md and CHANGELOG.md in the archive.
