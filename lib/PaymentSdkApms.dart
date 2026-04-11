@@ -24,6 +24,9 @@ enum PaymentSdkAPms {
   /// KNET (debit)
   KNET_DEBIT,
 
+  /// KENT
+  KENT,
+
   /// urpay
   URPAY,
 
@@ -83,6 +86,8 @@ extension PaymentSdkTokenFormatExtension on PaymentSdkAPms {
         return 'fawry';
       case PaymentSdkAPms.KNET_DEBIT:
         return 'knetdebit';
+      case PaymentSdkAPms.KENT:
+        return 'kent';
       case PaymentSdkAPms.URPAY:
         return 'urpay';
       case PaymentSdkAPms.AMAN:
