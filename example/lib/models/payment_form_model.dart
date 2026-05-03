@@ -18,6 +18,8 @@ class PaymentFormModel {
   String profileId = PaymentSdkDefaultConfig.profileID;
   String serverKey = PaymentSdkDefaultConfig.serverKey;
   String clientKey = PaymentSdkDefaultConfig.clientKey;
+  /// Optional PayTabs API base URL (query transaction / regional endpoints). Leave empty for SDK default.
+  String paymentApiBaseUrl = "";
 
   // Payment Configuration
   String cartId = "12433";

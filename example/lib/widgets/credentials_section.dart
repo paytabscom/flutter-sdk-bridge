@@ -51,6 +51,17 @@ class CredentialsSection extends StatelessWidget {
         ),
         SizedBox(height: 12),
         buildTextField(
+          label: "Payment API base URL (optional)",
+          value: model.paymentApiBaseUrl,
+          onChanged: (value) {
+            model.paymentApiBaseUrl = value;
+            onChanged(model);
+          },
+          icon: Icons.link,
+          keyboardType: TextInputType.url,
+        ),
+        SizedBox(height: 12),
+        buildTextField(
           label: "Apple Pay Merchant Name",
           value: model.merchantApplePayName,
           onChanged: (value) {
