@@ -435,12 +435,14 @@ class PaymentMethodsSection extends StatelessWidget {
 
   /// Generates the query configuration.
   PaymentSDKQueryConfiguration _generateQueryConfig() {
+    final baseUrl = model.paymentApiBaseUrl.trim();
     return PaymentSDKQueryConfiguration(
       model.serverKey,
       model.clientKey,
       model.merchantCountryCode,
       model.profileId,
-      "Transaction Reference"
+      "Transaction Reference",
+      baseUrl.isEmpty ? null : baseUrl,
     );
   }
 

@@ -267,8 +267,17 @@ public class SwiftFlutterPaymentSDKBridgePlugin: NSObject, FlutterPlugin {
         let merchantCountryCode = dictionary[pt_merchant_country_code] as? String ?? ""
         let profileID = dictionary[pt_profile_id] as? String ?? ""
         let transactionReference = dictionary[pt_transaction_reference] as? String ?? ""
-        let configuration = PaymentSDKQueryConfiguration(serverKey: serverKey, clientKey: clientKey, merchantCountryCode: merchantCountryCode, profileID: profileID, transactionReference: transactionReference)
-        return configuration
+        let paymentApiBaseUrlRaw = dictionary[pt_payment_api_base_url] as? String
+        let paymentApiBaseUrlTrimmed = paymentApiBaseUrlRaw?.trimmingCharacters(in: .whitespacesAndNewlines)
+        let paymentApiBaseUrlOrNil = (paymentApiBaseUrlTrimmed?.isEmpty ?? true) ? nil : paymentApiBaseUrlTrimmed
+        return PaymentSDKQueryConfiguration(
+            serverKey: serverKey,
+            clientKey: clientKey,
+            merchantCountryCode: merchantCountryCode,
+            profileID: profileID,
+            transactionReference: transactionReference,
+            paymentApiBaseUrl: paymentApiBaseUrlOrNil
+        )
     }
 
     private func mapTokeniseType(tokeniseType: String) -> TokeniseType? {

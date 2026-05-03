@@ -19,6 +19,7 @@ const String pt_tokenise_type = 'pt_tokenise_type';
 const String pt_token_format = 'pt_token_format';
 const String pt_token = 'pt_token';
 const String pt_transaction_reference = 'pt_transaction_reference';
+const String pt_payment_api_base_url = 'pt_payment_api_base_url';
 const String pt_cart_id = 'pt_cart_id';
 const String pt_cart_description = 'pt_cart_description';
 const String pt_merchant_country_code = 'pt_merchant_country_code';
