@@ -215,7 +215,7 @@ public class SwiftFlutterPaymentSDKBridgePlugin: NSObject, FlutterPlugin {
         configuration.enableZeroContacts = dictionary[pt_enable_zero_contacts] as? Bool ?? false
         configuration.expiryTime = dictionary[pt_expiry_time] as? Int ?? 0
 
-        if let apmsString = dictionary[pt_apms] as? String {
+        if let apmsString = dictionary[pt_apms] as? String, !apmsString.isEmpty {
             let alternativePaymentMethods = apmsString.components(separatedBy: ",")
             configuration.alternativePaymentMethods = generateAlternativePaymentMethods(apmsArray: alternativePaymentMethods)
         }
@@ -257,7 +257,7 @@ public class SwiftFlutterPaymentSDKBridgePlugin: NSObject, FlutterPlugin {
             configuration.paymentNetworks = generatePaymentNetworks(paymentsArray: paymentNetworks)
         }
 
-        configuration.metaData = ["PaymentSDKPluginName": "flutter", "PaymentSDKPluginVersion": "2.7.2"]
+        configuration.metaData = ["PaymentSDKPluginName": "flutter", "PaymentSDKPluginVersion": "2.7.11"]
         return configuration
     }
 
