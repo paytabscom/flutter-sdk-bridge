@@ -15,6 +15,9 @@ enum PaymentSdkAPms {
   /// OmanNet
   OMAN_NET,
 
+  /// KNET
+  KNET,
+
   /// KNET (credit)
   KNET_CREDIT,
 
@@ -23,9 +26,6 @@ enum PaymentSdkAPms {
 
   /// KNET (debit)
   KNET_DEBIT,
-
-  /// KENT
-  KENT,
 
   /// urpay
   URPAY,
@@ -80,14 +80,14 @@ extension PaymentSdkTokenFormatExtension on PaymentSdkAPms {
         return 'meezaqr';
       case PaymentSdkAPms.OMAN_NET:
         return 'omannet';
+      case PaymentSdkAPms.KNET:
+        return 'knet';
       case PaymentSdkAPms.KNET_CREDIT:
         return 'knetcredit';
       case PaymentSdkAPms.FAWRY:
         return 'fawry';
       case PaymentSdkAPms.KNET_DEBIT:
         return 'knetdebit';
-      case PaymentSdkAPms.KENT:
-        return 'kent';
       case PaymentSdkAPms.URPAY:
         return 'urpay';
       case PaymentSdkAPms.AMAN:
