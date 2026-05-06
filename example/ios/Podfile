@@ -40,6 +40,9 @@ post_install do |installer|
     flutter_additional_ios_build_settings(target)
     target.build_configurations.each do |config|
       config.build_settings['ENABLE_BITCODE'] = 'NO'
+      # PayTabsSDK requires iOS 15.0+. Enforce it for all Pods targets to avoid
+      # "required a higher minimum iOS deployment version" resolution errors.
+      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '15.0'
     end
   end
 end
