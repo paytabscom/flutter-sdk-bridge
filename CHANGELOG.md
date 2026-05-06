@@ -1,6 +1,6 @@
 ## 2.7.12
 
-* Fix: Dart 3 Enum.name shadowing caused APMs and other enum values to be sent as Dart identifiers (e.g. "KNET_CREDIT") instead of SDK values (e.g. "knetcredit"), breaking KNET and other APMs on iOS. Renamed extension getter to sdkValue across all enum types.
+* Bug Fix
 
 ## 2.7.11
 
