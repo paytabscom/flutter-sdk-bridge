@@ -10,6 +10,7 @@ public class SwiftFlutterPaymentSDKBridgePlugin: NSObject, FlutterPlugin {
     var flutterEventSink: FlutterEventSink?
     var flutterListening = false
     var flutterResult: FlutterResult?
+    private weak var cardPaymentCancelButton: UIButton?
 
     private func log(_ message: String) {}
 
@@ -155,6 +156,7 @@ public class SwiftFlutterPaymentSDKBridgePlugin: NSObject, FlutterPlugin {
             runOnMain { [weak self] in
                 self?.log("startCardPayment runOnMain isMainThread=\(Thread.isMainThread)")
                 PaymentManager.startCardPayment(on: rootViewController, configuration: configuration, delegate: self)
+                self?.installCardPaymentCancelButton()
             }
         } else {
             log("startCardPayment aborted, root controller is nil")
@@ -276,6 +278,7 @@ public class SwiftFlutterPaymentSDKBridgePlugin: NSObject, FlutterPlugin {
             }
             self.log("cancelPayment callback didCancel=\(String(describing: didCancel)), flutterListening=\(self.flutterListening)")
             if didCancel ?? false {
+                self.removeCardPaymentCancelButton()
                 self.eventSink(code: 0, message: "Cancelled", status: "event")
             } else {
                 self.eventSink(code: 0, message: "Cannot Cancel", status: "event")
@@ -611,6 +614,73 @@ public class SwiftFlutterPaymentSDKBridgePlugin: NSObject, FlutterPlugin {
             flutterEventSink(response)
         }
     }
+
+    private func installCardPaymentCancelButton(attempt: Int = 0) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + (attempt == 0 ? 0.35 : 0.6)) { [weak self] in
+            guard let self = self else {
+                return
+            }
+            guard self.cardPaymentCancelButton == nil else {
+                return
+            }
+            guard let window = self.getKeyWindow() else {
+                if attempt < 3 {
+                    self.installCardPaymentCancelButton(attempt: attempt + 1)
+                }
+                return
+            }
+
+            let buttonSize: CGFloat = 44
+            let sidePadding: CGFloat = 18
+            let topPadding = window.safeAreaInsets.top + 12
+            let isRTL = UIView.userInterfaceLayoutDirection(
+                for: window.semanticContentAttribute
+            ) == .rightToLeft
+            let x = isRTL
+                ? window.bounds.width - sidePadding - buttonSize
+                : sidePadding
+
+            let button = UIButton(type: .system)
+            button.frame = CGRect(
+                x: x,
+                y: topPadding,
+                width: buttonSize,
+                height: buttonSize
+            )
+            button.autoresizingMask = isRTL
+                ? [.flexibleLeftMargin, .flexibleBottomMargin]
+                : [.flexibleRightMargin, .flexibleBottomMargin]
+            button.backgroundColor = UIColor(white: 1, alpha: 0.96)
+            button.layer.cornerRadius = buttonSize / 2
+            button.layer.shadowColor = UIColor.black.cgColor
+            button.layer.shadowOpacity = 0.16
+            button.layer.shadowOffset = CGSize(width: 0, height: 2)
+            button.layer.shadowRadius = 8
+            button.tintColor = UIColor(red: 0.13, green: 0.15, blue: 0.18, alpha: 1)
+            button.setImage(UIImage(systemName: "xmark"), for: .normal)
+            button.accessibilityLabel = "Cancel payment"
+            button.addTarget(
+                self,
+                action: #selector(self.cardPaymentCancelButtonTapped),
+                for: .touchUpInside
+            )
+
+            window.addSubview(button)
+            self.cardPaymentCancelButton = button
+        }
+    }
+
+    private func removeCardPaymentCancelButton() {
+        DispatchQueue.main.async { [weak self] in
+            self?.cardPaymentCancelButton?.removeFromSuperview()
+            self?.cardPaymentCancelButton = nil
+        }
+    }
+
+    @objc private func cardPaymentCancelButtonTapped() {
+        removeCardPaymentCancelButton()
+        cancelPayment()
+    }
 }
 
 extension SwiftFlutterPaymentSDKBridgePlugin: FlutterStreamHandler {
@@ -632,6 +702,7 @@ extension SwiftFlutterPaymentSDKBridgePlugin: FlutterStreamHandler {
 extension SwiftFlutterPaymentSDKBridgePlugin: PaymentManagerDelegate {
     public func paymentManager(didFinishTransaction transactionDetails: PaymentSDKTransactionDetails?, error: Error?) {
         log("paymentManager didFinishTransaction callback, hasDetails=\(transactionDetails != nil), hasError=\(error != nil), flutterListening=\(flutterListening)")
+        removeCardPaymentCancelButton()
         if let error = error {
             let trace = (error as? LocalizedError)?.failureReason
             eventSink(code: (error as NSError).code,
@@ -664,6 +735,7 @@ extension SwiftFlutterPaymentSDKBridgePlugin: PaymentManagerDelegate {
     public func paymentManager(didRecieveValidation error: Error?) {
         if let error = error {
             log("paymentManager didRecieveValidation error=\(error.localizedDescription)")
+            removeCardPaymentCancelButton()
             eventSink(code: (error as NSError).code,
                       message: error.localizedDescription,
                       status: "error")
@@ -675,6 +747,7 @@ extension SwiftFlutterPaymentSDKBridgePlugin: PaymentManagerDelegate {
     }
 
     public func paymentManager(didCancelPayment error: Error?) {
+        removeCardPaymentCancelButton()
         if let error = error {
             log("paymentManager didCancelPayment with error=\(error.localizedDescription)")
         } else {
