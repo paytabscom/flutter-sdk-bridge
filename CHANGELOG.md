@@ -1,6 +1,6 @@
 ## 2.7.13
 
-* Bug Fix
+* Update iOS PayTabsSDK to 6.6.55
 
 ## 2.7.12
 
