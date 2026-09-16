@@ -1,3 +1,7 @@
+## 2.7.15
+
+* Update Android payment-sdk to 6.8.15 (fix keyboard covering input fields)
+
 ## 2.7.14
 
 * Bug Fix
