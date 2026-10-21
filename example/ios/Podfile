@@ -32,6 +32,10 @@ target 'Runner' do
   use_frameworks!
   use_modular_headers!
 
+  # PayTabsSDK 6.6.54 exists, but the CocoaPods CDN index can lag on some machines.
+  # Pinning to the upstream git tag makes installs deterministic.
+  pod 'PayTabsSDK', :git => 'https://github.com/paytabscom/paytabs-ios-library-sample.git', :tag => '6.6.54'
+
   flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
 end
 

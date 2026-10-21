@@ -47,7 +47,7 @@ class PaymentFormModel {
   String billingEmail = "email@domain.com";
   String billingPhone = "+97311111111";
   String billingAddress = "st. 12";
-  String billingCountry = "eg";
+  String billingCountry = "KW";
   String billingCity = "dubai";
   String billingState = "dubai";
   String billingZipCode = "12345";
@@ -57,7 +57,7 @@ class PaymentFormModel {
   String shippingEmail = "email@domain.com";
   String shippingPhone = "+97311111111";
   String shippingAddress = "st. 12";
-  String shippingCountry = "eg";
+  String shippingCountry = "KW";
   String shippingCity = "dubai";
   String shippingState = "dubai";
   String shippingZipCode = "12345";
@@ -68,7 +68,9 @@ class PaymentFormModel {
   bool cardApprovalBlockIfNoResponse = false;
 
   // APMs
-  List<PaymentSdkAPms> apms = [PaymentSdkAPms.AMAN];
+  /// Alternative payment methods to be shown/allowed by the SDK.
+  /// Set to KNET only by default for the example app.
+  List<PaymentSdkAPms> apms = [PaymentSdkAPms.KNET];
 
   // Networks
   List<PaymentSDKNetworks> networks = [
