@@ -5,6 +5,7 @@ import 'package:flutter_paytabs_bridge/BaseBillingShippingInfo.dart';
 import 'package:flutter_paytabs_bridge/IOSThemeConfiguration.dart';
 import 'package:flutter_paytabs_bridge/PaymentSDKQueryConfiguration.dart';
 import 'package:flutter_paytabs_bridge/PaymentSDKSavedCardInfo.dart';
+import 'package:flutter_paytabs_bridge/PaymentSdkAccountFunding.dart';
 import 'package:flutter_paytabs_bridge/PaymentSdkConfigurationDetails.dart';
 import 'package:flutter_paytabs_bridge/flutter_paytabs_bridge.dart';
 import 'common_widgets.dart';
@@ -310,6 +311,10 @@ class PaymentMethodsSection extends StatelessWidget {
       shippingDetails: _createShippingDetails(),
       alternativePaymentMethods: model.apms,
       linkBillingNameWithCardHolderName: true,
+      paymentApiBaseUrl: model.paymentApiBaseUrl.trim().isEmpty
+          ? null
+          : model.paymentApiBaseUrl.trim(),
+      accountFunding: _createAccountFunding(),
       // cardApproval: PaymentSDKCardApproval(
       //   validationUrl: model.cardApprovalValidationUrl,
       //   binLength: model.cardApprovalBinLength,
@@ -321,6 +326,59 @@ class PaymentMethodsSection extends StatelessWidget {
     configuration.tokeniseType = model.tokeniseType;
 
     return configuration;
+  }
+
+  /// Builds AFT data when "Send account funding" is enabled (same defaults as iOS sample).
+  PaymentSdkAccountFunding? _createAccountFunding() {
+    if (!model.includeAccountFunding) {
+      return null;
+    }
+    return PaymentSdkAccountFunding(
+      purpose: _aftText(model.aftPurpose),
+      senderType: _aftText(model.aftSenderType),
+      senderIsRecipient: model.aftSenderIsRecipient,
+      sender: PaymentSdkAftSender(
+        accountNumber: _aftText(model.aftAccountNumber),
+        accountType: _aftText(model.aftAccountType),
+        referenceNumber: _aftText(model.aftReferenceNumber),
+        sourceOfFunds: _aftText(model.aftSourceOfFunds),
+        address: _aftText(model.aftAddress),
+        state: _aftText(model.aftState),
+        zip: _aftText(model.aftZip),
+        city: _aftText(model.aftCity),
+        country: _aftText(model.aftCountry),
+        firstName: _aftText(model.aftFirstName),
+        middleName: _aftText(model.aftMiddleName),
+        lastName: _aftText(model.aftLastName),
+        phone: _aftText(model.aftPhone),
+        personalIdType: _aftText(model.aftPersonalIdType),
+        taxType: _aftText(model.aftTaxType),
+        identificationNumber: _aftText(model.aftIdentificationNumber),
+        dateOfBirth: PaymentSdkAftDateOfBirth(
+          year: int.tryParse(model.aftBirthYear.trim()),
+          month: int.tryParse(model.aftBirthMonth.trim()),
+          day: int.tryParse(model.aftBirthDay.trim()),
+        ),
+      ),
+      recipient: PaymentSdkAftRecipient(
+        accountIdentifier: _aftText(model.aftRecipientIdentifier),
+        accountType: _aftText(model.aftRecipientType),
+        fundingMethod: _aftText(model.aftFundingMethod),
+      ),
+      customer: PaymentSdkAftCustomer(
+        firstName: _aftText(model.aftCustomerFirstName),
+        middleName: _aftText(model.aftCustomerMiddleName),
+        lastName: _aftText(model.aftCustomerLastName),
+        identificationType: _aftText(model.aftCustomerIdType),
+        identificationValue: _aftText(model.aftCustomerIdValue),
+        identificationCountry: _aftText(model.aftCustomerIdCountry),
+      ),
+    );
+  }
+
+  String? _aftText(String value) {
+    final trimmed = value.trim();
+    return trimmed.isEmpty ? null : trimmed;
   }
 
   /// Validates card payment configuration
@@ -534,6 +592,10 @@ class PaymentMethodsSection extends StatelessWidget {
       billingDetails: _createBillingDetails(),
       shippingDetails: _createShippingDetails(),
       showBillingInfo: model.showBillingInfo,
+      paymentApiBaseUrl: model.paymentApiBaseUrl.trim().isEmpty
+          ? null
+          : model.paymentApiBaseUrl.trim(),
+      accountFunding: _createAccountFunding(),
     );
     
     FlutterPaytabsBridge.startApplePayPayment(configuration, (event) {

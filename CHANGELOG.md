@@ -1,3 +1,10 @@
+## 2.7.16
+
+* Add Account Funding Transaction (AFT) support
+* Add `paymentApiBaseUrl` to payment configuration (card / Apple Pay / APMs)
+* Update Android payment-sdk to 6.8.16
+* Update iOS PayTabsSDK to 6.6.60
+
 ## 2.7.15
 
 * Update Android payment-sdk to 6.8.15 (fix keyboard covering input fields)

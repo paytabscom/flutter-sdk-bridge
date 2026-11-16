@@ -5,6 +5,7 @@ import 'widgets/payment_config_section.dart';
 import 'widgets/billing_section.dart';
 import 'widgets/shipping_section.dart';
 import 'widgets/card_approval_section.dart';
+import 'widgets/account_funding_section.dart';
 import 'widgets/payment_methods_section.dart';
 
 void main() {
@@ -73,6 +74,10 @@ class _MyAppState extends State<MyApp> {
                 onChanged: (model) => setState(() {}),
               ),
               CardApprovalSection(
+                model: _model,
+                onChanged: (model) => setState(() {}),
+              ),
+              AccountFundingSection(
                 model: _model,
                 onChanged: (model) => setState(() {}),
               ),
