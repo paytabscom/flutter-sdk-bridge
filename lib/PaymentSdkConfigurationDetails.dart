@@ -3,6 +3,7 @@ import 'IOSThemeConfiguration.dart';
 import 'PaymentSDKCardApproval.dart';
 import 'PaymentSDKCardDiscount.dart';
 import 'PaymentSDKNetworks.dart';
+import 'PaymentSdkAccountFunding.dart';
 import 'PaymentSdkApms.dart';
 import 'PaymentSdkLocale.dart';
 import 'PaymentSdkTokenFormat.dart';
@@ -47,6 +48,10 @@ class PaymentSdkConfigurationDetails {
   int? expiryTime;
   List<PaymentSDKNetworks>? paymentNetworks;
   PaymentSDKCardApproval? cardApproval;
+  PaymentSdkAccountFunding? accountFunding;
+  /// Overrides the PayTabs payment API host for this session (e.g. staging).
+  /// Leave null/empty to use the SDK default.
+  String? paymentApiBaseUrl;
 
   PaymentSdkConfigurationDetails(
       {this.profileId,
@@ -83,7 +88,9 @@ class PaymentSdkConfigurationDetails {
       this.expiryTime,
       this.cardDiscounts,
       this.paymentNetworks,
-      this.cardApproval});
+      this.cardApproval,
+      this.accountFunding,
+      this.paymentApiBaseUrl});
 
   String getApmsConcatenated(List<PaymentSdkAPms>? list) {
     if (list == null || list.isEmpty) return "";
@@ -149,7 +156,11 @@ extension PaymentSdkConfigurationDetailsExtension
       pt_expiry_time: this.expiryTime,
       pt_card_discounts: this.cardDiscounts?.map((e) => e.map).toList(),
       pt_payment_networks: getPaymentNetworksConcatenated(this.paymentNetworks),
-      pt_card_approval: this.cardApproval?.map
+      pt_card_approval: this.cardApproval?.map,
+      pt_account_funding: this.accountFunding?.map,
+      if (this.paymentApiBaseUrl != null &&
+          this.paymentApiBaseUrl!.trim().isNotEmpty)
+        pt_payment_api_base_url: this.paymentApiBaseUrl!.trim(),
     };
   }
 }

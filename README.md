@@ -1,5 +1,5 @@
 # Flutter PayTabs Bridge
-![Version](https://img.shields.io/badge/flutter%20paytabs%20bridge-v2.7.15-green)
+![Version](https://img.shields.io/badge/flutter%20paytabs%20bridge-v2.7.16-green)
 
 Flutter paytabs plugin is a wrapper for the native PayTabs Android and iOS SDKs, It helps you integrate with PayTabs payment gateway.
 
@@ -12,7 +12,7 @@ Plugin Support:
 
 ```
 dependencies:
-   flutter_paytabs_bridge: ^2.7.15
+   flutter_paytabs_bridge: ^2.7.16
 ```
 
 ## Usage
@@ -20,6 +20,7 @@ dependencies:
 ```dart
 import 'package:flutter_paytabs_bridge/BaseBillingShippingInfo.dart';
 import 'package:flutter_paytabs_bridge/PaymentSdkConfigurationDetails.dart';
+import 'package:flutter_paytabs_bridge/PaymentSdkAccountFunding.dart';
 import 'package:flutter_paytabs_bridge/PaymentSdkLocale.dart';
 import 'package:flutter_paytabs_bridge/PaymentSdkTokenFormat.dart';
 import 'package:flutter_paytabs_bridge/PaymentSdkTokeniseType.dart';
@@ -90,6 +91,46 @@ Options to set expiry timeout for the card payment screen
  * Note that the expiryTime cannot be set to less than 60 seconds.
  * */
 PaymentSdkConfigurationDetails(...,expiryTime:120);
+```
+
+### Payment API base URL
+
+Optional. Override the PayTabs payment API host for this session (for example staging). Leave unset to use the SDK default. Also available on `PaymentSDKQueryConfiguration` for query transaction.
+
+```dart
+configuration.paymentApiBaseUrl = "https://paypage.paytabs.net";
+```
+
+### Account Funding Transaction (AFT)
+
+Optional. Attach AFT data when the payment funds an account. Required fields depend on the acquirer and card scheme.
+
+```dart
+configuration.accountFunding = PaymentSdkAccountFunding(
+  purpose: "account_to_account",
+  senderType: "consumer",
+  senderIsRecipient: false,
+  sender: PaymentSdkAftSender(
+    accountNumber: "1234567890",
+    accountType: "iban",
+    firstName: "John",
+    lastName: "Doe",
+    country: "JO",
+    dateOfBirth: PaymentSdkAftDateOfBirth(year: 1990, month: 1, day: 15),
+  ),
+  recipient: PaymentSdkAftRecipient(
+    accountIdentifier: "ACCT-001",
+    accountType: "wallet",
+    fundingMethod: "card",
+  ),
+  customer: PaymentSdkAftCustomer(
+    firstName: "John",
+    lastName: "Doe",
+    identificationType: "national_id",
+    identificationValue: "123456789",
+    identificationCountry: "JO",
+  ),
+);
 ```
 
 You have the option to close the payment screen if there are no ongoing transactions.

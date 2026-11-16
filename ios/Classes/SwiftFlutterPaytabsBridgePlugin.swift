@@ -214,6 +214,10 @@ public class SwiftFlutterPaymentSDKBridgePlugin: NSObject, FlutterPlugin {
         configuration.isDigitalProduct = dictionary[pt_is_digital_product] as? Bool ?? false
         configuration.enableZeroContacts = dictionary[pt_enable_zero_contacts] as? Bool ?? false
         configuration.expiryTime = dictionary[pt_expiry_time] as? Int ?? 0
+        if let paymentApiBaseUrl = dictionary[pt_payment_api_base_url] as? String {
+            let trimmed = paymentApiBaseUrl.trimmingCharacters(in: .whitespacesAndNewlines)
+            configuration.paymentApiBaseUrl = trimmed.isEmpty ? nil : trimmed
+        }
 
         if let apmsString = dictionary[pt_apms] as? String, !apmsString.isEmpty {
             let alternativePaymentMethods = apmsString.components(separatedBy: ",")
@@ -257,7 +261,11 @@ public class SwiftFlutterPaymentSDKBridgePlugin: NSObject, FlutterPlugin {
             configuration.paymentNetworks = generatePaymentNetworks(paymentsArray: paymentNetworks)
         }
 
-        configuration.metaData = ["PaymentSDKPluginName": "flutter", "PaymentSDKPluginVersion": "2.7.15"]
+        if let accountFundingDictionary = dictionary[pt_account_funding] as? [String: Any] {
+            configuration.accountFunding = generateAccountFunding(dictionary: accountFundingDictionary)
+        }
+
+        configuration.metaData = ["PaymentSDKPluginName": "flutter", "PaymentSDKPluginVersion": "2.7.16"]
         return configuration
     }
 
@@ -308,6 +316,84 @@ public class SwiftFlutterPaymentSDKBridgePlugin: NSObject, FlutterPlugin {
         billingDetails.state = dictionary[pt_state_billing] as? String ?? ""
         billingDetails.zip = dictionary[pt_zip_billing] as? String ?? ""
         return billingDetails
+    }
+
+    private func generateAccountFunding(dictionary: [String: Any]) -> PaymentSDKAccountFunding {
+        let accountFunding = PaymentSDKAccountFunding()
+        accountFunding.purpose = dictionary[pt_aft_purpose] as? String
+        accountFunding.senderType = dictionary[pt_aft_sender_type] as? String
+        accountFunding.senderIsRecipient = dictionary[pt_aft_sender_is_recipient] as? Bool
+        if let senderDictionary = dictionary[pt_aft_sender] as? [String: Any] {
+            accountFunding.sender = generateAftSender(dictionary: senderDictionary)
+        }
+        if let recipientDictionary = dictionary[pt_aft_recipient] as? [String: Any] {
+            accountFunding.recipient = generateAftRecipient(dictionary: recipientDictionary)
+        }
+        if let customerDictionary = dictionary[pt_aft_customer] as? [String: Any] {
+            accountFunding.customer = generateAftCustomer(dictionary: customerDictionary)
+        }
+        return accountFunding
+    }
+
+    private func generateAftSender(dictionary: [String: Any]) -> PaymentSDKAftSender {
+        let sender = PaymentSDKAftSender()
+        sender.accountNumber = dictionary[pt_aft_account_number] as? String
+        sender.accountType = dictionary[pt_aft_account_type] as? String
+        sender.referenceNumber = dictionary[pt_aft_reference_number] as? String
+        sender.sourceOfFunds = dictionary[pt_aft_source_of_funds] as? String
+        sender.address = dictionary[pt_aft_address] as? String
+        sender.state = dictionary[pt_aft_state] as? String
+        sender.zip = dictionary[pt_aft_zip] as? String
+        sender.city = dictionary[pt_aft_city] as? String
+        sender.country = dictionary[pt_aft_country] as? String
+        sender.firstName = dictionary[pt_aft_first_name] as? String
+        sender.middleName = dictionary[pt_aft_middle_name] as? String
+        sender.lastName = dictionary[pt_aft_last_name] as? String
+        sender.phone = dictionary[pt_aft_phone] as? String
+        sender.personalIdType = dictionary[pt_aft_personal_id_type] as? String
+        sender.taxType = dictionary[pt_aft_tax_type] as? String
+        sender.identificationNumber = dictionary[pt_aft_identification_number] as? String
+        if let dateOfBirthDictionary = dictionary[pt_aft_date_of_birth] as? [String: Any] {
+            sender.dateOfBirth = generateAftDateOfBirth(dictionary: dateOfBirthDictionary)
+        }
+        return sender
+    }
+
+    private func generateAftRecipient(dictionary: [String: Any]) -> PaymentSDKAftRecipient {
+        let recipient = PaymentSDKAftRecipient()
+        recipient.accountIdentifier = dictionary[pt_aft_account_identifier] as? String
+        recipient.accountType = dictionary[pt_aft_account_type] as? String
+        recipient.fundingMethod = dictionary[pt_aft_funding_method] as? String
+        return recipient
+    }
+
+    private func generateAftCustomer(dictionary: [String: Any]) -> PaymentSDKAftCustomer {
+        let customer = PaymentSDKAftCustomer()
+        customer.firstName = dictionary[pt_aft_first_name] as? String
+        customer.middleName = dictionary[pt_aft_middle_name] as? String
+        customer.lastName = dictionary[pt_aft_last_name] as? String
+        customer.identificationType = dictionary[pt_aft_identification_type] as? String
+        customer.identificationValue = dictionary[pt_aft_identification_value] as? String
+        customer.identificationCountry = dictionary[pt_aft_identification_country] as? String
+        return customer
+    }
+
+    private func generateAftDateOfBirth(dictionary: [String: Any]) -> PaymentSDKAftDateOfBirth {
+        let dateOfBirth = PaymentSDKAftDateOfBirth()
+        dateOfBirth.year = aftIntValue(dictionary[pt_aft_birth_year])
+        dateOfBirth.month = aftIntValue(dictionary[pt_aft_birth_month])
+        dateOfBirth.day = aftIntValue(dictionary[pt_aft_birth_day])
+        return dateOfBirth
+    }
+
+    private func aftIntValue(_ value: Any?) -> Int? {
+        if let intValue = value as? Int {
+            return intValue
+        }
+        if let number = value as? NSNumber {
+            return number.intValue
+        }
+        return nil
     }
 
     private func generateCardApproval(dictionary: [String: Any]) -> PaymentSDKCardApproval? {

@@ -12,13 +12,14 @@ class PaymentFormModel {
   bool showBillingDetails = false;
   bool showShippingDetails = false;
   bool showCardApproval = false;
+  bool showAccountFunding = false;
   bool showPaymentMethods = false;
 
   // Credentials
   String profileId = PaymentSdkDefaultConfig.profileID;
   String serverKey = PaymentSdkDefaultConfig.serverKey;
   String clientKey = PaymentSdkDefaultConfig.clientKey;
-  /// Optional PayTabs API base URL (query transaction / regional endpoints). Leave empty for SDK default.
+  /// Optional PayTabs API base URL for payments and query. Leave empty for SDK default.
   String paymentApiBaseUrl = "";
 
   // Payment Configuration
@@ -66,6 +67,40 @@ class PaymentFormModel {
   String cardApprovalValidationUrl = "https://www.example.com/validation";
   int cardApprovalBinLength = 6;
   bool cardApprovalBlockIfNoResponse = false;
+
+  // Account Funding Transaction (AFT) — sample defaults match iOS SDK sample
+  bool includeAccountFunding = false;
+  bool aftSenderIsRecipient = true;
+  String aftPurpose = "OTHER";
+  String aftSenderType = "PERSON";
+  String aftAccountNumber = "SA03 8000 0000 6080 1016 7519";
+  String aftAccountType = "BANK_ACCOUNT_IBAN";
+  String aftReferenceNumber = "REF123456";
+  String aftSourceOfFunds = "credit_card";
+  String aftAddress = "123 Main Street";
+  String aftState = "California";
+  String aftZip = "12345";
+  String aftCity = "San Francisco";
+  String aftCountry = "USA";
+  String aftFirstName = "John";
+  String aftMiddleName = "A.";
+  String aftLastName = "Doe";
+  String aftPhone = "123456789";
+  String aftPersonalIdType = "TaxID";
+  String aftTaxType = "B";
+  String aftIdentificationNumber = "123456789";
+  String aftBirthYear = "1947";
+  String aftBirthMonth = "8";
+  String aftBirthDay = "14";
+  String aftRecipientIdentifier = "User 1234";
+  String aftRecipientType = "STAGED_WALLET_USER_ID";
+  String aftFundingMethod = "unknown";
+  String aftCustomerFirstName = "Steven";
+  String aftCustomerMiddleName = "M";
+  String aftCustomerLastName = "Smith";
+  String aftCustomerIdType = "INDIVIDUAL_TAX_ID";
+  String aftCustomerIdValue = "12345abcdef6789";
+  String aftCustomerIdCountry = "AUS";
 
   // APMs
   List<PaymentSdkAPms> apms = [PaymentSdkAPms.AMAN];

@@ -124,6 +124,40 @@ const String pt_validation_url = "pt_validation_url";
 const String pt_bin_length = "pt_bin_length";
 const String pt_block_if_no_response = "pt_block_if_no_response";
 
+// Account Funding Transaction (AFT)
+const String pt_account_funding = "pt_account_funding";
+const String pt_aft_purpose = "pt_aft_purpose";
+const String pt_aft_sender_type = "pt_aft_sender_type";
+const String pt_aft_sender_is_recipient = "pt_aft_sender_is_recipient";
+const String pt_aft_sender = "pt_aft_sender";
+const String pt_aft_recipient = "pt_aft_recipient";
+const String pt_aft_customer = "pt_aft_customer";
+const String pt_aft_account_number = "pt_aft_account_number";
+const String pt_aft_account_type = "pt_aft_account_type";
+const String pt_aft_reference_number = "pt_aft_reference_number";
+const String pt_aft_source_of_funds = "pt_aft_source_of_funds";
+const String pt_aft_address = "pt_aft_address";
+const String pt_aft_state = "pt_aft_state";
+const String pt_aft_zip = "pt_aft_zip";
+const String pt_aft_city = "pt_aft_city";
+const String pt_aft_country = "pt_aft_country";
+const String pt_aft_first_name = "pt_aft_first_name";
+const String pt_aft_middle_name = "pt_aft_middle_name";
+const String pt_aft_last_name = "pt_aft_last_name";
+const String pt_aft_phone = "pt_aft_phone";
+const String pt_aft_personal_id_type = "pt_aft_personal_id_type";
+const String pt_aft_tax_type = "pt_aft_tax_type";
+const String pt_aft_identification_number = "pt_aft_identification_number";
+const String pt_aft_date_of_birth = "pt_aft_date_of_birth";
+const String pt_aft_birth_year = "pt_aft_birth_year";
+const String pt_aft_birth_month = "pt_aft_birth_month";
+const String pt_aft_birth_day = "pt_aft_birth_day";
+const String pt_aft_account_identifier = "pt_aft_account_identifier";
+const String pt_aft_funding_method = "pt_aft_funding_method";
+const String pt_aft_identification_type = "pt_aft_identification_type";
+const String pt_aft_identification_value = "pt_aft_identification_value";
+const String pt_aft_identification_country = "pt_aft_identification_country";
+
 class FlutterPaytabsBridge {
   static Future<dynamic> startCardPayment(
       PaymentSdkConfigurationDetails arg, void eventsCallBack(dynamic)) async {

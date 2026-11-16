@@ -17,6 +17,11 @@ import com.payment.paymentsdk.PaymentSdkActivity;
 import com.payment.paymentsdk.PaymentSdkConfigBuilder;
 import com.payment.paymentsdk.QuerySdkActivity;
 import com.payment.paymentsdk.integrationmodels.PaymentSDKQueryConfiguration;
+import com.payment.paymentsdk.integrationmodels.PaymentSdkAccountFunding;
+import com.payment.paymentsdk.integrationmodels.PaymentSdkAftCustomer;
+import com.payment.paymentsdk.integrationmodels.PaymentSdkAftDateOfBirth;
+import com.payment.paymentsdk.integrationmodels.PaymentSdkAftRecipient;
+import com.payment.paymentsdk.integrationmodels.PaymentSdkAftSender;
 import com.payment.paymentsdk.integrationmodels.PaymentSdkApms;
 import com.payment.paymentsdk.integrationmodels.PaymentSdkBillingDetails;
 import com.payment.paymentsdk.integrationmodels.PaymentSdkCardApproval;
@@ -331,7 +336,9 @@ public class FlutterPaytabsBridgePlugin implements FlutterPlugin, MethodCallHand
             shippingData = new PaymentSdkShippingDetails(shippingDetails.optString("pt_city_shipping"), shippingDetails.optString("pt_country_shipping"), shippingDetails.optString("pt_email_shipping"), shippingDetails.optString("pt_name_shipping"), shippingDetails.optString("pt_phone_shipping"), shippingDetails.optString("pt_state_shipping"), shippingDetails.optString("pt_address_shipping"), shippingDetails.optString("pt_zip_shipping"));
         }
         final List<PaymentSdkCardDiscount> paymentSdkCardDiscounts = getPaymentSdkCardDiscounts(paymentDetails);
-        return new PaymentSdkConfigBuilder(profileId, serverKey, clientKey, amount, currency).setCartDescription(cartDesc).setLanguageCode(locale).setBillingData(billingData).setMerchantCountryCode(paymentDetails.optString("pt_merchant_country_code")).setShippingData(shippingData).setCartId(orderId).setTransactionClass(createPaymentSdkTransactionClass(paymentDetails.optString("pt_transaction_class"))).setTransactionType(transaction_type).setTokenise(tokeniseType, tokenFormat).setTokenisationData(token, transRef).setAlternativePaymentMethods(aPmsList).showBillingInfo(paymentDetails.optBoolean("pt_show_billing_info")).showShippingInfo(paymentDetails.optBoolean("pt_show_shipping_info")).forceShippingInfo(paymentDetails.optBoolean("pt_force_validate_shipping")).setMerchantIcon(iconUri).setScreenTitle(screenTitle).linkBillingNameWithCard(paymentDetails.optBoolean("pt_link_billing_name")).hideCardScanner(paymentDetails.optBoolean("pt_hide_card_scanner")).enableZeroContacts(paymentDetails.optBoolean("pt_enable_zero_contacts")).isDigitalProduct(paymentDetails.optBoolean("pt_is_digital_product")).setPaymentExpiry(paymentScreenExpiry).setMetadata(getMetadata()).setCardApproval(getCardApproval(paymentDetails)).setCardDiscount(paymentSdkCardDiscounts).build();
+        String paymentApiBaseUrl = paymentDetails.optString("pt_payment_api_base_url").trim();
+        String paymentApiBaseUrlOrNull = paymentApiBaseUrl.isEmpty() || "null".equals(paymentApiBaseUrl) ? null : paymentApiBaseUrl;
+        return new PaymentSdkConfigBuilder(profileId, serverKey, clientKey, amount, currency).setCartDescription(cartDesc).setLanguageCode(locale).setBillingData(billingData).setMerchantCountryCode(paymentDetails.optString("pt_merchant_country_code")).setShippingData(shippingData).setCartId(orderId).setTransactionClass(createPaymentSdkTransactionClass(paymentDetails.optString("pt_transaction_class"))).setTransactionType(transaction_type).setTokenise(tokeniseType, tokenFormat).setTokenisationData(token, transRef).setAlternativePaymentMethods(aPmsList).showBillingInfo(paymentDetails.optBoolean("pt_show_billing_info")).showShippingInfo(paymentDetails.optBoolean("pt_show_shipping_info")).forceShippingInfo(paymentDetails.optBoolean("pt_force_validate_shipping")).setMerchantIcon(iconUri).setScreenTitle(screenTitle).linkBillingNameWithCard(paymentDetails.optBoolean("pt_link_billing_name")).hideCardScanner(paymentDetails.optBoolean("pt_hide_card_scanner")).enableZeroContacts(paymentDetails.optBoolean("pt_enable_zero_contacts")).isDigitalProduct(paymentDetails.optBoolean("pt_is_digital_product")).setPaymentExpiry(paymentScreenExpiry).setMetadata(getMetadata()).setCardApproval(getCardApproval(paymentDetails)).setCardDiscount(paymentSdkCardDiscounts).setAccountFunding(getAccountFunding(paymentDetails)).setPaymentApiBaseUrl(paymentApiBaseUrlOrNull).build();
     }
 
     /**
@@ -342,8 +349,106 @@ public class FlutterPaytabsBridgePlugin implements FlutterPlugin, MethodCallHand
     private Map<String, Object> getMetadata() {
         Map<String, Object> metadata = new HashMap<>();
         metadata.put("PaymentSDKPluginName", "flutter");
-        metadata.put("PaymentSDKPluginVersion", "2.7.15");
+        metadata.put("PaymentSDKPluginVersion", "2.7.16");
         return metadata;
+    }
+
+    private static PaymentSdkAccountFunding getAccountFunding(JSONObject paymentDetails) {
+        JSONObject aft = paymentDetails.optJSONObject("pt_account_funding");
+        if (aft == null) {
+            return null;
+        }
+        Boolean senderIsRecipient = null;
+        if (aft.has("pt_aft_sender_is_recipient") && !aft.isNull("pt_aft_sender_is_recipient")) {
+            senderIsRecipient = aft.optBoolean("pt_aft_sender_is_recipient");
+        }
+        return new PaymentSdkAccountFunding(
+                optNullableString(aft, "pt_aft_purpose"),
+                optNullableString(aft, "pt_aft_sender_type"),
+                senderIsRecipient,
+                getAftSender(aft.optJSONObject("pt_aft_sender")),
+                getAftRecipient(aft.optJSONObject("pt_aft_recipient")),
+                getAftCustomer(aft.optJSONObject("pt_aft_customer"))
+        );
+    }
+
+    private static PaymentSdkAftSender getAftSender(JSONObject sender) {
+        if (sender == null) {
+            return null;
+        }
+        return new PaymentSdkAftSender(
+                optNullableString(sender, "pt_aft_account_number"),
+                optNullableString(sender, "pt_aft_account_type"),
+                optNullableString(sender, "pt_aft_reference_number"),
+                optNullableString(sender, "pt_aft_source_of_funds"),
+                optNullableString(sender, "pt_aft_address"),
+                optNullableString(sender, "pt_aft_state"),
+                optNullableString(sender, "pt_aft_zip"),
+                optNullableString(sender, "pt_aft_city"),
+                optNullableString(sender, "pt_aft_country"),
+                optNullableString(sender, "pt_aft_first_name"),
+                optNullableString(sender, "pt_aft_middle_name"),
+                optNullableString(sender, "pt_aft_last_name"),
+                optNullableString(sender, "pt_aft_phone"),
+                optNullableString(sender, "pt_aft_personal_id_type"),
+                optNullableString(sender, "pt_aft_tax_type"),
+                optNullableString(sender, "pt_aft_identification_number"),
+                getAftDateOfBirth(sender.optJSONObject("pt_aft_date_of_birth"))
+        );
+    }
+
+    private static PaymentSdkAftRecipient getAftRecipient(JSONObject recipient) {
+        if (recipient == null) {
+            return null;
+        }
+        return new PaymentSdkAftRecipient(
+                optNullableString(recipient, "pt_aft_account_identifier"),
+                optNullableString(recipient, "pt_aft_account_type"),
+                optNullableString(recipient, "pt_aft_funding_method")
+        );
+    }
+
+    private static PaymentSdkAftCustomer getAftCustomer(JSONObject customer) {
+        if (customer == null) {
+            return null;
+        }
+        return new PaymentSdkAftCustomer(
+                optNullableString(customer, "pt_aft_first_name"),
+                optNullableString(customer, "pt_aft_middle_name"),
+                optNullableString(customer, "pt_aft_last_name"),
+                optNullableString(customer, "pt_aft_identification_type"),
+                optNullableString(customer, "pt_aft_identification_value"),
+                optNullableString(customer, "pt_aft_identification_country")
+        );
+    }
+
+    private static PaymentSdkAftDateOfBirth getAftDateOfBirth(JSONObject dateOfBirth) {
+        if (dateOfBirth == null) {
+            return null;
+        }
+        return new PaymentSdkAftDateOfBirth(
+                optNullableInt(dateOfBirth, "pt_aft_birth_year"),
+                optNullableInt(dateOfBirth, "pt_aft_birth_month"),
+                optNullableInt(dateOfBirth, "pt_aft_birth_day")
+        );
+    }
+
+    private static String optNullableString(JSONObject json, String key) {
+        if (json == null || !json.has(key) || json.isNull(key)) {
+            return null;
+        }
+        String value = json.optString(key, null);
+        if (value == null || value.isEmpty() || "null".equals(value)) {
+            return null;
+        }
+        return value;
+    }
+
+    private static Integer optNullableInt(JSONObject json, String key) {
+        if (json == null || !json.has(key) || json.isNull(key)) {
+            return null;
+        }
+        return json.optInt(key);
     }
 
     @NonNull
